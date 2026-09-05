@@ -1,0 +1,213 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Juan Daniel\\Desktop\\Pagina DFIT\\Dfit\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{146C9879-5357-411A-A715-247F51328927}|Dfit\\Dfit.csproj|c:\\users\\juan daniel\\desktop\\pagina dfit\\dfit\\dfit\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{146C9879-5357-411A-A715-247F51328927}|Dfit\\Dfit.csproj|solutionrelative:dfit\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{146C9879-5357-411A-A715-247F51328927}|Dfit\\Dfit.csproj|c:\\users\\juan daniel\\desktop\\pagina dfit\\dfit\\dfit\\views\\home\\checkinresult.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{146C9879-5357-411A-A715-247F51328927}|Dfit\\Dfit.csproj|solutionrelative:dfit\\views\\home\\checkinresult.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{146C9879-5357-411A-A715-247F51328927}|Dfit\\Dfit.csproj|c:\\users\\juan daniel\\desktop\\pagina dfit\\dfit\\dfit\\views\\home\\asistencia.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{146C9879-5357-411A-A715-247F51328927}|Dfit\\Dfit.csproj|solutionrelative:dfit\\views\\home\\asistencia.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{146C9879-5357-411A-A715-247F51328927}|Dfit\\Dfit.csproj|c:\\users\\juan daniel\\desktop\\pagina dfit\\dfit\\dfit\\views\\home\\pantallaqr.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{146C9879-5357-411A-A715-247F51328927}|Dfit\\Dfit.csproj|solutionrelative:dfit\\views\\home\\pantallaqr.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{146C9879-5357-411A-A715-247F51328927}|Dfit\\Dfit.csproj|c:\\users\\juan daniel\\desktop\\pagina dfit\\dfit\\dfit\\views\\home\\reportefinanciero.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{146C9879-5357-411A-A715-247F51328927}|Dfit\\Dfit.csproj|solutionrelative:dfit\\views\\home\\reportefinanciero.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{146C9879-5357-411A-A715-247F51328927}|Dfit\\Dfit.csproj|c:\\users\\juan daniel\\desktop\\pagina dfit\\dfit\\dfit\\views\\home\\mimembresia.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{146C9879-5357-411A-A715-247F51328927}|Dfit\\Dfit.csproj|solutionrelative:dfit\\views\\home\\mimembresia.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{146C9879-5357-411A-A715-247F51328927}|Dfit\\Dfit.csproj|c:\\users\\juan daniel\\desktop\\pagina dfit\\dfit\\dfit\\views\\home\\membresias.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{146C9879-5357-411A-A715-247F51328927}|Dfit\\Dfit.csproj|solutionrelative:dfit\\views\\home\\membresias.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{146C9879-5357-411A-A715-247F51328927}|Dfit\\Dfit.csproj|c:\\users\\juan daniel\\desktop\\pagina dfit\\dfit\\dfit\\views\\home\\assignmembresia.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{146C9879-5357-411A-A715-247F51328927}|Dfit\\Dfit.csproj|solutionrelative:dfit\\views\\home\\assignmembresia.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{146C9879-5357-411A-A715-247F51328927}|Dfit\\Dfit.csproj|c:\\users\\juan daniel\\desktop\\pagina dfit\\dfit\\dfit\\views\\home\\createmembresia.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{146C9879-5357-411A-A715-247F51328927}|Dfit\\Dfit.csproj|solutionrelative:dfit\\views\\home\\createmembresia.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{146C9879-5357-411A-A715-247F51328927}|Dfit\\Dfit.csproj|c:\\users\\juan daniel\\desktop\\pagina dfit\\dfit\\dfit\\views\\home\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{146C9879-5357-411A-A715-247F51328927}|Dfit\\Dfit.csproj|solutionrelative:dfit\\views\\home\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{146C9879-5357-411A-A715-247F51328927}|Dfit\\Dfit.csproj|c:\\users\\juan daniel\\desktop\\pagina dfit\\dfit\\dfit\\views\\home\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{146C9879-5357-411A-A715-247F51328927}|Dfit\\Dfit.csproj|solutionrelative:dfit\\views\\home\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{146C9879-5357-411A-A715-247F51328927}|Dfit\\Dfit.csproj|c:\\users\\juan daniel\\desktop\\pagina dfit\\dfit\\dfit\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{146C9879-5357-411A-A715-247F51328927}|Dfit\\Dfit.csproj|solutionrelative:dfit\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 6,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "PantallaQR.cshtml",
+              "DocumentMoniker": "C:\\Users\\Juan Daniel\\Desktop\\Pagina DFIT\\Dfit\\Dfit\\Views\\Home\\PantallaQR.cshtml",
+              "RelativeDocumentMoniker": "Dfit\\Views\\Home\\PantallaQR.cshtml",
+              "ToolTip": "C:\\Users\\Juan Daniel\\Desktop\\Pagina DFIT\\Dfit\\Dfit\\Views\\Home\\PantallaQR.cshtml",
+              "RelativeToolTip": "Dfit\\Views\\Home\\PantallaQR.cshtml",
+              "ViewState": "AgIAACAAAAAAAAAAAIAwwCEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-28T05:51:27.161Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ReporteFinanciero.cshtml",
+              "DocumentMoniker": "C:\\Users\\Juan Daniel\\Desktop\\Pagina DFIT\\Dfit\\Dfit\\Views\\Home\\ReporteFinanciero.cshtml",
+              "RelativeDocumentMoniker": "Dfit\\Views\\Home\\ReporteFinanciero.cshtml",
+              "ToolTip": "C:\\Users\\Juan Daniel\\Desktop\\Pagina DFIT\\Dfit\\Dfit\\Views\\Home\\ReporteFinanciero.cshtml",
+              "RelativeToolTip": "Dfit\\Views\\Home\\ReporteFinanciero.cshtml",
+              "ViewState": "AgIAAC0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-28T05:50:47.64Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Membresias.cshtml",
+              "DocumentMoniker": "C:\\Users\\Juan Daniel\\Desktop\\Pagina DFIT\\Dfit\\Dfit\\Views\\Home\\Membresias.cshtml",
+              "RelativeDocumentMoniker": "Dfit\\Views\\Home\\Membresias.cshtml",
+              "ToolTip": "C:\\Users\\Juan Daniel\\Desktop\\Pagina DFIT\\Dfit\\Dfit\\Views\\Home\\Membresias.cshtml",
+              "RelativeToolTip": "Dfit\\Views\\Home\\Membresias.cshtml",
+              "ViewState": "AgIAAC0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-28T05:49:39.601Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "CheckInResult.cshtml",
+              "DocumentMoniker": "C:\\Users\\Juan Daniel\\Desktop\\Pagina DFIT\\Dfit\\Dfit\\Views\\Home\\CheckInResult.cshtml",
+              "RelativeDocumentMoniker": "Dfit\\Views\\Home\\CheckInResult.cshtml",
+              "ToolTip": "C:\\Users\\Juan Daniel\\Desktop\\Pagina DFIT\\Dfit\\Dfit\\Views\\Home\\CheckInResult.cshtml",
+              "RelativeToolTip": "Dfit\\Views\\Home\\CheckInResult.cshtml",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-28T05:45:22.993Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Asistencia.cshtml",
+              "DocumentMoniker": "C:\\Users\\Juan Daniel\\Desktop\\Pagina DFIT\\Dfit\\Dfit\\Views\\Home\\Asistencia.cshtml",
+              "RelativeDocumentMoniker": "Dfit\\Views\\Home\\Asistencia.cshtml",
+              "ToolTip": "C:\\Users\\Juan Daniel\\Desktop\\Pagina DFIT\\Dfit\\Dfit\\Views\\Home\\Asistencia.cshtml",
+              "RelativeToolTip": "Dfit\\Views\\Home\\Asistencia.cshtml",
+              "ViewState": "AgIAACgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-28T05:50:12.784Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "AssignMembresia.cshtml",
+              "DocumentMoniker": "C:\\Users\\Juan Daniel\\Desktop\\Pagina DFIT\\Dfit\\Dfit\\Views\\Home\\AssignMembresia.cshtml",
+              "RelativeDocumentMoniker": "Dfit\\Views\\Home\\AssignMembresia.cshtml",
+              "ToolTip": "C:\\Users\\Juan Daniel\\Desktop\\Pagina DFIT\\Dfit\\Dfit\\Views\\Home\\AssignMembresia.cshtml",
+              "RelativeToolTip": "Dfit\\Views\\Home\\AssignMembresia.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-29T10:26:43.785Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Juan Daniel\\Desktop\\Pagina DFIT\\Dfit\\Dfit\\Program.cs",
+              "RelativeDocumentMoniker": "Dfit\\Program.cs",
+              "ToolTip": "C:\\Users\\Juan Daniel\\Desktop\\Pagina DFIT\\Dfit\\Dfit\\Program.cs",
+              "RelativeToolTip": "Dfit\\Program.cs",
+              "ViewState": "AgIAACoAAAAAAAAAAAAIwDwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-22T07:49:11.688Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "MiMembresia.cshtml",
+              "DocumentMoniker": "C:\\Users\\Juan Daniel\\Desktop\\Pagina DFIT\\Dfit\\Dfit\\Views\\Home\\MiMembresia.cshtml",
+              "RelativeDocumentMoniker": "Dfit\\Views\\Home\\MiMembresia.cshtml",
+              "ToolTip": "C:\\Users\\Juan Daniel\\Desktop\\Pagina DFIT\\Dfit\\Dfit\\Views\\Home\\MiMembresia.cshtml",
+              "RelativeToolTip": "Dfit\\Views\\Home\\MiMembresia.cshtml",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-29T10:26:07.512Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "CreateMembresia.cshtml",
+              "DocumentMoniker": "C:\\Users\\Juan Daniel\\Desktop\\Pagina DFIT\\Dfit\\Dfit\\Views\\Home\\CreateMembresia.cshtml",
+              "RelativeDocumentMoniker": "Dfit\\Views\\Home\\CreateMembresia.cshtml",
+              "ToolTip": "C:\\Users\\Juan Daniel\\Desktop\\Pagina DFIT\\Dfit\\Dfit\\Views\\Home\\CreateMembresia.cshtml",
+              "RelativeToolTip": "Dfit\\Views\\Home\\CreateMembresia.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-29T10:26:00.439Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Dashboard.cshtml",
+              "DocumentMoniker": "C:\\Users\\Juan Daniel\\Desktop\\Pagina DFIT\\Dfit\\Dfit\\Views\\Home\\Dashboard.cshtml",
+              "RelativeDocumentMoniker": "Dfit\\Views\\Home\\Dashboard.cshtml",
+              "ToolTip": "C:\\Users\\Juan Daniel\\Desktop\\Pagina DFIT\\Dfit\\Dfit\\Views\\Home\\Dashboard.cshtml",
+              "RelativeToolTip": "Dfit\\Views\\Home\\Dashboard.cshtml",
+              "ViewState": "AgIAAH4AAAAAAAAAAAAAACQAAAB9AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-28T05:45:31.337Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Juan Daniel\\Desktop\\Pagina DFIT\\Dfit\\Dfit\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "Dfit\\Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Juan Daniel\\Desktop\\Pagina DFIT\\Dfit\\Dfit\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "Dfit\\Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-28T05:45:06.937Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "C:\\Users\\Juan Daniel\\Desktop\\Pagina DFIT\\Dfit\\Dfit\\Views\\Home\\Login.cshtml",
+              "RelativeDocumentMoniker": "Dfit\\Views\\Home\\Login.cshtml",
+              "ToolTip": "C:\\Users\\Juan Daniel\\Desktop\\Pagina DFIT\\Dfit\\Dfit\\Views\\Home\\Login.cshtml",
+              "RelativeToolTip": "Dfit\\Views\\Home\\Login.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAC0AAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-28T05:43:25.009Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

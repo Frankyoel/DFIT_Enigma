@@ -1,0 +1,77 @@
+@model Dfit.Models.MembresiaUsuario
+@{ Layout = null; }
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <title>Mi Membresía - DFIT Power</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/dfit-login.css" asp-append-version="true" />
+    <style>
+        .memb-card { background: var(--primary-dark); border-radius: 16px; padding: 24px; color: white; position: relative; overflow: hidden; margin-top: 20px; }
+        .badge { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; background: var(--primary); display: inline-block; }
+    </style>
+</head>
+<body style="background-image: none; background-color: var(--mobile-bg);">
+
+    <div class="login-container" style="max-width: 500px;">
+        <div class="login-card" style="background: var(--dark-card);">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h1 class="text-h1">Mi Membresía</h1>
+                <a href="/Home/Index" style="color:var(--muted); text-decoration:none;">✕ Cerrar</a>
+            </div>
+
+            @if (Model != null)
+            {
+                <div class="memb-card">
+                    <span class="badge">Vigente</span>
+                    <h2 style="margin: 16px 0 8px 0;">@Model.Membresia.Nombre</h2>
+                    <p style="font-size:14px; opacity: 0.9;">@Model.Membresia.Descripcion</p>
+                    
+                    @if ((Model.FechaFin - System.DateTime.Now).TotalDays <= 5)
+                    {
+                        <div style="background: rgba(226, 75, 74, 0.2); color: #FF9999; padding: 10px; border-radius: 8px; font-size: 13px; margin-top:16px;">
+                            <strong>¡Atención!</strong> Tu membresía vencerá en @((int)(Model.FechaFin - System.DateTime.Now).TotalDays) días.
+                        </div>
+                    }
+                    
+                    <div style="margin-top: 24px; display:flex; justify-content:space-between; font-size:13px;">
+                        <div>
+                            <div style="opacity:0.7; font-size:11px;">Válido desde</div>
+                            <strong>@Model.FechaInicio.ToString("dd/MM/yyyy")</strong>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="opacity:0.7; font-size:11px;">Vence el</div>
+                            <strong>@Model.FechaFin.ToString("dd/MM/yyyy")</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 30px; display: flex; gap: 10px;">
+                    <button class="btn btn-primary" style="flex:1;">Renovar</button>
+                    
+                    <form asp-action="CancelMembresia" method="post" style="flex:1;">
+                        <input type="hidden" name="membresiaUsuarioId" value="@Model.Id" />
+                        <input type="hidden" name="usuarioId" value="@Model.UsuarioId" />
+                        <button type="submit" class="btn" style="width:100%; background: #E24B4A; color:white;" onclick="return confirm('¿Seguro que deseas cancelar?');">Cancelar</button>
+                    </form>
+                </div>
+                
+                <div style="text-align:center; margin-top:20px;">
+                    <a href="/Home/PagosUsuario/@Model.UsuarioId" style="color:var(--muted); text-decoration:underline; font-size:14px;">Ver mi historial de pagos</a>
+                </div>
+            }
+            else
+            {
+                <div style="text-align:center; padding: 40px 0; color: var(--muted);">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:16px;">
+                        <circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    <p>No tienes ninguna membresía activa en este momento.</p>
+                </div>
+            }
+        </div>
+    </div>
+</body>
+</html>

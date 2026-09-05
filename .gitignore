@@ -1,0 +1,6 @@
+*firebase-key.json
+*.json.secret
+[Bb]in/
+[Oo]bj/
+*.log
+.env

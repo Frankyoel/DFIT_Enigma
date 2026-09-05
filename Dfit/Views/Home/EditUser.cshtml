@@ -1,0 +1,58 @@
+@model Dfit.Models.EditUserViewModel
+@{
+    ViewData["Title"] = "Editar Usuario";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2>Editar Usuario</h2>
+        <p class="text-muted" style="margin-top: 4px;">Modifica los datos personales y el nivel de acceso del usuario.</p>
+    </div>
+    <a href="/Home/Dashboard" class="btn btn-secondary">← Volver</a>
+</div>
+
+<div class="card" style="max-width: 600px;">
+    <form asp-action="EditUser" method="post">
+        <input type="hidden" asp-for="Id" />
+        
+        <div class="form-group">
+            <label asp-for="Nombres" class="form-label">Nombres</label>
+            <input asp-for="Nombres" class="form-control" required />
+        </div>
+        
+        <div class="form-group">
+            <label asp-for="Apellidos" class="form-label">Apellidos</label>
+            <input asp-for="Apellidos" class="form-control" required />
+        </div>
+        
+        <div class="form-group">
+            <label asp-for="DNI" class="form-label">DNI</label>
+            <input asp-for="DNI" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Celular" class="form-label">Número de Celular</label>
+            <input asp-for="Celular" class="form-control" required />
+        </div>
+        
+        <div class="form-group">
+            <label asp-for="Correo" class="form-label">Correo Electrónico</label>
+            <input asp-for="Correo" type="email" class="form-control" required />
+        </div>
+        
+        <div class="form-group mb-4">
+            <label asp-for="Rol" class="form-label">Rol del Sistema</label>
+            <select asp-for="Rol" class="form-control" style="appearance: auto;">
+                <option value="Usuario">Usuario Estándar</option>
+                <option value="Admin">Administrador</option>
+            </select>
+        </div>
+
+        <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 2rem;">
+            <input asp-for="Activo" type="checkbox" style="width: 16px; height: 16px; accent-color: var(--primary);" />
+            <label asp-for="Activo" style="font-weight: 500; margin: 0; cursor: pointer;">Cuenta Activa (Permite el acceso al sistema)</label>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Guardar Cambios</button>
+    </form>
+</div>

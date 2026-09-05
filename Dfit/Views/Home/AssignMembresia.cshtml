@@ -1,0 +1,32 @@
+@{
+    ViewData["Title"] = "Asignar Membresía";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2>Asignar Membresía</h2>
+        <p class="text-muted" style="margin-top: 4px;">Selecciona el plan para este usuario.</p>
+    </div>
+    <a href="/Home/Dashboard" class="btn btn-secondary">← Volver al Dashboard</a>
+</div>
+
+<div class="card" style="max-width: 600px;">
+    <form asp-action="AssignMembresia" method="post">
+        <input type="hidden" name="usuarioId" value="@ViewBag.UsuarioId" />
+        
+        <div class="form-group mb-4">
+            <label class="form-label">Selecciona el Plan</label>
+            <select name="membresiaId" class="form-control" style="appearance: auto;" required>
+                @if (ViewBag.Membresias != null)
+                {
+                    foreach (var plan in ViewBag.Membresias)
+                    {
+                        <option value="@plan.Id">@plan.Nombre - S/ @plan.Precio (@plan.DuracionDias días)</option>
+                    }
+                }
+            </select>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Asignar Plan</button>
+    </form>
+</div>

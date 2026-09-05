@@ -1,0 +1,45 @@
+@model Dfit.Models.Membresia
+@{
+    ViewData["Title"] = "Editar Plan";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2>Editar Plan</h2>
+        <p class="text-muted" style="margin-top: 4px;">Modifica los detalles del plan de membresía.</p>
+    </div>
+    <a href="/Home/Membresias" class="btn btn-secondary">← Volver</a>
+</div>
+
+<div class="card" style="max-width: 600px;">
+    <form asp-action="EditMembresia" method="post">
+        <input type="hidden" asp-for="Id" />
+        
+        <div class="form-group">
+            <label asp-for="Nombre" class="form-label">Nombre del Plan</label>
+            <input asp-for="Nombre" class="form-control" required />
+        </div>
+        
+        <div class="form-group">
+            <label asp-for="Descripcion" class="form-label">Descripción</label>
+            <textarea asp-for="Descripcion" class="form-control" rows="3" required></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label asp-for="Precio" class="form-label">Precio (S/)</label>
+            <input asp-for="Precio" type="number" step="0.01" class="form-control" required />
+        </div>
+        
+        <div class="form-group mb-4">
+            <label asp-for="DuracionDias" class="form-label">Duración (días)</label>
+            <input asp-for="DuracionDias" type="number" class="form-control" required />
+        </div>
+
+        <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 2rem;">
+            <input asp-for="Activa" type="checkbox" style="width: 16px; height: 16px; accent-color: var(--primary);" />
+            <label asp-for="Activa" style="font-weight: 500; margin: 0; cursor: pointer;">Plan Activo (Disponible para venta)</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Guardar Cambios</button>
+    </form>
+</div>

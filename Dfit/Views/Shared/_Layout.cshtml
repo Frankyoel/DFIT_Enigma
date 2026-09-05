@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - DFIT Power</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    @{
+        var hideSidebar = ViewData["HideSidebar"] as bool? ?? false;
+    }
+
+    @if (hideSidebar)
+    {
+        <div style="width:100%; min-height:100vh; background-color: var(--bg-body); display:flex; justify-content:center; align-items:center;">
+            @RenderBody()
+        </div>
+    }
+    else
+    {
+        <div class="app-container">
+            <aside class="sidebar">
+                <div class="sidebar-header" style="justify-content: center; padding-bottom: 2rem;">
+                    <img src="~/images/logo.png" alt="DFIT Power Logo" style="max-width: 100%; height: auto; max-height: 120px; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" />
+                </div>
+                
+                <nav>
+                    <a href="/Home/Dashboard" class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Dashboard" ? "active" : "")">Usuarios</a>
+                    <a href="/Home/Membresias" class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Membresias" ? "active" : "")">Membresías</a>
+                    <a href="/Home/ReporteFinanciero" class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "ReporteFinanciero" ? "active" : "")">Reportes</a>
+                    <a href="/Home/Asistencia" class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Asistencia" ? "active" : "")">Control Asistencia</a>
+                    <a href="/Home/Rutinas" class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Rutinas" ? "active" : "")">Rutinas</a>
+                    <a href="/Home/Horarios" class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Horarios" ? "active" : "")">Horarios</a>
+                </nav>
+                
+                <div style="margin-top: auto;">
+                    <a href="/Home/Login" class="nav-link text-danger" style="color: var(--danger) !important; font-weight:600;">Cerrar sesión</a>
+                </div>
+            </aside>
+
+            <main class="main-content">
+                <header class="topbar">
+                    <div style="display:flex; gap: 1rem; align-items:center;">
+                        <span style="font-weight: 500; font-size:14px; color:var(--text-muted);">Admin Panel</span>
+                        <div style="width: 32px; height: 32px; background: var(--primary); border-radius: 50%; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold;">A</div>
+                    </div>
+                </header>
+                
+                <div class="content-body">
+                    @RenderBody()
+                </div>
+            </main>
+        </div>
+    }
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

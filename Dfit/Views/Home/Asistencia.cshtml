@@ -1,0 +1,156 @@
+@model IEnumerable<Dfit.Models.Asistencia>
+@{
+    ViewData["Title"] = "Control de Asistencia";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2>Control de Asistencia</h2>
+        <p class="text-muted" style="margin-top: 4px;">Monitor de ingresos y control de acceso.</p>
+    </div>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#qrModal" onclick="startQR()">
+        📱 Mostrar QR de Ingreso
+    </button>
+</div>
+
+@if(TempData["ErrorAcceso"] != null)
+{
+    <div class="alert alert-danger" style="background-color: #fef2f2; border: 1px solid #f87171; color: #b91c1c; padding: 1rem; border-radius: var(--radius); margin-bottom: 1.5rem; font-weight: 500;">
+        <span style="margin-right: 8px;">✕</span> Acceso Denegado: @TempData["ErrorAcceso"]
+    </div>
+}
+@if(TempData["ExitoAcceso"] != null)
+{
+    <div class="alert alert-success" style="background-color: #f0fdf4; border: 1px solid #4ade80; color: #166534; padding: 1rem; border-radius: var(--radius); margin-bottom: 1.5rem; font-weight: 500;">
+        <span style="margin-right: 8px;">✓</span> @TempData["ExitoAcceso"]
+    </div>
+}
+
+<div class="card" style="margin-bottom: 2rem;">
+    <h3 style="margin-bottom: 0.5rem;">Simulador Manual / Contingencia</h3>
+    <p class="text-muted" style="margin-bottom: 1.5rem;">Si un usuario olvidó su teléfono, puedes registrar su ingreso manualmente aquí.</p>
+    
+    <form asp-action="RegistrarAsistencia" method="post" class="d-flex gap-2">
+        <select name="usuarioId" class="form-control" style="flex: 1; appearance: auto;">
+            @if(ViewBag.Usuarios != null)
+            {
+                foreach(var u in ViewBag.Usuarios)
+                {
+                    <option value="@u.Id">@u.Nombres @u.Apellidos - @u.Correo</option>
+                }
+            }
+        </select>
+        <button type="submit" class="btn btn-secondary">Registrar Ingreso Manual</button>
+    </form>
+</div>
+
+<div class="card">
+    <h3 style="margin-bottom: 1.5rem;">Asistencias de Hoy</h3>
+    <div class="table-responsive">
+        <table class="formal-table">
+            <thead>
+                <tr>
+                    <th>Hora de Ingreso</th>
+                    <th>Miembro</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var a in Model)
+                {
+                    <tr>
+                        <td class="text-muted" style="font-weight: 500;">@a.FechaHoraEntrada.ToString("hh:mm tt")</td>
+                        <td style="font-weight: 500;">@a.Usuario.Nombres @a.Usuario.Apellidos</td>
+                        <td>
+                            <span class="badge badge-success">Acceso Concedido</span>
+                        </td>
+                    </tr>
+                }
+                @if(!Model.Any()) {
+                    <tr>
+                        <td colspan="3" class="text-center text-muted" style="padding: 3rem 1rem;">Nadie ha ingresado hoy.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal QR -->
+<div class="modal fade" id="qrModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border: none; border-radius: 20px; background-color: #ffffff; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+      <div class="modal-header" style="border-bottom: 1px solid var(--border-color); padding: 1.5rem;">
+        <h5 class="modal-title" style="font-weight: 600;">Código de Acceso</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="stopQR()"></button>
+      </div>
+      <div class="modal-body text-center" style="padding: 2rem;">
+        <h3 style="color: var(--primary); margin-bottom: 0.5rem; font-size: 24px;">DFIT Power</h3>
+        <p class="text-muted" style="margin-bottom: 2rem;">Apunta con la cámara de tu móvil para registrar asistencia</p>
+        
+        <div id="qrcode" style="display: flex; justify-content: center; align-items: center; background: white; padding: 20px; border-radius: 12px; margin: 0 auto 2rem auto; width: fit-content; border: 1px solid var(--border-color);"></div>
+        
+        <div style="font-size: 14px; color: var(--text-muted); font-weight: 500;">
+            El código se actualiza en <span id="countdown" style="color: var(--text-main); font-weight: bold;">60</span>s
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        let qrcode = null;
+        let countdown = 60;
+        let qrInterval = null;
+        let countdownEl = document.getElementById("countdown");
+
+        function updateQR() {
+            fetch('/Home/GenerarTokenQR')
+                .then(response => response.json())
+                .then(data => {
+                    let fullUrl = window.location.origin + '/Home/CheckIn?token=' + data.token;
+                    
+                    if (!qrcode) {
+                        qrcode = new QRCode(document.getElementById("qrcode"), {
+                            width: 200,
+                            height: 200,
+                            colorDark : "#0a0a0a",
+                            colorLight : "#ffffff",
+                            correctLevel : QRCode.CorrectLevel.H
+                        });
+                    }
+                    
+                    qrcode.clear();
+                    qrcode.makeCode(fullUrl);
+                    countdown = 60;
+                });
+        }
+
+        function startQR() {
+            if (qrInterval) clearInterval(qrInterval);
+            updateQR();
+            qrInterval = setInterval(() => {
+                countdown--;
+                if (countdown <= 0) {
+                    updateQR();
+                } else {
+                    countdownEl.innerText = countdown;
+                }
+            }, 1000);
+        }
+
+        function stopQR() {
+            if (qrInterval) {
+                clearInterval(qrInterval);
+                qrInterval = null;
+            }
+        }
+        
+        // Limpiar el intervalo si se cierra el modal clickeando fuera
+        document.getElementById('qrModal').addEventListener('hidden.bs.modal', function () {
+            stopQR();
+        });
+    </script>
+}

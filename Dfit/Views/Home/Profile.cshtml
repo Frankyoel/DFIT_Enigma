@@ -1,0 +1,64 @@
+@model Dfit.Models.ProfileViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <title>Mi Perfil - DFIT Power</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/dfit-login.css" asp-append-version="true" />
+    <style>
+        .login-card { max-width: 500px; width: 100%; margin: 40px auto; }
+    </style>
+</head>
+<body style="background-image: none; background-color: var(--mobile-bg);">
+
+    <div class="login-container" style="max-width: 600px;">
+        <div class="login-card" style="background: var(--dark-card);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 24px;">
+                <h1 class="text-h1">Mi Perfil</h1>
+                <a href="/Home/Index" style="color:var(--muted); text-decoration:none;">✕ Cerrar</a>
+            </div>
+            
+            @if (ViewBag.Message != null)
+            {
+                <div style="background: rgba(99, 153, 34, 0.2); color: var(--accent-light); padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size:14px; text-align:center;">
+                    @ViewBag.Message
+                </div>
+            }
+
+            <form asp-action="Profile" method="post">
+                <input type="hidden" asp-for="Id" />
+                
+                <div class="input-group">
+                    <label style="font-size:12px; color:var(--muted); margin-bottom:4px; display:block;">Nombres</label>
+                    <input asp-for="Nombres" class="input-dark" required />
+                </div>
+                <div class="input-group">
+                    <label style="font-size:12px; color:var(--muted); margin-bottom:4px; display:block;">Apellidos</label>
+                    <input asp-for="Apellidos" class="input-dark" required />
+                </div>
+                <div class="input-group">
+                    <label style="font-size:12px; color:var(--muted); margin-bottom:4px; display:block;">Correo Electrónico</label>
+                    <input asp-for="Correo" class="input-dark" required />
+                </div>
+                
+                <div class="divider">
+                    <span>Cambiar Contraseña (Opcional)</span>
+                </div>
+
+                <div class="input-group">
+                    <input asp-for="NewPassword" type="password" class="input-dark" placeholder="Nueva Contraseña" />
+                    <span style="font-size:11px; color:var(--muted); display:block; margin-top:4px;">Déjalo en blanco si no quieres cambiarla.</span>
+                </div>
+                
+                <button type="submit" class="btn btn-primary mt-2">Actualizar Datos</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

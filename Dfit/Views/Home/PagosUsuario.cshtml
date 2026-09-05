@@ -1,0 +1,60 @@
+@model IEnumerable<Dfit.Models.Pago>
+@{ Layout = null; }
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <title>Mis Pagos - DFIT Power</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/dfit-login.css" asp-append-version="true" />
+    <style>
+        .table-card { background: var(--dark-card); border-radius: 12px; padding: 24px; margin-top:20px; }
+        table { width: 100%; border-collapse: collapse; text-align: left; color:var(--white); }
+        th { padding: 16px; border-bottom: 2px solid var(--dark-border); color: var(--muted); font-size: 13px; text-transform: uppercase; }
+        td { padding: 16px; border-bottom: 1px solid var(--dark-border); font-size: 14px; }
+    </style>
+</head>
+<body style="background-image: none; background-color: var(--mobile-bg);">
+
+    <div class="login-container" style="max-width: 800px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:40px;">
+            <h1 class="text-h1">Historial de Pagos</h1>
+            <a href="/Home/Index" style="color:var(--muted); text-decoration:none;">✕ Cerrar</a>
+        </div>
+
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Recibo #</th>
+                        <th>Fecha</th>
+                        <th>Concepto (Plan)</th>
+                        <th>Método</th>
+                        <th>Monto</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var pago in Model)
+                    {
+                        <tr>
+                            <td style="color:var(--muted)">000-@pago.Id</td>
+                            <td>@pago.FechaPago.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td style="font-weight:600;">@pago.Membresia.Nombre</td>
+                            <td>@pago.MetodoPago</td>
+                            <td style="color:var(--primary); font-weight:700;">S/ @pago.Monto</td>
+                            <td><span style="background:rgba(99,153,34,0.2); color:var(--primary); padding:4px 10px; border-radius:20px; font-size:12px;">Completado</span></td>
+                        </tr>
+                    }
+                    @if(!Model.Any()) {
+                        <tr>
+                            <td colspan="6" style="text-align: center; padding: 40px; color: var(--muted);">No tienes pagos registrados.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

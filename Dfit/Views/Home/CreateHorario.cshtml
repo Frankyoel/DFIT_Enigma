@@ -1,0 +1,69 @@
+@model Dfit.Models.Horario
+@{
+    ViewData["Title"] = "Crear Horario";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2>Registrar Nueva Clase</h2>
+        <p class="text-muted" style="margin-top: 4px;">Agrega una nueva clase al calendario del gimnasio.</p>
+    </div>
+    <a href="/Home/Horarios" class="btn btn-secondary">← Volver</a>
+</div>
+
+<div class="card" style="max-width: 600px;">
+    <form asp-action="CreateHorario" method="post">
+        
+        <div class="form-group">
+            <label asp-for="NombreClase" class="form-label">Nombre de la Clase</label>
+            <input asp-for="NombreClase" class="form-control" placeholder="Ej. Crossfit, Spinning, Yoga" required />
+            <span asp-validation-for="NombreClase" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="DiaSemana" class="form-label">Día de la Semana</label>
+            <select asp-for="DiaSemana" class="form-control" style="appearance: auto;" required>
+                <option value="Lunes">Lunes</option>
+                <option value="Martes">Martes</option>
+                <option value="Miércoles">Miércoles</option>
+                <option value="Jueves">Jueves</option>
+                <option value="Viernes">Viernes</option>
+                <option value="Sábado">Sábado</option>
+                <option value="Domingo">Domingo</option>
+            </select>
+        </div>
+
+        <div style="display: flex; gap: 1rem;">
+            <div class="form-group" style="flex: 1;">
+                <label asp-for="HoraInicio" class="form-label">Hora de Inicio</label>
+                <input asp-for="HoraInicio" type="time" class="form-control" required />
+            </div>
+            
+            <div class="form-group" style="flex: 1;">
+                <label asp-for="HoraFin" class="form-label">Hora de Fin</label>
+                <input asp-for="HoraFin" type="time" class="form-control" required />
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 1rem;" class="mb-4">
+            <div class="form-group" style="flex: 2;">
+                <label asp-for="Instructor" class="form-label">Instructor</label>
+                <select asp-for="Instructor" class="form-control" style="appearance: auto;">
+                    <option value="">Selecciona un instructor...</option>
+                    <option value="Carlos Ruiz">Carlos Ruiz</option>
+                    <option value="Ana Perez">Ana Perez</option>
+                    <option value="Laura Gomez">Laura Gomez</option>
+                    <option value="Diana Sanchez">Diana Sanchez</option>
+                    <option value="Luis Mendoza">Luis Mendoza</option>
+                </select>
+            </div>
+            
+            <div class="form-group" style="flex: 1;">
+                <label asp-for="CupoMaximo" class="form-label">Cupo Máximo</label>
+                <input asp-for="CupoMaximo" type="number" class="form-control" value="20" required />
+            </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Guardar Clase</button>
+    </form>
+</div>

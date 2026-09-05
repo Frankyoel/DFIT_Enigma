@@ -1,0 +1,36 @@
+@model Dfit.Models.LoginViewModel
+@{
+    ViewData["Title"] = "Iniciar Sesión";
+    ViewData["HideSidebar"] = true;
+}
+
+<div class="card" style="width: 100%; max-width: 400px; padding: 2.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); border: none;">
+    <div style="text-align: center; margin-bottom: 2rem;">
+        <img src="~/images/logo.png" alt="DFIT Power Logo" style="max-width: 100%; height: auto; max-height: 150px; margin-bottom: 1rem; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" />
+        <p class="text-muted" style="font-size: 14px; margin-top: 0.5rem;">Acceso al portal corporativo</p>
+    </div>
+    
+    <form asp-controller="Home" asp-action="Login" method="post">
+        <div class="form-group">
+            <label asp-for="Correo" class="form-label">Correo electrónico</label>
+            <input asp-for="Correo" class="form-control" placeholder="correo@dfit.com" required />
+            <span asp-validation-for="Correo" class="text-danger" style="font-size:12px; display:block; margin-top:4px;"></span>
+        </div>
+        
+        <div class="form-group mb-4">
+            <label asp-for="Password" class="form-label">Contraseña</label>
+            <input asp-for="Password" type="password" class="form-control" placeholder="••••••••" required />
+            <span asp-validation-for="Password" class="text-danger" style="font-size:12px; display:block; margin-top:4px;"></span>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.75rem; font-weight: 600; font-size: 15px;">Iniciar sesión</button>
+        
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger mt-3" style="font-size: 13px; color: var(--danger); text-align: center;">
+                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+            </div>
+        }
+    </form>
+
+</div>

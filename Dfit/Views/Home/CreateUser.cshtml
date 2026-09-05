@@ -1,0 +1,56 @@
+@model Dfit.Models.Usuario
+@{
+    ViewData["Title"] = "Crear Nuevo Usuario";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2>Crear Nuevo Usuario</h2>
+        <p class="text-muted" style="margin-top: 4px;">Añade un nuevo miembro o administrador al sistema.</p>
+    </div>
+    <a href="/Home/Dashboard" class="btn btn-secondary">← Volver</a>
+</div>
+
+<div class="card" style="max-width: 600px;">
+    <form asp-action="CreateUser" method="post">
+        <div class="form-group">
+            <label asp-for="Nombres" class="form-label">Nombres</label>
+            <input asp-for="Nombres" class="form-control" required />
+        </div>
+        
+        <div class="form-group">
+            <label asp-for="Apellidos" class="form-label">Apellidos</label>
+            <input asp-for="Apellidos" class="form-control" required />
+        </div>
+        
+        <div class="form-group">
+            <label asp-for="DNI" class="form-label">DNI</label>
+            <input asp-for="DNI" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Celular" class="form-label">Número de Celular</label>
+            <input asp-for="Celular" class="form-control" required />
+        </div>
+        
+        <div class="form-group">
+            <label asp-for="Correo" class="form-label">Correo Electrónico</label>
+            <input asp-for="Correo" type="email" class="form-control" required />
+        </div>
+        
+        <div class="form-group">
+            <label asp-for="PasswordHash" class="form-label">Contraseña Inicial</label>
+            <input asp-for="PasswordHash" type="password" class="form-control" required />
+        </div>
+        
+        <div class="form-group mb-4">
+            <label asp-for="Rol" class="form-label">Tipo de Perfil (Rol)</label>
+            <select asp-for="Rol" class="form-control" style="appearance: auto;">
+                <option value="Usuario">Miembro Regular</option>
+                <option value="Admin">Administrador</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Registrar Usuario</button>
+    </form>
+</div>

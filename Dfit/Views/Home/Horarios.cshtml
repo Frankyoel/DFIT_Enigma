@@ -1,0 +1,64 @@
+@model IEnumerable<Dfit.Models.Horario>
+@{
+    ViewData["Title"] = "Horarios de Clases";
+    
+    // Agrupar horarios por día de la semana
+    var dias = new[] { "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo" };
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2>Horarios de Clases</h2>
+        <p class="text-muted" style="margin-top: 4px;">Configuración de disponibilidad del gimnasio.</p>
+    </div>
+    <a href="/Home/CreateHorario" class="btn btn-primary">+ Nueva Clase</a>
+</div>
+
+<div class="row">
+    @foreach (var dia in dias)
+    {
+        var clasesDelDia = Model.Where(h => h.DiaSemana.Equals(dia, StringComparison.OrdinalIgnoreCase)).ToList();
+        
+        if (clasesDelDia.Any())
+        {
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100">
+                    <h3 style="padding: 1rem 1.5rem; margin: 0; border-bottom: 1px solid var(--border-color); background-color: var(--bg-body); font-size: 16px; border-radius: var(--radius) var(--radius) 0 0;">
+                        @dia
+                    </h3>
+                    <div style="padding: 1.5rem;">
+                        @foreach (var clase in clasesDelDia)
+                        {
+                            <div style="border-left: 4px solid var(--primary); padding-left: 1rem; margin-bottom: 1.5rem;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+                                    <h4 style="margin: 0; font-size: 15px;">@clase.NombreClase</h4>
+                                    <span style="font-size: 13px; font-weight: 600; color: var(--text-muted);">
+                                        @clase.HoraInicio.ToString(@"hh\:mm") - @clase.HoraFin.ToString(@"hh\:mm")
+                                    </span>
+                                </div>
+                                <p class="text-muted" style="margin-bottom: 0.5rem; font-size: 13px;">
+                                    Instructor: @clase.Instructor | Cupo: @clase.CupoMaximo
+                                </p>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <a href="/Home/EditHorario/@clase.Id" style="font-size: 12px; font-weight: 600; color: var(--primary); text-decoration: none;">Editar</a>
+                                    <form asp-action="DeleteHorario" method="post" style="display: inline;">
+                                        <input type="hidden" name="id" value="@clase.Id" />
+                                        <button type="submit" style="background: none; border: none; font-size: 12px; font-weight: 600; color: var(--danger); cursor: pointer; padding: 0;" onclick="return confirm('¿Eliminar esta clase?');">Eliminar</button>
+                                    </form>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@if (!Model.Any())
+{
+    <div class="card" style="padding: 4rem; text-align: center;">
+        <h3 class="text-muted">No hay horarios registrados</h3>
+        <p class="text-muted">Aún no has configurado las clases del gimnasio. Haz clic en "Nueva Clase" para comenzar.</p>
+    </div>
+}

@@ -1,0 +1,114 @@
+@model IEnumerable<Dfit.Models.Usuario>
+@{
+    ViewData["Title"] = "Gestión de Usuarios";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2>Gestión de Usuarios</h2>
+        <p class="text-muted" style="margin-top: 4px;">Administra los miembros, planes y estados de cuenta.</p>
+    </div>
+    <div class="d-flex gap-3">
+        <form method="get" asp-action="Dashboard" class="d-flex gap-2">
+            <input type="text" name="search" class="form-control" placeholder="Buscar por DNI, Nombre..." value="@ViewBag.SearchTerm" style="width: 250px;" />
+            <button type="submit" class="btn btn-secondary">Buscar</button>
+            @if(!string.IsNullOrEmpty((string)ViewBag.SearchTerm)) {
+                <a href="/Home/Dashboard" class="btn btn-outline-secondary">Limpiar</a>
+            }
+        </form>
+        <a href="/Home/CreateUser" class="btn btn-primary">+ Nuevo Usuario</a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="formal-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre Completo</th>
+                    <th>Correo</th>
+                    <th>Rol</th>
+                    <th>Estado</th>
+                    <th>Plan Actual</th>
+                    <th>Vencimiento</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td class="text-muted">#@user.Id</td>
+                        <td style="font-weight: 500;">@user.Nombres @user.Apellidos</td>
+                        <td>@user.Correo</td>
+                        <td>@user.Rol</td>
+                        <td>
+                            @if (user.Activo)
+                            {
+                                <span class="badge badge-success">Activo</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-danger">Bloqueado</span>
+                            }
+                        </td>
+                        @{
+                            var mem = ((List<Dfit.Models.MembresiaUsuario>)ViewBag.MembresiasActivas)?.FirstOrDefault(m => m.UsuarioId == user.Id);
+                        }
+                        <td>
+                            @if(mem != null) {
+                                <strong style="color:var(--primary);">@mem.Membresia?.Nombre</strong>
+                            } else {
+                                <span class="text-muted">Sin Plan</span>
+                            }
+                        </td>
+                        <td>
+                            @if(mem != null) {
+                                if ((mem.FechaFin - System.DateTime.Now).TotalDays <= 5) {
+                                    <span style="color:var(--danger); font-weight:600;">@mem.FechaFin.ToString("dd/MM/yyyy")</span>
+                                } else {
+                                    <span>@mem.FechaFin.ToString("dd/MM/yyyy")</span>
+                                }
+                            } else {
+                                <span class="text-muted">-</span>
+                            }
+                        </td>
+                        <td>
+                            <div class="d-flex gap-2 flex-wrap" style="max-width: 400px;">
+                                <a href="/Home/EditUser/@user.Id" class="btn btn-secondary" style="width: 75px; height: 32px; display:flex; align-items:center; justify-content:center; font-size:12px; padding: 4px;">Editar</a>
+                                
+                                <form asp-controller="Home" asp-action="ToggleUserStatus" asp-route-id="@user.Id" method="post" style="margin:0;">
+                                    <button type="submit" class="btn @(user.Activo ? "btn-secondary" : "btn-primary")" style="width: 75px; height: 32px; display:flex; align-items:center; justify-content:center; font-size:12px; padding: 4px;">
+                                        @(user.Activo ? "Bloquear" : "Activar")
+                                    </button>
+                                </form>
+
+                                <form asp-controller="Home" asp-action="DeleteUser" asp-route-id="@user.Id" method="post" style="margin:0;" onsubmit="return confirm('¿Seguro que deseas eliminar este usuario?');">
+                                    <button type="submit" class="btn btn-danger" style="width: 75px; height: 32px; display:flex; align-items:center; justify-content:center; font-size:12px; padding: 4px;">Eliminar</button>
+                                </form>
+                                @if(mem != null) {
+                                    <form asp-controller="Home" asp-action="AdminRemoveMembresia" asp-route-membresiaUsuarioId="@mem.Id" method="post" style="margin:0;" onsubmit="return confirm('¿Seguro que deseas quitar el plan actual de este usuario?');">
+                                        <button type="submit" class="btn btn-danger" style="width: 75px; height: 32px; display:flex; align-items:center; justify-content:center; font-size:12px; padding: 4px;">- Quitar</button>
+                                    </form>
+                                } else {
+                                    <a href="/Home/AssignMembresia?usuarioId=@user.Id" class="btn btn-secondary" style="width: 75px; height: 32px; display:flex; align-items:center; justify-content:center; font-size:12px; padding: 4px;">+ Plan</a>
+                                }
+                                <a href="/Home/RegistrarPago?usuarioId=@user.Id" class="btn btn-secondary" style="width: 75px; height: 32px; display:flex; align-items:center; justify-content:center; font-size:12px; padding: 4px;">$ Pago</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="8" class="text-center text-muted" style="padding: 3rem 1rem;">
+                            No hay usuarios registrados todavía.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

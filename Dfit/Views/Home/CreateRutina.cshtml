@@ -1,0 +1,45 @@
+@model Dfit.Models.Rutina
+@{
+    ViewData["Title"] = "Crear Rutina";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2>Crear Nueva Rutina</h2>
+        <p class="text-muted" style="margin-top: 4px;">Agrega un plan de entrenamiento con soporte para video.</p>
+    </div>
+    <a href="/Home/Rutinas" class="btn btn-secondary">← Volver</a>
+</div>
+
+<div class="card" style="max-width: 600px;">
+    <form asp-action="CreateRutina" method="post">
+        <div class="form-group">
+            <label asp-for="Nombre" class="form-label">Nombre de la Rutina</label>
+            <input asp-for="Nombre" class="form-control" placeholder="Ej. Rutina de Pecho Avanzado" required />
+            <span asp-validation-for="Nombre" class="text-danger"></span>
+        </div>
+        
+        <div class="form-group">
+            <label asp-for="Nivel" class="form-label">Nivel de Dificultad</label>
+            <select asp-for="Nivel" class="form-control" style="appearance: auto;">
+                <option value="Principiante">Principiante</option>
+                <option value="Intermedio">Intermedio</option>
+                <option value="Avanzado">Avanzado</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Descripcion" class="form-label">Instrucciones / Descripción</label>
+            <textarea asp-for="Descripcion" class="form-control" rows="4" placeholder="Ej. 4 series de 12 repeticiones de Press Banca..." required></textarea>
+            <span asp-validation-for="Descripcion" class="text-danger"></span>
+        </div>
+        
+        <div class="form-group mb-4">
+            <label asp-for="VideoUrl" class="form-label">Enlace de YouTube (Opcional)</label>
+            <input asp-for="VideoUrl" class="form-control" placeholder="Ej. https://www.youtube.com/watch?v=..." />
+            <small class="text-muted" style="display:block; margin-top:4px;">Copia y pega el enlace del video para que los usuarios puedan reproducirlo.</small>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Guardar Rutina</button>
+    </form>
+</div>

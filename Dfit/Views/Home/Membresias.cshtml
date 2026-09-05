@@ -1,0 +1,41 @@
+@model IEnumerable<Dfit.Models.Membresia>
+@{
+    ViewData["Title"] = "Planes de Membresía";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2>Planes de Membresía</h2>
+        <p class="text-muted" style="margin-top: 4px;">Configura y administra los planes disponibles para los usuarios.</p>
+    </div>
+    <a href="/Home/CreateMembresia" class="btn btn-primary">+ Nuevo Plan</a>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
+    @foreach (var plan in Model)
+    {
+        <div class="card" style="margin-bottom: 0;">
+            <h3 style="margin-bottom: 0.5rem; font-size: 18px;">@plan.Nombre</h3>
+            <p class="text-muted" style="font-size: 14px; min-height: 40px;">@plan.Descripcion</p>
+            
+            <div style="font-size: 24px; font-weight: 700; color: var(--primary); margin: 1rem 0;">
+                S/ @plan.Precio 
+                <span style="font-size: 13px; font-weight: 500; color: var(--text-muted);">/ @plan.DuracionDias días</span>
+            </div>
+            
+            <div class="d-flex gap-2" style="margin-top: 1.5rem;">
+                <a href="/Home/EditMembresia/@plan.Id" class="btn btn-secondary" style="flex: 1;">Editar</a>
+                <form asp-action="DeleteMembresia" method="post" style="flex: 1; margin: 0;" onsubmit="return confirm('¿Seguro que deseas eliminar este plan?');">
+                    <input type="hidden" name="id" value="@plan.Id" />
+                    <button type="submit" class="btn btn-danger" style="width: 100%;">Eliminar</button>
+                </form>
+            </div>
+        </div>
+    }
+</div>
+
+@if(!Model.Any()) {
+    <div class="card text-center" style="padding: 3rem;">
+        <p class="text-muted">No hay planes configurados.</p>
+    </div>
+}

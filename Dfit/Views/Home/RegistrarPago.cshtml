@@ -1,0 +1,46 @@
+@model Dfit.Models.Pago
+@{
+    ViewData["Title"] = "Registrar Pago";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2>Registrar Pago</h2>
+        <p class="text-muted" style="margin-top: 4px;">Registrando pago para: <strong>@ViewBag.Usuario?.Nombres @ViewBag.Usuario?.Apellidos</strong></p>
+    </div>
+    <a href="/Home/Dashboard" class="btn btn-secondary">← Volver</a>
+</div>
+
+<div class="card" style="max-width: 600px;">
+    <form asp-action="RegistrarPago" method="post">
+        <input type="hidden" asp-for="UsuarioId" value="@ViewBag.Usuario?.Id" />
+        
+        <div class="form-group">
+            <label asp-for="MembresiaId" class="form-label">Membresía Asociada</label>
+            <select asp-for="MembresiaId" class="form-control" style="appearance: auto;">
+                @if(ViewBag.Membresias != null) {
+                    foreach (var plan in ViewBag.Membresias)
+                    {
+                        <option value="@plan.Id">@plan.Nombre - S/ @plan.Precio</option>
+                    }
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Monto" class="form-label">Monto Recibido (S/)</label>
+            <input asp-for="Monto" type="number" step="0.01" class="form-control" required />
+        </div>
+
+        <div class="form-group mb-4">
+            <label asp-for="MetodoPago" class="form-label">Método de Pago</label>
+            <select asp-for="MetodoPago" class="form-control" style="appearance: auto;">
+                <option value="Efectivo">Efectivo</option>
+                <option value="Tarjeta Crédito/Débito">Tarjeta Crédito/Débito</option>
+                <option value="Transferencia">Transferencia (Yape/Plin)</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Confirmar Pago</button>
+    </form>
+</div>

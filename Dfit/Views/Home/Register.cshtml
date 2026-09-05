@@ -1,0 +1,66 @@
+@model Dfit.Models.RegisterViewModel
+@{
+    ViewData["Title"] = "Registro";
+    ViewData["HideSidebar"] = true;
+}
+
+<div class="card" style="width: 100%; max-width: 450px; padding: 2.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); border: none;">
+    <div style="text-align: center; margin-bottom: 2rem;">
+        <img src="~/images/logo.png" alt="DFIT Power Logo" style="max-width: 100%; height: auto; max-height: 120px; margin-bottom: 1rem; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" />
+        <h1 style="font-size: 24px; font-weight: 700; color: var(--text-main);">Crear Cuenta</h1>
+        <p class="text-muted" style="font-size: 14px; margin-top: 0.5rem;">Por favor, complete el formulario para registrarse.</p>
+    </div>
+    
+    <form asp-controller="Home" asp-action="Register" method="post">
+        <div class="form-group">
+            <label asp-for="Nombres" class="form-label">Nombres</label>
+            <input asp-for="Nombres" class="form-control" placeholder="Ej. Juan" required />
+            <span asp-validation-for="Nombres" class="text-danger" style="font-size:12px; display:block; margin-top:4px;"></span>
+        </div>
+        
+        <div class="form-group">
+            <label asp-for="Apellidos" class="form-label">Apellidos</label>
+            <input asp-for="Apellidos" class="form-control" placeholder="Ej. Pérez" required />
+            <span asp-validation-for="Apellidos" class="text-danger" style="font-size:12px; display:block; margin-top:4px;"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="DNI" class="form-label">DNI / Identificación</label>
+            <input asp-for="DNI" class="form-control" placeholder="Ej. 12345678" required />
+            <span asp-validation-for="DNI" class="text-danger" style="font-size:12px; display:block; margin-top:4px;"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Celular" class="form-label">Celular / Teléfono</label>
+            <input asp-for="Celular" class="form-control" placeholder="Ej. 987654321" required />
+            <span asp-validation-for="Celular" class="text-danger" style="font-size:12px; display:block; margin-top:4px;"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Correo" class="form-label">Correo electrónico</label>
+            <input asp-for="Correo" class="form-control" placeholder="ejemplo@empresa.com" required />
+            <span asp-validation-for="Correo" class="text-danger" style="font-size:12px; display:block; margin-top:4px;"></span>
+        </div>
+        
+        <div class="form-group mb-4">
+            <label asp-for="Password" class="form-label">Contraseña</label>
+            <input asp-for="Password" type="password" class="form-control" placeholder="••••••••" required />
+            <span asp-validation-for="Password" class="text-danger" style="font-size:12px; display:block; margin-top:4px;"></span>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.75rem; font-weight: 600; font-size: 15px;">Registrarse</button>
+        
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger mt-3" style="font-size: 13px; color: var(--danger); text-align: center;">
+                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+            </div>
+        }
+    </form>
+
+    <div style="margin-top: 2rem; text-align: center; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+        <p style="font-size: 13px; color: var(--text-muted);">
+            ¿Ya tiene una cuenta? <a href="/Home/Login" style="font-weight: 600;">Inicie sesión aquí</a>
+        </p>
+    </div>
+</div>

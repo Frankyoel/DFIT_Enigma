@@ -1,0 +1,57 @@
+@model IEnumerable<Dfit.Models.Rutina>
+@{
+    ViewData["Title"] = "Rutinas de Entrenamiento";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2>Rutinas de Entrenamiento</h2>
+        <p class="text-muted" style="margin-top: 4px;">Gestión de planes y videos predeterminados.</p>
+    </div>
+    <a href="/Home/CreateRutina" class="btn btn-primary">+ Nueva Rutina</a>
+</div>
+
+<div class="row" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem;">
+    @foreach (var rutina in Model)
+    {
+        <div class="card" style="padding: 1.5rem; display: flex; flex-direction: column;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                <h3 style="font-size: 18px; margin: 0;">@rutina.Nombre</h3>
+                <span class="badge" style="background-color: var(--bg-body); color: var(--text-main);">@rutina.Nivel</span>
+            </div>
+            
+            <p class="text-muted" style="font-size: 14px; flex-grow: 1; margin-bottom: 1.5rem;">
+                @rutina.Descripcion
+            </p>
+
+            @if (!string.IsNullOrEmpty(rutina.VideoUrl))
+            {
+                <div style="margin-bottom: 1.5rem; border-radius: 8px; overflow: hidden; background: #000; aspect-ratio: 16/9;">
+                    @{
+                        // Convert simple youtube link to embed link
+                        var embedUrl = rutina.VideoUrl.Replace("watch?v=", "embed/");
+                        // Handles youtu.be/ links
+                        embedUrl = embedUrl.Replace("youtu.be/", "www.youtube.com/embed/");
+                    }
+                    <iframe width="100%" height="100%" src="@embedUrl" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            }
+
+            <div style="display: flex; gap: 0.5rem; margin-top: auto;">
+                <a href="/Home/EditRutina/@rutina.Id" class="btn btn-secondary" style="flex: 1; text-align: center; font-size: 13px;">Editar</a>
+                <form asp-action="DeleteRutina" method="post" style="flex: 1;">
+                    <input type="hidden" name="id" value="@rutina.Id" />
+                    <button type="submit" class="btn btn-danger" style="width: 100%; font-size: 13px;" onclick="return confirm('¿Seguro que deseas eliminar esta rutina?');">Eliminar</button>
+                </form>
+            </div>
+        </div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="card" style="grid-column: 1 / -1; padding: 4rem; text-align: center;">
+            <h3 class="text-muted">No hay rutinas registradas</h3>
+            <p class="text-muted">Aún no has agregado ninguna rutina o video. Haz clic en "Nueva Rutina" para comenzar.</p>
+        </div>
+    }
+</div>

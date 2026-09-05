@@ -1,0 +1,56 @@
+@model IEnumerable<Dfit.Models.Pago>
+@{
+    ViewData["Title"] = "Reporte Financiero";
+}
+
+<div class="mb-4">
+    <h2>Reporte Financiero</h2>
+    <p class="text-muted" style="margin-top: 4px;">Resumen de ingresos y transacciones históricas.</p>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+    <div class="card" style="margin-bottom: 0;">
+        <div style="color:var(--text-muted); font-weight:600; font-size:12px; text-transform:uppercase;">Ingresos Totales (Histórico)</div>
+        <div style="font-size: 32px; font-weight: 700; color: var(--text-main); margin-top: 8px;">S/ @ViewBag.IngresosTotales</div>
+    </div>
+    <div class="card" style="margin-bottom: 0;">
+        <div style="color:var(--text-muted); font-weight:600; font-size:12px; text-transform:uppercase;">Ingresos de este Mes</div>
+        <div style="font-size: 32px; font-weight: 700; color: var(--primary); margin-top: 8px;">S/ @ViewBag.PagosDelMes</div>
+    </div>
+</div>
+
+<div class="card">
+    <h3 style="margin-bottom: 1.5rem;">Historial de Transacciones</h3>
+    <div class="table-responsive">
+        <table class="formal-table">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Cliente</th>
+                    <th>Membresía</th>
+                    <th>Método de Pago</th>
+                    <th>Monto Recibido</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var pago in Model)
+                {
+                    <tr>
+                        <td class="text-muted">@pago.FechaPago.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td style="font-weight: 500;">@pago.Usuario.Nombres @pago.Usuario.Apellidos</td>
+                        <td>@pago.Membresia.Nombre</td>
+                        <td>
+                            <span class="badge badge-neutral">@pago.MetodoPago</span>
+                        </td>
+                        <td style="color:var(--success); font-weight: 600;">+ S/ @pago.Monto</td>
+                    </tr>
+                }
+                @if(!Model.Any()) {
+                    <tr>
+                        <td colspan="5" class="text-center text-muted" style="padding: 3rem 1rem;">No hay transacciones registradas.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
