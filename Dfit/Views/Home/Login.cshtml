@@ -24,7 +24,22 @@
         </div>
         
         <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.75rem; font-weight: 600; font-size: 15px;">Iniciar sesión</button>
-        
+
+        <div style="display: flex; align-items: center; margin: 1.25rem 0 1rem;">
+            <hr style="flex: 1; border: none; border-top: 1px solid #e2e8f0; margin: 0;" />
+            <span style="padding: 0 0.75rem; font-size: 13px; color: #94a3b8;">o</span>
+            <hr style="flex: 1; border: none; border-top: 1px solid #e2e8f0; margin: 0;" />
+        </div>
+
+        <a asp-controller="Home" asp-action="Register"
+           style="display: block; width: 100%; padding: 0.72rem; text-align: center; font-weight: 600; font-size: 15px;
+                  border: 2px solid #1a1a1a; border-radius: 6px; color: #1a1a1a; text-decoration: none;
+                  transition: background-color 0.2s, color 0.2s;"
+           onmouseover="this.style.backgroundColor='#1a1a1a'; this.style.color='#fff';"
+           onmouseout="this.style.backgroundColor='transparent'; this.style.color='#1a1a1a';">
+            ¿No tienes cuenta? Regístrate
+        </a>
+
         @if (!ViewData.ModelState.IsValid)
         {
             <div class="alert alert-danger mt-3" style="font-size: 13px; color: var(--danger); text-align: center;">

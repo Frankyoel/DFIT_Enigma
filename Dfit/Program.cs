@@ -25,7 +25,7 @@ if (FirebaseApp.DefaultInstance == null)
     });
 }
 
-var firestoreDb = FirestoreDb.Create("dfit-gym");
+var firestoreDb = FirestoreDb.Create("dfit-gym-cd550");
 builder.Services.AddSingleton(firestoreDb);
 
 // builder.Services.AddDbContext<AppDbContext>(...); // Eliminado en migración a Firebase
@@ -60,7 +60,5 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Login}/{id?}");
-
-// Seed de datos eliminado (ahora en Firestore)
 
 app.Run();
