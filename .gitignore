@@ -4,4 +4,12 @@
 [Oo]bj/
 *.log
 .env
+*.env.*
 .vs
+.vscode/
+*.user
+*.csproj.user
+
+# Binarios de compilación móvil
+*.aab
+*.ipa
