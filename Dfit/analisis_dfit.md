@@ -15,11 +15,11 @@
 | **ORM (legado)** | Entity Framework Core SqlServer | 8.0.0 (paquete presente pero NO usado activamente — migrado a Firestore) |
 | **Frontend** | Razor Views (.cshtml) + Bootstrap 5 + jQuery | — |
 | **Estilos** | CSS propio (`site.css`) + Bootstrap 5 | — |
-| **Contenedorización** | Docker (imagen `dotnet/aspnet:8.0`) | — |
+| **Contenedorización** | Docker (imagen `dotnet/aspnet:10.0`) | — |
 | **Autenticación QR** | Sistema propio con tokens GUID + expiración 1 min | — |
 
-> [!WARNING]
-> El `.csproj` declara target `net10.0` pero el `Dockerfile` usa imagen `dotnet/aspnet:8.0`. Esto puede causar incompatibilidades al construir el contenedor.
+> [!NOTE]
+> Tanto el `.csproj` como el `Dockerfile` apuntan a `.NET 10.0` (`net10.0`), asegurando compatibilidad completa en compilación y tiempo de ejecución.
 
 > [!NOTE]
 > EF Core SqlServer aparece en el `.csproj` como dependencia residual de una migración anterior a Firestore. No se usa en el código activo — la línea `AddDbContext` está comentada en `Program.cs`.
@@ -517,7 +517,7 @@ GOOGLE_APPLICATION_CREDENTIALS=/app/firebase-key.json  # Se establece en Program
 
 1. **.NET SDK 10.0** instalado
 2. Archivo `firebase-key.json` válido en la raíz del proyecto
-3. Proyecto Firebase `dfit-gym` creado con Firestore habilitado
+3. Proyecto Firebase `dfit-gym-cd550` creado con Firestore habilitado
 4. Comando: `dotnet run` desde la carpeta `Dfit/`
 
 ### 9.4 Requerimientos para Docker
@@ -527,8 +527,8 @@ docker build -t dfit .
 docker run -p 8080:8080 dfit
 ```
 
-> [!WARNING]
-> El Dockerfile usa `dotnet/aspnet:8.0` pero el proyecto apunta a `net10.0`. Para producción se debe cambiar a `dotnet/aspnet:10.0` o ajustar el target framework.
+> [!NOTE]
+> El Dockerfile y el proyecto apuntan a `.NET 10.0` (`mcr.microsoft.com/dotnet/sdk:10.0` y `mcr.microsoft.com/dotnet/aspnet:10.0`).
 
 ---
 
@@ -558,6 +558,6 @@ docker run -p 8080:8080 dfit
 | 3 | No hay autenticación de sesión real (cookies/JWT) — `HttpContext.Session` solo se usa en `CheckIn` pero no en otras rutas | 🟠 Alto |
 | 4 | Un solo controlador de 795 líneas — viola Single Responsibility y dificulta el mantenimiento | 🟡 Medio |
 | 5 | EF Core + SQL Server declarado como dependencia pero sin uso — limpiar el `.csproj` | 🟡 Medio |
-| 6 | Incompatibilidad `net10.0` vs imagen Docker `aspnet:8.0` | 🟠 Alto |
+| 6 | Incompatibilidad `net10.0` vs imagen Docker `aspnet:8.0` (Resuelto: Dockerfile actualizado a `dotnet/aspnet:10.0`) | ✅ Resuelto |
 | 7 | Múltiples lecturas secuenciales a Firestore por entidad (sin batch queries ni caché) — rendimiento degradado con muchos documentos | 🟡 Medio |
 | 8 | `GymAccessProxy` usa `.Result` en métodos async — riesgo de deadlock | 🟠 Alto |
