@@ -1,7 +1,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 COPY ["Dfit.csproj", "./"]
-RUN dotnet restore "Dfit.csproj"
+RUN dotnet restore "./Dfit.csproj"
 COPY . .
 RUN dotnet publish "Dfit.csproj" -c Release -o /app/publish
 
