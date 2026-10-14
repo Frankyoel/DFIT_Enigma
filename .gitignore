@@ -13,3 +13,12 @@
 # Binarios de compilación móvil
 *.aab
 *.ipa
+
+## Visual Studio herramientas y archivos temporales
+.vs/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+bbin/
+obj/

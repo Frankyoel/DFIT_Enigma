@@ -9,24 +9,31 @@ using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Firestore;
 
+using Dfit.Utils;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Cargar variables de entorno desde archivo .env (si existe)
+EnvLoader.Load(builder.Environment.ContentRootPath);
+
+// Soporte para Render y plataformas Cloud que asignan la variable PORT
+var port = Environment.GetEnvironmentVariable("PORT");
+if (!string.IsNullOrEmpty(port))
+{
+    if (builder.Environment.IsDevelopment())
+    {
+        builder.WebHost.UseUrls($"http://localhost:{port}");
+    }
+    else
+    {
+        builder.WebHost.UseUrls($"http://*:{port}");
+    }
+}
 
 builder.Services.AddControllersWithViews();
 
-// Configurar Firebase
-var firebaseKeyPath = Path.Combine(builder.Environment.ContentRootPath, "firebase-key.json");
-Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", firebaseKeyPath);
-
-if (FirebaseApp.DefaultInstance == null)
-{
-    FirebaseApp.Create(new AppOptions()
-    {
-        Credential = GoogleCredential.FromFile(firebaseKeyPath)
-    });
-}
-
-var firestoreDb = FirestoreDb.Create("dfit-gym-cd550");
-builder.Services.AddSingleton(firestoreDb);
+// Configurar Firebase y Firestore mediante variables de entorno (.env / Render)
+FirebaseConfig.Configure(builder);
 
 // builder.Services.AddDbContext<AppDbContext>(...); // Eliminado en migración a Firebase
 
