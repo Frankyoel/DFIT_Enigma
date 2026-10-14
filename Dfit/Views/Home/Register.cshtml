@@ -1,66 +1,379 @@
 @model Dfit.Models.RegisterViewModel
 @{
-    ViewData["Title"] = "Registro";
-    ViewData["HideSidebar"] = true;
+    Layout = null;
+    ViewData["Title"] = "Crear Cuenta - DFIT Power";
 }
 
-<div class="card" style="width: 100%; max-width: 450px; padding: 2.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); border: none;">
-    <div style="text-align: center; margin-bottom: 2rem;">
-        <img src="~/images/logo.png" alt="DFIT Power Logo" style="max-width: 100%; height: auto; max-height: 120px; margin-bottom: 1rem; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" />
-        <h1 style="font-size: 24px; font-weight: 700; color: var(--text-main);">Crear Cuenta</h1>
-        <p class="text-muted" style="font-size: 14px; margin-top: 0.5rem;">Por favor, complete el formulario para registrarse.</p>
-    </div>
-    
-    <form asp-controller="Home" asp-action="Register" method="post">
-        <div class="form-group">
-            <label asp-for="Nombres" class="form-label">Nombres</label>
-            <input asp-for="Nombres" class="form-control" placeholder="Ej. Juan" required />
-            <span asp-validation-for="Nombres" class="text-danger" style="font-size:12px; display:block; margin-top:4px;"></span>
-        </div>
-        
-        <div class="form-group">
-            <label asp-for="Apellidos" class="form-label">Apellidos</label>
-            <input asp-for="Apellidos" class="form-control" placeholder="Ej. Pérez" required />
-            <span asp-validation-for="Apellidos" class="text-danger" style="font-size:12px; display:block; margin-top:4px;"></span>
-        </div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
 
-        <div class="form-group">
-            <label asp-for="DNI" class="form-label">DNI / Identificación</label>
-            <input asp-for="DNI" class="form-control" placeholder="Ej. 12345678" required />
-            <span asp-validation-for="DNI" class="text-danger" style="font-size:12px; display:block; margin-top:4px;"></span>
-        </div>
+    <!-- Tipografía Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-        <div class="form-group">
-            <label asp-for="Celular" class="form-label">Celular / Teléfono</label>
-            <input asp-for="Celular" class="form-control" placeholder="Ej. 987654321" required />
-            <span asp-validation-for="Celular" class="text-danger" style="font-size:12px; display:block; margin-top:4px;"></span>
-        </div>
+    <!-- Framework de estilos Bootstrap & Estilos Reutilizados DFIT -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/dfit-login.css" asp-append-version="true" />
+</head>
+<body>
 
-        <div class="form-group">
-            <label asp-for="Correo" class="form-label">Correo electrónico</label>
-            <input asp-for="Correo" class="form-control" placeholder="ejemplo@empresa.com" required />
-            <span asp-validation-for="Correo" class="text-danger" style="font-size:12px; display:block; margin-top:4px;"></span>
-        </div>
-        
-        <div class="form-group mb-4">
-            <label asp-for="Password" class="form-label">Contraseña</label>
-            <input asp-for="Password" type="password" class="form-control" placeholder="••••••••" required />
-            <span asp-validation-for="Password" class="text-danger" style="font-size:12px; display:block; margin-top:4px;"></span>
-        </div>
-        
-        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.75rem; font-weight: 600; font-size: 15px;">Registrarse</button>
-        
-        @if (!ViewData.ModelState.IsValid)
-        {
-            <div class="alert alert-danger mt-3" style="font-size: 13px; color: var(--danger); text-align: center;">
-                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+    <!-- Contenedor Principal (Reutiliza clases de dfit-login.css) -->
+    <main class="login-container register-container" role="main">
+        <div class="login-card">
+            
+            <!-- Cabecera e Identidad -->
+            <header class="text-center mb-3">
+                <img src="~/images/logo.png" 
+                     alt="Logotipo oficial de DFIT Power" 
+                     style="max-width: 85px; height: auto; max-height: 70px; margin-bottom: 0.35rem; border-radius: 12px;" />
+                <h1 class="text-h1">Crear Cuenta</h1>
+                <p class="text-caption mt-1">Únete a DFIT Power y gestiona tu entrenamiento</p>
+            </header>
+
+            <!-- Resumen de Errores del Servidor (Accesible para Screen Readers) -->
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="login-alert-danger" role="alert" aria-live="assertive">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="flex-shrink: 0;">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="12" y1="8" x2="12" y2="12" />
+                        <line x1="12" y1="16" x2="12.01" y2="16" />
+                    </svg>
+                    <div class="flex-grow-1">
+                        @Html.ValidationSummary(false, "", new { @class = "mb-0" })
+                    </div>
+                </div>
+            }
+
+            <!-- Formulario de Registro -->
+            <form asp-controller="Home" asp-action="Register" method="post" id="main-register-form" novalidate>
+                @Html.AntiForgeryToken()
+
+                <!-- Fila 1: Nombres y Apellidos en dos columnas -->
+                <div class="row g-2 mb-2">
+                    <div class="col-sm-6">
+                        <div class="input-group mb-0">
+                            <label asp-for="Nombres" class="form-label" for="NombresInput">Nombres</label>
+                            <div class="input-actions-container">
+                                <input asp-for="Nombres" 
+                                       id="NombresInput" 
+                                       type="text" 
+                                       class="input-dark js-clearable-input" 
+                                       placeholder="Ej. Juan" 
+                                       autocomplete="given-name" 
+                                       required 
+                                       aria-required="true"
+                                       aria-describedby="nombres-error" />
+                                <button type="button" class="btn-clear-input" aria-label="Limpiar campo Nombres" title="Limpiar casilla">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                            </div>
+                            <span asp-validation-for="Nombres" id="nombres-error" class="field-error-message" role="alert"></span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="input-group mb-0">
+                            <label asp-for="Apellidos" class="form-label" for="ApellidosInput">Apellidos</label>
+                            <div class="input-actions-container">
+                                <input asp-for="Apellidos" 
+                                       id="ApellidosInput" 
+                                       type="text" 
+                                       class="input-dark js-clearable-input" 
+                                       placeholder="Ej. Pérez" 
+                                       autocomplete="family-name" 
+                                       required 
+                                       aria-required="true"
+                                       aria-describedby="apellidos-error" />
+                                <button type="button" class="btn-clear-input" aria-label="Limpiar campo Apellidos" title="Limpiar casilla">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                            </div>
+                            <span asp-validation-for="Apellidos" id="apellidos-error" class="field-error-message" role="alert"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fila 2: DNI y Celular con Restricciones Numéricas -->
+                <div class="row g-2 mb-2">
+                    <div class="col-sm-6">
+                        <div class="input-group mb-0">
+                            <label asp-for="DNI" class="form-label" for="DniInput">DNI (8 dígitos)</label>
+                            <div class="input-actions-container">
+                                <input asp-for="DNI" 
+                                       id="DniInput" 
+                                       type="text" 
+                                       inputmode="numeric"
+                                       pattern="[0-9]{8}"
+                                       maxlength="8"
+                                       class="input-dark js-clearable-input js-numeric-only" 
+                                       placeholder="12345678" 
+                                       required 
+                                       aria-required="true"
+                                       aria-describedby="dni-error" />
+                                <button type="button" class="btn-clear-input" aria-label="Limpiar campo DNI" title="Limpiar casilla">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                            </div>
+                            <span asp-validation-for="DNI" id="dni-error" class="field-error-message" role="alert"></span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="input-group mb-0">
+                            <label asp-for="Celular" class="form-label" for="CelularInput">Celular (9 dígitos)</label>
+                            <div class="input-actions-container">
+                                <input asp-for="Celular" 
+                                       id="CelularInput" 
+                                       type="tel" 
+                                       inputmode="numeric"
+                                       pattern="[0-9]{9}"
+                                       maxlength="9"
+                                       class="input-dark js-clearable-input js-numeric-only" 
+                                       placeholder="987654321" 
+                                       autocomplete="tel" 
+                                       required 
+                                       aria-required="true"
+                                       aria-describedby="celular-error" />
+                                <button type="button" class="btn-clear-input" aria-label="Limpiar campo Celular" title="Limpiar casilla">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                            </div>
+                            <span asp-validation-for="Celular" id="celular-error" class="field-error-message" role="alert"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fila 3: Correo Electrónico -->
+                <div class="input-group mb-2">
+                    <label asp-for="Correo" class="form-label" for="CorreoInput">Correo electrónico</label>
+                    <div class="input-actions-container">
+                        <input asp-for="Correo" 
+                               id="CorreoInput" 
+                               type="email" 
+                               class="input-dark js-clearable-input" 
+                               placeholder="ejemplo@dfitpower.com" 
+                               autocomplete="email" 
+                               required 
+                               aria-required="true"
+                               aria-describedby="correo-error" />
+                        <button type="button" class="btn-clear-input" aria-label="Limpiar campo Correo" title="Limpiar casilla">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                    </div>
+                    <span asp-validation-for="Correo" id="correo-error" class="field-error-message" role="alert"></span>
+                </div>
+
+                <!-- Fila 4: Contraseña y Confirmar Contraseña (Dos columnas simétricas) -->
+                <div class="row g-2 mb-3">
+                    <div class="col-sm-6">
+                        <div class="input-group mb-0">
+                            <label asp-for="Password" class="form-label" for="PasswordInput">Contraseña</label>
+                            <div class="input-actions-container has-both-actions">
+                                <input asp-for="Password" 
+                                       id="PasswordInput" 
+                                       type="password" 
+                                       class="input-dark js-clearable-input" 
+                                       placeholder="Mín. 6 caracteres" 
+                                       autocomplete="new-password" 
+                                       required 
+                                       aria-required="true"
+                                       aria-describedby="password-error" />
+                                <button type="button" class="btn-clear-input" aria-label="Limpiar campo Contraseña" title="Limpiar casilla">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                                <button type="button" 
+                                        class="password-toggle-btn js-toggle-pwd" 
+                                        data-target="PasswordInput" 
+                                        aria-label="Mostrar contraseña" 
+                                        aria-pressed="false" 
+                                        title="Mostrar u ocultar contraseña">
+                            <svg class="eye-show" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                <circle cx="12" cy="12" r="3" />
+                            </svg>
+                            <svg class="eye-hide" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display: none;">
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                                <line x1="1" y1="1" x2="23" y2="23" />
+                            </svg>
+                        </button>
+                    </div>
+                    <span asp-validation-for="Password" id="password-error" class="field-error-message" role="alert"></span>
+                </div>
             </div>
-        }
-    </form>
+            <div class="col-sm-6">
+                <div class="input-group mb-0">
+                    <label asp-for="ConfirmPassword" class="form-label" for="ConfirmPasswordInput">Confirmar</label>
+                    <div class="input-actions-container has-both-actions">
+                        <input asp-for="ConfirmPassword" 
+                               id="ConfirmPasswordInput" 
+                               type="password" 
+                               class="input-dark js-clearable-input" 
+                               placeholder="Repetir clave" 
+                               autocomplete="new-password" 
+                               required 
+                               aria-required="true"
+                               aria-describedby="confirm-password-error" />
+                        <button type="button" class="btn-clear-input" aria-label="Limpiar campo Confirmar" title="Limpiar casilla">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                        <button type="button" 
+                                class="password-toggle-btn js-toggle-pwd" 
+                                data-target="ConfirmPasswordInput" 
+                                aria-label="Mostrar contraseña confirmada" 
+                                aria-pressed="false" 
+                                title="Mostrar u ocultar contraseña">
+                            <svg class="eye-show" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                <circle cx="12" cy="12" r="3" />
+                            </svg>
+                            <svg class="eye-hide" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display: none;">
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                                <line x1="1" y1="1" x2="23" y2="23" />
+                            </svg>
+                        </button>
+                    </div>
+                    <span asp-validation-for="ConfirmPassword" id="confirm-password-error" class="field-error-message" role="alert"></span>
+                </div>
+            </div>
+        </div>
 
-    <div style="margin-top: 2rem; text-align: center; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
-        <p style="font-size: 13px; color: var(--text-muted);">
-            ¿Ya tiene una cuenta? <a href="/Home/Login" style="font-weight: 600;">Inicie sesión aquí</a>
-        </p>
-    </div>
-</div>
+                <!-- Botón de Registro -->
+                <button type="submit" class="btn btn-primary" id="btnSubmitRegister">
+                    <span>Crear Cuenta</span>
+                </button>
+
+                <!-- Divisor y Enlace a Iniciar Sesión -->
+                <div class="divider">
+                    <span>O</span>
+                </div>
+
+                <div class="text-center">
+                    <span class="text-caption">¿Ya tienes una cuenta? </span>
+                    <a asp-controller="Home" asp-action="Login" class="link-accent">Inicia sesión aquí</a>
+                </div>
+
+                <!-- Enlace sutil para Canales de Asistencia -->
+                <div class="text-center mt-3 pt-2" style="border-top: 1px solid rgba(255, 255, 255, 0.08);">
+                    <a href="#" 
+                       data-bs-toggle="offcanvas" 
+                       data-bs-target="#assistanceDrawer" 
+                       aria-controls="assistanceDrawer" 
+                       class="link-muted" 
+                       style="font-size: 12.5px; text-decoration: none;">
+                        💬 Canales de asistencia (Alt + A)
+                    </a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Vista Parcial Reutilizable: Canales de Asistencia y Modal -->
+    <partial name="_AssistanceDrawer" />
+
+    <!-- Scripts de Bootstrap y Funciones Específicas de Registro -->
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        (function () {
+            "use strict";
+
+            // 0. EVITAR DIÁLOGO DE REENVÍO DE FORMULARIO AL PRESIONAR F5
+            if (window.history.replaceState) {
+                window.history.replaceState(null, null, window.location.href);
+            }
+
+            // 1. RESTRICCIONES NUMÉRICAS EN TIEMPO REAL (DNI Y CELULAR)
+            const dniInput = document.getElementById("DniInput");
+            const celularInput = document.getElementById("CelularInput");
+
+            if (dniInput) {
+                dniInput.addEventListener("input", function () {
+                    this.value = this.value.replace(/\D/g, "").slice(0, 8);
+                });
+            }
+
+            if (celularInput) {
+                celularInput.addEventListener("input", function () {
+                    this.value = this.value.replace(/\D/g, "").slice(0, 9);
+                });
+            }
+
+            // 2. BOTONES DE LIMPIAR CASILLA (BOTÓN "X")
+            document.querySelectorAll(".input-actions-container").forEach(function (container) {
+                const input = container.querySelector(".js-clearable-input");
+                const clearBtn = container.querySelector(".btn-clear-input");
+
+                if (!input || !clearBtn) return;
+
+                function updateClearBtn() {
+                    clearBtn.style.display = input.value.length > 0 ? "flex" : "none";
+                }
+
+                input.addEventListener("input", updateClearBtn);
+                input.addEventListener("focus", updateClearBtn);
+
+                clearBtn.addEventListener("click", function () {
+                    input.value = "";
+                    updateClearBtn();
+                    input.dispatchEvent(new Event("input", { bubbles: true }));
+                    input.focus();
+                });
+
+                updateClearBtn();
+            });
+
+            // 3. VER / OCULTAR CONTRASEÑA Y CONFIRMAR CONTRASEÑA
+            document.querySelectorAll(".js-toggle-pwd").forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                    const targetId = this.getAttribute("data-target");
+                    const targetInput = document.getElementById(targetId);
+                    if (!targetInput) return;
+
+                    const isPassword = targetInput.getAttribute("type") === "password";
+                    const eyeShow = this.querySelector(".eye-show");
+                    const eyeHide = this.querySelector(".eye-hide");
+
+                    if (isPassword) {
+                        targetInput.setAttribute("type", "text");
+                        this.setAttribute("aria-label", "Ocultar contraseña");
+                        this.setAttribute("aria-pressed", "true");
+                        if (eyeShow) eyeShow.style.display = "none";
+                        if (eyeHide) eyeHide.style.display = "block";
+                    } else {
+                        targetInput.setAttribute("type", "password");
+                        this.setAttribute("aria-label", "Mostrar contraseña");
+                        this.setAttribute("aria-pressed", "false");
+                        if (eyeShow) eyeShow.style.display = "block";
+                        if (eyeHide) eyeHide.style.display = "none";
+                    }
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

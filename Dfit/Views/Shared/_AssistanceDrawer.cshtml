@@ -1,0 +1,284 @@
+<!-- ======================================================================
+     VISTA PARCIAL COMPARTIDA: CANALES DE ASISTENCIA Y ACCESIBILIDAD
+     Reutilizable en Login, Register, Perfil o cualquier vista del sistema.
+     ====================================================================== -->
+
+<!-- Barra Lateral Desplegable (Offcanvas) -->
+<aside class="offcanvas offcanvas-end accessibility-drawer" 
+       tabindex="-1" 
+       id="assistanceDrawer" 
+       aria-labelledby="assistanceDrawerTitle" 
+       role="dialog" 
+       aria-modal="true">
+
+    <div class="offcanvas-header">
+        <h2 class="offcanvas-title" id="assistanceDrawerTitle">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            </svg>
+            Canales de Asistencia
+        </h2>
+        <button type="button" 
+                class="btn-close" 
+                data-bs-dismiss="offcanvas" 
+                aria-label="Cerrar panel de asistencia"></button>
+    </div>
+
+    <div class="offcanvas-body">
+
+        <!-- 
+        ======================================================================
+        SECCIÓN: TAMAÑO DE TEXTO
+        ======================================================================
+        <section class="a11y-section" aria-labelledby="a11y-font-size-title">
+            <h3 class="a11y-section-title" id="a11y-font-size-title">Tamaño de Texto</h3>
+            <div class="a11y-btn-group" role="group" aria-label="Selector de tamaño de texto">
+                <button type="button" class="a11y-btn" id="btnFontNormal" aria-pressed="true">Normal</button>
+                <button type="button" class="a11y-btn" id="btnFontLarge" aria-pressed="false">A+ Grande</button>
+                <button type="button" class="a11y-btn" id="btnFontXLarge" aria-pressed="false">A++ Extra</button>
+            </div>
+        </section>
+        ======================================================================
+        -->
+
+        <!-- SECCIÓN 1: Canales Directos de Atención y Soporte -->
+        <section class="a11y-section" aria-labelledby="heading-support-channels">
+            <h3 class="a11y-section-title" id="heading-support-channels">Atención al Usuario</h3>
+            <div class="d-flex flex-column gap-2">
+                <a href="https://wa.me/51987987987?text=Hola,%20necesito%20ayuda%20para%20acceder%20a%20DFIT%20Power" target="_blank" rel="noopener noreferrer" class="a11y-link-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+                    </svg>
+                    <div>
+                        <span style="font-weight: 600; color: #fff; display: block;">WhatsApp de Soporte</span>
+                        <span class="text-caption" style="font-size: 11px;">Respuesta rápida de administración</span>
+                    </div>
+                </a>
+
+                <a href="mailto:soporte@dfitpower.com?subject=Ayuda%20con%20DFIT%20Power" class="a11y-link-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                        <polyline points="22,6 12,13 2,6" />
+                    </svg>
+                    <div>
+                        <span style="font-weight: 600; color: #fff; display: block;">Correo Electrónico</span>
+                        <span class="text-caption" style="font-size: 11px;">soporte@dfitpower.com</span>
+                    </div>
+                </a>
+
+                <div class="a11y-link-item" style="cursor: default;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 16 14" />
+                    </svg>
+                    <div>
+                        <span style="font-weight: 600; color: #fff; display: block;">Atención Presencial</span>
+                        <span class="text-caption" style="font-size: 11px;">Lun - Sáb: 6:00 am a 10:00 pm (Recepción)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: Opciones de Visualización y Contraste -->
+        <section class="a11y-section" aria-labelledby="heading-visual-options">
+            <h3 class="a11y-section-title" id="heading-visual-options">Ajustes Visuales</h3>
+            
+            <button type="button" class="a11y-btn" id="btnToggleHighContrast" aria-pressed="false">
+                <span>🌓 Alto Contraste (Modo B/N)</span>
+                <span class="badge bg-secondary" id="badgeHighContrast">Desactivado</span>
+            </button>
+
+            <button type="button" class="a11y-btn" id="btnToggleReadableFont" aria-pressed="false">
+                <span>🔤 Fuente de Fácil Lectura</span>
+                <span class="badge bg-secondary" id="badgeReadableFont">Desactivado</span>
+            </button>
+
+            <button type="button" class="a11y-btn" id="btnToggleMotion" aria-pressed="false">
+                <span>⏸ Reducir Animaciones</span>
+                <span class="badge bg-secondary" id="badgeMotion">Desactivado</span>
+            </button>
+        </section>
+
+        <!-- SECCIÓN 3: Guía de Navegación por Teclado -->
+        <section class="a11y-section" aria-labelledby="heading-keyboard-guide">
+            <h3 class="a11y-section-title" id="heading-keyboard-guide">Navegación por Teclado</h3>
+            <p class="text-caption mb-0" style="font-size: 12px; line-height: 1.6;">
+                • <kbd>Tab</kbd> / <kbd>Shift+Tab</kbd>: Moverse entre campos.<br />
+                • <kbd>Alt + A</kbd>: Abrir o cerrar este panel de asistencia.<br />
+                • <kbd>Enter</kbd>: Enviar el formulario.
+            </p>
+        </section>
+
+        <!-- Botón de Restablecer Preferencias -->
+        <div class="mt-auto pt-3 border-top text-center">
+            <button type="button" class="btn btn-sm btn-link link-muted" id="btnResetAllA11y" style="font-size: 12px; text-decoration: none;">
+                Restablecer ajustes predeterminados
+            </button>
+        </div>
+    </div>
+</aside>
+
+<!-- Modal informativo para "¿Olvidaste tu contraseña?" -->
+<div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background: #182418; color: #fff; border: 1px solid #2a3a2a;">
+            <div class="modal-header" style="border-bottom-color: #2a3a2a;">
+                <h5 class="modal-title" id="forgotModalLabel">Recuperación de Contraseña</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar" style="filter: invert(1);"></button>
+            </div>
+            <div class="modal-body" style="font-size: 14px; line-height: 1.6; color: #d0ded0;">
+                <p>Por políticas de seguridad de <strong>DFIT Power</strong>, la reactivación o cambio de credenciales de acceso se gestiona a través de la administración del gimnasio.</p>
+                <p class="mb-0">
+                    Por favor, acércate al mostrador de recepción con tu documento de identidad o envía un correo a 
+                    <a href="mailto:soporte@dfitpower.com?subject=Solicitud%20de%20Recuperaci%C3%B3n%20de%20Contrase%C3%B1a%20-%20DFIT%20Power" 
+                       class="email-highlight-link" 
+                       title="Clic o Ctrl+Clic para enviar correo">
+                        soporte@dfitpower.com
+                    </a>.
+                </p>
+            </div>
+            <div class="modal-footer" style="border-top-color: #2a3a2a;">
+                <button type="button" class="btn btn-primary btn-sm" data-bs-dismiss="modal">Entendido</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Lógica compartida de asistencia y accesibilidad -->
+<script>
+    (function () {
+        "use strict";
+
+        // Modal de ayuda para contraseñas
+        const linkForgot = document.getElementById("linkForgotPassword");
+        if (linkForgot) {
+            linkForgot.addEventListener("click", function (e) {
+                e.preventDefault();
+                const modalElement = document.getElementById("forgotPasswordModal");
+                if (modalElement && window.bootstrap) {
+                    const modal = new bootstrap.Modal(modalElement);
+                    modal.show();
+                }
+            });
+        }
+
+        // ================================================================
+        // GESTIÓN DE ACCESIBILIDAD Y PERSISTENCIA
+        // ================================================================
+        const STORAGE_KEY_A11Y = "dfit_a11y_preferences";
+        const defaults = {
+            highContrast: false,
+            readableFont: false,
+            reduceMotion: false
+        };
+
+        let a11yState = { ...defaults };
+
+        try {
+            const stored = localStorage.getItem(STORAGE_KEY_A11Y);
+            if (stored) {
+                a11yState = Object.assign({}, defaults, JSON.parse(stored));
+            }
+        } catch (err) {
+            console.warn("Error leyendo preferencias de asistencia:", err);
+        }
+
+        function applyA11yState() {
+            const body = document.body;
+
+            // Alto contraste
+            const badgeContrast = document.getElementById("badgeHighContrast");
+            const btnContrast = document.getElementById("btnToggleHighContrast");
+            if (a11yState.highContrast) {
+                body.classList.add("a11y-high-contrast");
+                btnContrast?.classList.add("active");
+                btnContrast?.setAttribute("aria-pressed", "true");
+                if (badgeContrast) badgeContrast.textContent = "Activo";
+            } else {
+                body.classList.remove("a11y-high-contrast");
+                btnContrast?.classList.remove("active");
+                btnContrast?.setAttribute("aria-pressed", "false");
+                if (badgeContrast) badgeContrast.textContent = "Desactivado";
+            }
+
+            // Fuente legible
+            const badgeFont = document.getElementById("badgeReadableFont");
+            const btnFont = document.getElementById("btnToggleReadableFont");
+            if (a11yState.readableFont) {
+                body.classList.add("a11y-readable-font");
+                btnFont?.classList.add("active");
+                btnFont?.setAttribute("aria-pressed", "true");
+                if (badgeFont) badgeFont.textContent = "Activo";
+            } else {
+                body.classList.remove("a11y-readable-font");
+                btnFont?.classList.remove("active");
+                btnFont?.setAttribute("aria-pressed", "false");
+                if (badgeFont) badgeFont.textContent = "Desactivado";
+            }
+
+            // Reducir animaciones
+            const badgeMotion = document.getElementById("badgeMotion");
+            const btnMotion = document.getElementById("btnToggleMotion");
+            if (a11yState.reduceMotion) {
+                body.classList.add("a11y-reduce-motion");
+                btnMotion?.classList.add("active");
+                btnMotion?.setAttribute("aria-pressed", "true");
+                if (badgeMotion) badgeMotion.textContent = "Activo";
+            } else {
+                body.classList.remove("a11y-reduce-motion");
+                btnMotion?.classList.remove("active");
+                btnMotion?.setAttribute("aria-pressed", "false");
+                if (badgeMotion) badgeMotion.textContent = "Desactivado";
+            }
+
+            try {
+                localStorage.setItem(STORAGE_KEY_A11Y, JSON.stringify(a11yState));
+            } catch (e) {
+                console.warn("Error guardando preferencias:", e);
+            }
+        }
+
+        document.getElementById("btnToggleHighContrast")?.addEventListener("click", () => {
+            a11yState.highContrast = !a11yState.highContrast;
+            applyA11yState();
+        });
+
+        document.getElementById("btnToggleReadableFont")?.addEventListener("click", () => {
+            a11yState.readableFont = !a11yState.readableFont;
+            applyA11yState();
+        });
+
+        document.getElementById("btnToggleMotion")?.addEventListener("click", () => {
+            a11yState.reduceMotion = !a11yState.reduceMotion;
+            applyA11yState();
+        });
+
+        document.getElementById("btnResetAllA11y")?.addEventListener("click", () => {
+            a11yState = { ...defaults };
+            applyA11yState();
+        });
+
+        // Atajo Alt + A para abrir/cerrar offcanvas
+        window.addEventListener("keydown", function (e) {
+            if (e.altKey && (e.key === "a" || e.key === "A")) {
+                e.preventDefault();
+                const drawerElement = document.getElementById("assistanceDrawer");
+                if (drawerElement && window.bootstrap) {
+                    const instance = bootstrap.Offcanvas.getInstance(drawerElement) || new bootstrap.Offcanvas(drawerElement);
+                    if (drawerElement.classList.contains("show")) {
+                        instance.hide();
+                    } else {
+                        instance.show();
+                        // Mover el foco al botón de cerrar para evitar artefactos visuales y dar accesibilidad por teclado
+                        setTimeout(function () {
+                            const closeBtn = drawerElement.querySelector(".btn-close");
+                            if (closeBtn) closeBtn.focus();
+                        }, 150);
+                    }
+                }
+            }
+        });
+
+        applyA11yState();
+    })();
+</script>
