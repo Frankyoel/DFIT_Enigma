@@ -1,36 +1,247 @@
 @model Dfit.Models.LoginViewModel
 @{
-    ViewData["Title"] = "Iniciar Sesión";
-    ViewData["HideSidebar"] = true;
+    Layout = null;
+    ViewData["Title"] = "Iniciar Sesión - DFIT Power";
 }
 
-<div class="card" style="width: 100%; max-width: 400px; padding: 2.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); border: none;">
-    <div style="text-align: center; margin-bottom: 2rem;">
-        <img src="~/images/logo.png" alt="DFIT Power Logo" style="max-width: 100%; height: auto; max-height: 150px; margin-bottom: 1rem; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" />
-        <p class="text-muted" style="font-size: 14px; margin-top: 0.5rem;">Acceso al portal corporativo</p>
-    </div>
-    
-    <form asp-controller="Home" asp-action="Login" method="post">
-        <div class="form-group">
-            <label asp-for="Correo" class="form-label">Correo electrónico</label>
-            <input asp-for="Correo" class="form-control" placeholder="correo@dfit.com" required />
-            <span asp-validation-for="Correo" class="text-danger" style="font-size:12px; display:block; margin-top:4px;"></span>
-        </div>
-        
-        <div class="form-group mb-4">
-            <label asp-for="Password" class="form-label">Contraseña</label>
-            <input asp-for="Password" type="password" class="form-control" placeholder="••••••••" required />
-            <span asp-validation-for="Password" class="text-danger" style="font-size:12px; display:block; margin-top:4px;"></span>
-        </div>
-        
-        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.75rem; font-weight: 600; font-size: 15px;">Iniciar sesión</button>
-        
-        @if (!ViewData.ModelState.IsValid)
-        {
-            <div class="alert alert-danger mt-3" style="font-size: 13px; color: var(--danger); text-align: center;">
-                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
-            </div>
-        }
-    </form>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
 
-</div>
+    <!-- Tipografía Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Framework de estilos Bootstrap & Estilos DFIT -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/dfit-login.css" asp-append-version="true" />
+</head>
+<body>
+
+    <!-- Contenedor Principal (Ajustado al alto de la pantalla sin scroll) -->
+    <main class="login-container" role="main">
+        <div class="login-card">
+            
+            <!-- Cabecera e Identidad Compacta -->
+            <header class="text-center mb-3">
+                <img src="~/images/logo.png" 
+                     alt="Logotipo oficial de DFIT Power" 
+                     style="max-width: 95px; height: auto; max-height: 80px; margin-bottom: 0.4rem; border-radius: 12px;" />
+                <h1 class="text-h1">Iniciar Sesión</h1>
+                <p class="text-caption mt-1">Acceso al portal corporativo y de socios</p>
+            </header>
+
+            <!-- Resumen de Errores del Servidor (Accesible para Screen Readers) -->
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="login-alert-danger" role="alert" aria-live="assertive">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="flex-shrink: 0;">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="12" y1="8" x2="12" y2="12" />
+                        <line x1="12" y1="16" x2="12.01" y2="16" />
+                    </svg>
+                    <div class="flex-grow-1">
+                        @Html.ValidationSummary(false, "", new { @class = "mb-0" })
+                    </div>
+                </div>
+            }
+
+            <!-- Formulario de Acceso -->
+            <form asp-controller="Home" asp-action="Login" method="post" id="main-login-form" novalidate>
+                @Html.AntiForgeryToken()
+
+                <!-- Campo Correo Electrónico con botón X para borrar -->
+                <div class="input-group mb-2">
+                    <label asp-for="Correo" class="form-label" for="CorreoInput">Correo electrónico</label>
+                    <div class="input-actions-container">
+                        <input asp-for="Correo" 
+                               id="CorreoInput" 
+                               type="email" 
+                               class="input-dark js-clearable-input" 
+                               placeholder="ejemplo@dfitpower.com" 
+                               autocomplete="username" 
+                               required 
+                               aria-required="true"
+                               aria-describedby="correo-error" />
+                        <button type="button" class="btn-clear-input" aria-label="Limpiar campo Correo" title="Limpiar casilla">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                    </div>
+                    <span asp-validation-for="Correo" id="correo-error" class="field-error-message" role="alert"></span>
+                </div>
+
+                <!-- Campo Contraseña con botón de Ver/Ocultar y botón X para borrar -->
+                <div class="input-group mb-2">
+                    <label asp-for="Password" class="form-label" for="PasswordInput">Contraseña</label>
+                    <div class="input-actions-container has-both-actions w-100">
+                        <input asp-for="Password" 
+                               id="PasswordInput" 
+                               type="password" 
+                               class="input-dark js-clearable-input" 
+                               placeholder="••••••••" 
+                               autocomplete="current-password" 
+                               required 
+                               aria-required="true"
+                               aria-describedby="password-error" />
+                        <button type="button" class="btn-clear-input" aria-label="Limpiar campo Contraseña" title="Limpiar casilla">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                        <button type="button" 
+                                class="password-toggle-btn" 
+                                id="btnTogglePassword" 
+                                aria-label="Mostrar contraseña" 
+                                aria-pressed="false" 
+                                title="Mostrar u ocultar contraseña">
+                            <svg id="eyeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                <circle cx="12" cy="12" r="3" />
+                            </svg>
+                            <svg id="eyeSlashIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display: none;">
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                                <line x1="1" y1="1" x2="23" y2="23" />
+                            </svg>
+                        </button>
+                    </div>
+                    <span asp-validation-for="Password" id="password-error" class="field-error-message" role="alert"></span>
+                </div>
+
+                <!-- Fila de opciones: Recordar correo y Olvidé contraseña -->
+                <div class="d-flex justify-content-between align-items-center mb-3 mt-1">
+                    <label class="form-check-custom" for="rememberEmailCheck">
+                        <input type="checkbox" id="rememberEmailCheck" />
+                        <span>Recordar correo</span>
+                    </label>
+                    <a href="#" class="link-accent" id="linkForgotPassword" title="Recuperación de contraseña" style="font-size: 12.5px;">¿Olvidaste tu contraseña?</a>
+                </div>
+
+                <!-- Botón de Ingreso -->
+                <button type="submit" class="btn btn-primary" id="btnSubmitLogin">
+                    <span>Iniciar sesión</span>
+                </button>
+
+                <!-- Divisor y Enlace a Registro -->
+                <div class="divider">
+                    <span>O</span>
+                </div>
+
+                <div class="text-center">
+                    <span class="text-caption">¿Aún no tienes cuenta? </span>
+                    <a asp-controller="Home" asp-action="Register" class="link-accent">Regístrate aquí</a>
+                </div>
+
+                <!-- Enlace sutil para Canales de Asistencia -->
+                <div class="text-center mt-3 pt-2" style="border-top: 1px solid rgba(255, 255, 255, 0.08);">
+                    <a href="#" 
+                       data-bs-toggle="offcanvas" 
+                       data-bs-target="#assistanceDrawer" 
+                       aria-controls="assistanceDrawer" 
+                       class="link-muted" 
+                       style="font-size: 12.5px; text-decoration: none;">
+                        💬 Canales de asistencia (Alt + A)
+                    </a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Vista Parcial Reutilizable: Canales de Asistencia y Modal -->
+    <partial name="_AssistanceDrawer" />
+
+    <!-- Scripts de Bootstrap y Funciones Específicas de Login -->
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        (function () {
+            "use strict";
+
+            // 0. EVITAR DIÁLOGO DE REENVÍO DE FORMULARIO AL PRESIONAR F5
+            if (window.history.replaceState) {
+                window.history.replaceState(null, null, window.location.href);
+            }
+
+            // 1. VER / OCULTAR CONTRASEÑA
+            const btnTogglePassword = document.getElementById("btnTogglePassword");
+            const passwordInput = document.getElementById("PasswordInput");
+            const eyeIcon = document.getElementById("eyeIcon");
+            const eyeSlashIcon = document.getElementById("eyeSlashIcon");
+
+            if (btnTogglePassword && passwordInput) {
+                btnTogglePassword.addEventListener("click", function () {
+                    const isPassword = passwordInput.getAttribute("type") === "password";
+                    if (isPassword) {
+                        passwordInput.setAttribute("type", "text");
+                        btnTogglePassword.setAttribute("aria-label", "Ocultar contraseña");
+                        btnTogglePassword.setAttribute("aria-pressed", "true");
+                        eyeIcon.style.display = "none";
+                        eyeSlashIcon.style.display = "block";
+                    } else {
+                        passwordInput.setAttribute("type", "password");
+                        btnTogglePassword.setAttribute("aria-label", "Mostrar contraseña");
+                        btnTogglePassword.setAttribute("aria-pressed", "false");
+                        eyeIcon.style.display = "block";
+                        eyeSlashIcon.style.display = "none";
+                    }
+                });
+            }
+
+            // 2. BOTONES DE LIMPIAR CASILLA (BOTÓN "X")
+            document.querySelectorAll(".input-actions-container").forEach(function (container) {
+                const input = container.querySelector(".js-clearable-input");
+                const clearBtn = container.querySelector(".btn-clear-input");
+
+                if (!input || !clearBtn) return;
+
+                function updateClearBtn() {
+                    clearBtn.style.display = input.value.length > 0 ? "flex" : "none";
+                }
+
+                input.addEventListener("input", updateClearBtn);
+                input.addEventListener("focus", updateClearBtn);
+
+                clearBtn.addEventListener("click", function () {
+                    input.value = "";
+                    updateClearBtn();
+                    input.dispatchEvent(new Event("input", { bubbles: true }));
+                    input.focus();
+                });
+
+                updateClearBtn();
+            });
+
+            // 3. RECORDAR CORREO ELECTRÓNICO (LOCALSTORAGE)
+            const correoInput = document.getElementById("CorreoInput");
+            const rememberCheck = document.getElementById("rememberEmailCheck");
+            const STORAGE_KEY_EMAIL = "dfit_saved_email";
+
+            if (correoInput && rememberCheck) {
+                const savedEmail = localStorage.getItem(STORAGE_KEY_EMAIL);
+                if (savedEmail) {
+                    correoInput.value = savedEmail;
+                    rememberCheck.checked = true;
+                }
+
+                const loginForm = document.getElementById("main-login-form");
+                if (loginForm) {
+                    loginForm.addEventListener("submit", function () {
+                        if (rememberCheck.checked) {
+                            localStorage.setItem(STORAGE_KEY_EMAIL, correoInput.value.trim());
+                        } else {
+                            localStorage.removeItem(STORAGE_KEY_EMAIL);
+                        }
+                    });
+                }
+            }
+        })();
+    </script>
+</body>
+</html>

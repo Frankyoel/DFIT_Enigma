@@ -27,7 +27,13 @@
 /* ==========================================================================
    RESET & GLOBAL STYLES
    ========================================================================== */
-* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+    height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
 
 body {
     font-family: 'Inter', sans-serif;
@@ -36,12 +42,15 @@ body {
     background-size: cover;
     background-position: center;
     color: var(--white);
-    min-height: 100vh;
+    height: 100vh;
+    max-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
     position: relative;
+    padding: 0;
+    margin: 0;
 }
 
 /* Add a cool background glow */
@@ -70,29 +79,29 @@ body::after {
 /* ==========================================================================
    TYPOGRAPHY
    ========================================================================== */
-.text-h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
-.text-caption { font-size: 14px; font-weight: 400; color: var(--muted); }
+.text-h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; }
+.text-caption { font-size: 13px; font-weight: 400; color: var(--muted); }
 
 /* ==========================================================================
    LOGIN CARD
    ========================================================================== */
 .login-container {
     width: 100%;
-    max-width: 420px;
-    padding: 20px;
+    max-width: 400px;
+    padding: 12px;
     z-index: 1;
 }
 
 .login-card {
-    background: rgba(26, 42, 26, 0.6);
+    background: rgba(26, 42, 26, 0.65);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    padding: 40px 32px;
+    padding: 24px 26px;
     border-radius: var(--r-card);
     border: 1px solid rgba(255, 255, 255, 0.05);
-    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
-    animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    transform: translateY(20px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    transform: translateY(15px);
     opacity: 0;
 }
 
@@ -103,16 +112,16 @@ body::after {
 /* ==========================================================================
    INPUTS
    ========================================================================== */
-.input-group { margin-bottom: 20px; width: 100%; position: relative; }
+.input-group { margin-bottom: 12px; width: 100%; position: relative; }
 
 .input-dark {
     width: 100%;
-    height: 48px;
+    height: 42px;
     border-radius: var(--r-inp);
     border: 1px solid var(--dark-border);
     background: rgba(22, 30, 22, 0.8);
-    padding: 0 16px;
-    font-size: 14px;
+    padding: 0 14px;
+    font-size: 13.5px;
     color: var(--white);
     transition: all 0.3s ease;
 }
@@ -128,8 +137,8 @@ body::after {
    ========================================================================== */
 .btn {
     display: inline-flex; justify-content: center; align-items: center; gap: 8px;
-    height: 48px; border-radius: var(--r-btn);
-    font-size: 15px; font-weight: 600; transition: all 0.3s ease;
+    height: 42px; border-radius: var(--r-btn);
+    font-size: 14.5px; font-weight: 600; transition: all 0.3s ease;
     cursor: pointer; border: none; width: 100%;
 }
 
@@ -152,13 +161,13 @@ body::after {
    UTILITIES
    ========================================================================== */
 .text-center { text-align: center; }
-.mb-1 { margin-bottom: 8px; }
-.mb-2 { margin-bottom: 16px; }
-.mb-3 { margin-bottom: 24px; }
-.mb-4 { margin-bottom: 32px; }
+.mb-1 { margin-bottom: 6px; }
+.mb-2 { margin-bottom: 12px; }
+.mb-3 { margin-bottom: 18px; }
+.mb-4 { margin-bottom: 20px; }
 
 .divider {
-    display: flex; align-items: center; margin: 24px 0;
+    display: flex; align-items: center; margin: 14px 0;
 }
 .divider::before, .divider::after {
     content: ''; flex: 1; height: 1px; background: var(--dark-border);
@@ -193,3 +202,450 @@ body::after {
     border-radius: 12px; display: flex; justify-content: center;
     align-items: center; box-shadow: 0 8px 16px rgba(99, 153, 34, 0.3);
 }
+
+/* ==========================================================================
+   ACCESSIBILITY & KEYBOARD NAVIGATION (WCAG COMPLIANCE)
+   ========================================================================== */
+:focus-visible {
+    outline: 3px solid var(--accent) !important;
+    outline-offset: 3px !important;
+}
+
+.skip-link {
+    position: absolute;
+    top: -50px;
+    left: 16px;
+    background: var(--primary);
+    color: var(--white);
+    padding: 10px 18px;
+    border-radius: var(--r-btn);
+    font-weight: 600;
+    z-index: 9999;
+    text-decoration: none;
+    transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+    top: 16px;
+}
+
+/* Input with Actions (Clear 'X' and Password Eye) */
+.input-actions-container,
+.password-field-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.input-actions-container .input-dark,
+.password-field-container .input-dark {
+    padding-right: 36px;
+}
+
+.input-actions-container.has-both-actions .input-dark,
+.password-field-container.has-both-actions .input-dark {
+    padding-right: 64px;
+}
+
+.btn-clear-input {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    padding: 6px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: color 0.2s ease;
+}
+
+.btn-clear-input:hover {
+    color: #ff7875;
+}
+
+.btn-clear-input:focus-visible {
+    outline: 2px solid var(--accent) !important;
+}
+
+.password-toggle-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: color 0.2s ease;
+}
+
+.password-toggle-btn:hover {
+    color: var(--accent);
+}
+
+.password-toggle-btn:focus-visible {
+    outline: 2px solid var(--accent) !important;
+}
+
+.has-both-actions .btn-clear-input {
+    right: 34px;
+}
+
+.has-both-actions .password-toggle-btn {
+    right: 6px;
+}
+
+/* Checkbox Accessible */
+.form-check-custom {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #b0bfb0;
+    user-select: none;
+}
+
+.form-check-custom input[type="checkbox"] {
+    width: 17px;
+    height: 17px;
+    accent-color: var(--primary);
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+/* Form Labels & Validation Messages */
+.form-label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #cfdccf;
+}
+
+.field-error-message {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: #ff6b6b;
+    margin-top: 5px;
+    font-weight: 500;
+}
+
+.login-alert-danger {
+    background: rgba(226, 75, 74, 0.15);
+    border: 1px solid rgba(226, 75, 74, 0.4);
+    border-radius: var(--r-inp);
+    padding: 12px 14px;
+    color: #ff9d9d;
+    font-size: 13px;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.login-alert-danger .validation-summary-errors,
+.login-alert-danger ul {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.login-alert-danger li {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1.4;
+    font-size: 13px;
+    color: #ff9d9d;
+}
+
+/* Enlace de correo resaltado en texto */
+.email-highlight-link {
+    color: var(--accent);
+    background: rgba(151, 196, 89, 0.12);
+    border: 1px solid rgba(151, 196, 89, 0.3);
+    padding: 1px 7px;
+    border-radius: 4px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.email-highlight-link:hover,
+.email-highlight-link:focus-visible {
+    background: rgba(151, 196, 89, 0.25);
+    border-color: var(--accent);
+    color: #c4f77c;
+    text-decoration: underline;
+    box-shadow: 0 0 8px rgba(151, 196, 89, 0.25);
+}
+
+
+
+/* ==========================================================================
+   ACCESSIBILITY DRAWER (OFFCANVAS)
+   ========================================================================== */
+.accessibility-drawer {
+    background-color: #111a11 !important;
+    color: #e5ede5 !important;
+    border-left: 1px solid var(--dark-border);
+    width: 340px !important;
+    max-width: 85vw;
+    box-shadow: -8px 0 32px rgba(0, 0, 0, 0.5);
+    outline: none !important;
+}
+
+.accessibility-drawer:focus,
+.accessibility-drawer:focus-visible {
+    outline: none !important;
+    box-shadow: -8px 0 32px rgba(0, 0, 0, 0.5) !important;
+}
+
+.accessibility-drawer .offcanvas-header {
+    border-bottom: 1px solid var(--dark-border);
+    padding: 18px 22px;
+}
+
+.accessibility-drawer .offcanvas-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.accessibility-drawer .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+    opacity: 0.8;
+}
+
+.accessibility-drawer .btn-close:focus {
+    box-shadow: 0 0 0 3px rgba(151, 196, 89, 0.5);
+}
+
+.accessibility-drawer .offcanvas-body {
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+}
+
+.a11y-section {
+    margin-bottom: 24px;
+}
+
+.a11y-section-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--accent);
+    margin-bottom: 12px;
+}
+
+.a11y-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    background: rgba(26, 38, 26, 0.9);
+    color: #dbe4db;
+    border: 1px solid var(--dark-border);
+    border-radius: var(--r-inp);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    margin-bottom: 8px;
+}
+
+.a11y-btn:hover {
+    background: rgba(40, 60, 40, 0.9);
+    border-color: var(--primary);
+    color: var(--white);
+}
+
+.a11y-btn.active {
+    background: rgba(99, 153, 34, 0.25);
+    border-color: var(--accent);
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.a11y-btn-group {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.a11y-btn-group .a11y-btn {
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.a11y-link-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    color: #b8c9b8;
+    text-decoration: none;
+    font-size: 13px;
+    border-radius: 8px;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.a11y-link-item:hover {
+    background: rgba(40, 60, 40, 0.6);
+    color: var(--accent-light);
+}
+
+/* ==========================================================================
+   ACCESSIBILITY MODES (APPLIED VIA JAVASCRIPT)
+   ========================================================================== */
+
+/* 1. Modo Alto Contraste */
+body.a11y-high-contrast {
+    background: #000000 !important;
+    background-image: none !important;
+    color: #ffff00 !important;
+}
+
+body.a11y-high-contrast::before,
+body.a11y-high-contrast::after {
+    display: none !important;
+}
+
+body.a11y-high-contrast .login-card {
+    background: #000000 !important;
+    border: 3px solid #ffff00 !important;
+    box-shadow: none !important;
+}
+
+body.a11y-high-contrast .input-dark {
+    background: #000000 !important;
+    border: 2px solid #ffffff !important;
+    color: #ffffff !important;
+}
+
+body.a11y-high-contrast .input-dark:focus {
+    border-color: #ffff00 !important;
+    box-shadow: 0 0 0 3px #ffff00 !important;
+}
+
+body.a11y-high-contrast .form-label,
+body.a11y-high-contrast .text-caption,
+body.a11y-high-contrast .form-check-custom {
+    color: #ffffff !important;
+}
+
+body.a11y-high-contrast .btn-primary {
+    background: #ffff00 !important;
+    color: #000000 !important;
+    border: 2px solid #ffffff !important;
+    font-weight: 700 !important;
+}
+
+body.a11y-high-contrast .link-accent,
+body.a11y-high-contrast .link-muted,
+body.a11y-high-contrast .email-highlight-link {
+    color: #ffff00 !important;
+    text-decoration: underline !important;
+    background: transparent !important;
+    border-color: #ffff00 !important;
+}
+
+
+
+body.a11y-high-contrast .accessibility-drawer {
+    background: #000000 !important;
+    border-left: 3px solid #ffff00 !important;
+    color: #ffffff !important;
+}
+
+body.a11y-high-contrast .a11y-btn {
+    background: #000000 !important;
+    border: 2px solid #ffffff !important;
+    color: #ffffff !important;
+}
+
+body.a11y-high-contrast .a11y-btn.active {
+    border-color: #ffff00 !important;
+    color: #ffff00 !important;
+}
+
+/* 2. Escalas de Tamaño de Fuente */
+body.a11y-font-lg {
+    font-size: 115% !important;
+}
+
+body.a11y-font-lg .login-container {
+    max-width: 480px !important;
+}
+
+body.a11y-font-xl {
+    font-size: 130% !important;
+}
+
+body.a11y-font-xl .login-container {
+    max-width: 530px !important;
+}
+
+/* 3. Fuente de Fácil Lectura (Dislexia / Legibilidad) */
+body.a11y-readable-font,
+body.a11y-readable-font * {
+    font-family: Arial, "Helvetica Neue", Verdana, sans-serif !important;
+    letter-spacing: 0.04em !important;
+    line-height: 1.6 !important;
+}
+
+/* 4. Reducción de Animaciones */
+body.a11y-reduce-motion *,
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.001s !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001s !important;
+    }
+}
+
+/* ==========================================================================
+   REGISTER & EXTENDED FORMS (WIDER CARDS & RESPONSIVE SCROLL)
+   ========================================================================== */
+.register-container {
+    max-width: 500px !important;
+}
+
+@media (max-height: 720px), (max-width: 576px) {
+    html, body {
+        height: auto !important;
+        min-height: 100vh !important;
+        overflow-y: auto !important;
+    }
+    body {
+        padding: 16px 0 !important;
+    }
+}
+
+
