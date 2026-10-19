@@ -27,19 +27,24 @@ namespace Dfit.Models.Patterns.Strategy
     [FirestoreData]
     public class PaymentContext
     {
-        private IPaymentStrategy _strategy;
+        private const decimal CardThreshold = 100m;
+        private IPaymentStrategy? _strategy;
 
         public void SetStrategy(IPaymentStrategy strategy)
         {
             _strategy = strategy;
         }
 
+        // Regla existente de RegistrarPago: la estrategia se elige por monto.
+        public decimal ExecutePaymentForAmount(decimal baseAmount)
+        {
+            SetStrategy(baseAmount > CardThreshold ? new CardStrategy() : new CashStrategy());
+            return ExecutePayment(baseAmount);
+        }
+
         public decimal ExecutePayment(decimal baseAmount)
         {
-            if (_strategy == null)
-            {
-                _strategy = new CashStrategy(); // Default
-            }
+            _strategy ??= new CashStrategy(); // Default
             return _strategy.CalculateFinalAmount(baseAmount);
         }
     }

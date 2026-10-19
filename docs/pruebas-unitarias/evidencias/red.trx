@@ -1,0 +1,739 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="2ee59c70-c144-4dd1-bff6-077f6fc7b269" name="diego@PCDIEGO 2026-10-18 22:30:02.4113793" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-18T22:30:01.557404Z" queuing="2026-10-18T22:30:01.557404Z" start="2026-10-18T22:30:01.557404Z" finish="2026-10-18T22:30:02.4117887Z" />
+  <TestSettings name="default" id="a79c0bd7-e750-4321-a9de-1fe759bac5ab">
+    <Deployment runDeploymentRoot="diego_PCDIEGO_2026-10-18_22_30_02.4113793" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="83463a83-d959-4834-8e8f-6b93517fbdad" testId="1a36ae16-dc42-857d-91f3-2be43c50104e" testName="CalcularFechaFin_MembresiaAnual_SumaExactamente365Dias" computerName="PCDIEGO" duration="00:00:00.7166067" startTime="2026-10-18T22:30:01.6405083+00:00" endTime="2026-10-18T22:30:02.3727723+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Failed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="83463a83-d959-4834-8e8f-6b93517fbdad">
+      <Output>
+        <ErrorInfo>
+          <Message>Excepción método de prueba PruebasUnitarias.CalculoVigenciaTests.CalcularFechaFin_MembresiaAnual_SumaExactamente365Dias: 
+System.NotImplementedException: Pendiente de extraer la regla de vigencia.</Message>
+          <StackTrace>   at Dfit.Models.ReglasMembresia.CalcularFechaFin(DateTime fechaInicio, Int32 duracionDias) in C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\ReglasMembresia.cs:line 7
+   at PruebasUnitarias.CalculoVigenciaTests.CalcularFechaFin_MembresiaAnual_SumaExactamente365Dias() in C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\CalculoVigenciaTests.cs:line 28
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d9fc4a21-5e06-4049-a553-fb00c36d6c1c" testId="1989c2da-6bb0-8957-9ce7-7a4f7b91890c" testName="ValidarAcceso_ConMembresiaVencida_DebeDenegarAcceso" computerName="PCDIEGO" duration="00:00:00.7166202" startTime="2026-10-18T22:30:01.6405391+00:00" endTime="2026-10-18T22:30:02.3727977+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Failed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="d9fc4a21-5e06-4049-a553-fb00c36d6c1c">
+      <Output>
+        <ErrorInfo>
+          <Message>Excepción método de prueba PruebasUnitarias.MembresiaAccesoTests.ValidarAcceso_ConMembresiaVencida_DebeDenegarAcceso: 
+System.NotImplementedException: Pendiente de extraer la regla de acceso.</Message>
+          <StackTrace>   at Dfit.Models.ReglasMembresia.PermiteAcceso(Boolean activa, DateTime fechaFin, DateTime ahora) in C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\ReglasMembresia.cs:line 10
+   at PruebasUnitarias.MembresiaAccesoTests.ValidarAcceso_ConMembresiaVencida_DebeDenegarAcceso() in C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\MembresiaAccesoTests.cs:line 29
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="1d74e582-5585-48d7-9dd1-2b11b645e801" testId="10005642-9110-875c-8523-bb745f6550b6" testName="CalcularFechaFin_MembresiaMensual_SumaExactamente30Dias" computerName="PCDIEGO" duration="00:00:00.7165616" startTime="2026-10-18T22:30:01.6405013+00:00" endTime="2026-10-18T22:30:02.3727809+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Failed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="1d74e582-5585-48d7-9dd1-2b11b645e801">
+      <Output>
+        <ErrorInfo>
+          <Message>Excepción método de prueba PruebasUnitarias.CalculoVigenciaTests.CalcularFechaFin_MembresiaMensual_SumaExactamente30Dias: 
+System.NotImplementedException: Pendiente de extraer la regla de vigencia.</Message>
+          <StackTrace>   at Dfit.Models.ReglasMembresia.CalcularFechaFin(DateTime fechaInicio, Int32 duracionDias) in C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\ReglasMembresia.cs:line 7
+   at PruebasUnitarias.CalculoVigenciaTests.CalcularFechaFin_MembresiaMensual_SumaExactamente30Dias() in C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\CalculoVigenciaTests.cs:line 17
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="f64e628d-9c20-48d1-aac8-874d10a03617" testId="1e261f79-cba7-8559-acee-399c85ad89eb" testName="CalcularFechaFin_AnioBisiesto_Incluye29DeFebrero" computerName="PCDIEGO" duration="00:00:00.7165886" startTime="2026-10-18T22:30:01.6404879+00:00" endTime="2026-10-18T22:30:02.3727846+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Failed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="f64e628d-9c20-48d1-aac8-874d10a03617">
+      <Output>
+        <ErrorInfo>
+          <Message>Excepción método de prueba PruebasUnitarias.CalculoVigenciaTests.CalcularFechaFin_AnioBisiesto_Incluye29DeFebrero: 
+System.NotImplementedException: Pendiente de extraer la regla de vigencia.</Message>
+          <StackTrace>   at Dfit.Models.ReglasMembresia.CalcularFechaFin(DateTime fechaInicio, Int32 duracionDias) in C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\ReglasMembresia.cs:line 7
+   at PruebasUnitarias.CalculoVigenciaTests.CalcularFechaFin_AnioBisiesto_Incluye29DeFebrero() in C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\CalculoVigenciaTests.cs:line 62
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="022ab5b2-2ff6-4217-922b-c4acd8e8562a" testId="19553bd1-b0b8-8b20-98f7-aff91f6989ce" testName="ValidarAcceso_UnTickDespuesDeVencer_DebeDenegarAcceso" computerName="PCDIEGO" duration="00:00:00.7165326" startTime="2026-10-18T22:30:01.6404879+00:00" endTime="2026-10-18T22:30:02.3727650+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Failed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="022ab5b2-2ff6-4217-922b-c4acd8e8562a">
+      <Output>
+        <ErrorInfo>
+          <Message>Excepción método de prueba PruebasUnitarias.MembresiaAccesoTests.ValidarAcceso_UnTickDespuesDeVencer_DebeDenegarAcceso: 
+System.NotImplementedException: Pendiente de extraer la regla de acceso.</Message>
+          <StackTrace>   at Dfit.Models.ReglasMembresia.PermiteAcceso(Boolean activa, DateTime fechaFin, DateTime ahora) in C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\ReglasMembresia.cs:line 10
+   at PruebasUnitarias.MembresiaAccesoTests.ValidarAcceso_UnTickDespuesDeVencer_DebeDenegarAcceso() in C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\MembresiaAccesoTests.cs:line 73
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="62321fbe-f8ad-4b13-aa10-c6f803045655" testId="11649e3c-c640-8ca5-aee9-32af3bdd4610" testName="CalcularFechaFin_CambioDeAnio_ConservaHora" computerName="PCDIEGO" duration="00:00:00.7165601" startTime="2026-10-18T22:30:01.6405093+00:00" endTime="2026-10-18T22:30:02.3727877+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Failed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="62321fbe-f8ad-4b13-aa10-c6f803045655">
+      <Output>
+        <ErrorInfo>
+          <Message>Excepción método de prueba PruebasUnitarias.CalculoVigenciaTests.CalcularFechaFin_CambioDeAnio_ConservaHora: 
+System.NotImplementedException: Pendiente de extraer la regla de vigencia.</Message>
+          <StackTrace>   at Dfit.Models.ReglasMembresia.CalcularFechaFin(DateTime fechaInicio, Int32 duracionDias) in C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\ReglasMembresia.cs:line 7
+   at PruebasUnitarias.CalculoVigenciaTests.CalcularFechaFin_CambioDeAnio_ConservaHora() in C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\CalculoVigenciaTests.cs:line 73
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="79c30be4-b0b0-4f84-84f5-b3be6eabad52" testId="137d6b5d-8002-813a-88c6-ec77e7f1d04e" testName="ValidarAcceso_UnTickAntesDeVencer_DebePermitirAcceso" computerName="PCDIEGO" duration="00:00:00.7165330" startTime="2026-10-18T22:30:01.6405274+00:00" endTime="2026-10-18T22:30:02.3727651+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Failed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="79c30be4-b0b0-4f84-84f5-b3be6eabad52">
+      <Output>
+        <ErrorInfo>
+          <Message>Excepción método de prueba PruebasUnitarias.MembresiaAccesoTests.ValidarAcceso_UnTickAntesDeVencer_DebePermitirAcceso: 
+System.NotImplementedException: Pendiente de extraer la regla de acceso.</Message>
+          <StackTrace>   at Dfit.Models.ReglasMembresia.PermiteAcceso(Boolean activa, DateTime fechaFin, DateTime ahora) in C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\ReglasMembresia.cs:line 10
+   at PruebasUnitarias.MembresiaAccesoTests.ValidarAcceso_UnTickAntesDeVencer_DebePermitirAcceso() in C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\MembresiaAccesoTests.cs:line 62
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="90877a99-ffb6-4c78-a717-e97840f7190b" testId="1bd40c47-a9f1-854d-8621-7d5bd64a17fa" testName="ValidarAcceso_EnInstanteExactoDeVencimiento_DebeDenegarAcceso" computerName="PCDIEGO" duration="00:00:00.7165982" startTime="2026-10-18T22:30:01.6405332+00:00" endTime="2026-10-18T22:30:02.3727915+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Failed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="90877a99-ffb6-4c78-a717-e97840f7190b">
+      <Output>
+        <ErrorInfo>
+          <Message>Excepción método de prueba PruebasUnitarias.MembresiaAccesoTests.ValidarAcceso_EnInstanteExactoDeVencimiento_DebeDenegarAcceso: 
+System.NotImplementedException: Pendiente de extraer la regla de acceso.</Message>
+          <StackTrace>   at Dfit.Models.ReglasMembresia.PermiteAcceso(Boolean activa, DateTime fechaFin, DateTime ahora) in C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\ReglasMembresia.cs:line 10
+   at PruebasUnitarias.MembresiaAccesoTests.ValidarAcceso_EnInstanteExactoDeVencimiento_DebeDenegarAcceso() in C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\MembresiaAccesoTests.cs:line 51
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="9c2080bc-9682-4aaf-8b78-c3e264886ca1" testId="14e3528b-64ef-85ed-ae02-eb2acf782801" testName="ValidarAcceso_ConMembresiaInactiva_DebeDenegarAcceso" computerName="PCDIEGO" duration="00:00:00.7165769" startTime="2026-10-18T22:30:01.6405229+00:00" endTime="2026-10-18T22:30:02.3727650+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Failed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="9c2080bc-9682-4aaf-8b78-c3e264886ca1">
+      <Output>
+        <ErrorInfo>
+          <Message>Excepción método de prueba PruebasUnitarias.MembresiaAccesoTests.ValidarAcceso_ConMembresiaInactiva_DebeDenegarAcceso: 
+System.NotImplementedException: Pendiente de extraer la regla de acceso.</Message>
+          <StackTrace>   at Dfit.Models.ReglasMembresia.PermiteAcceso(Boolean activa, DateTime fechaFin, DateTime ahora) in C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\ReglasMembresia.cs:line 10
+   at PruebasUnitarias.MembresiaAccesoTests.ValidarAcceso_ConMembresiaInactiva_DebeDenegarAcceso() in C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\MembresiaAccesoTests.cs:line 40
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="6967f82c-e84f-4173-932a-d43d68907905" testId="16d7d2c7-5024-872f-b1b9-5a0fcac36bf2" testName="CalcularFechaFin_FinDeMes_SumaDiasSinUsarMesCalendario" computerName="PCDIEGO" duration="00:00:00.7165867" startTime="2026-10-18T22:30:01.6404906+00:00" endTime="2026-10-18T22:30:02.3727672+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Failed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="6967f82c-e84f-4173-932a-d43d68907905">
+      <Output>
+        <ErrorInfo>
+          <Message>Excepción método de prueba PruebasUnitarias.CalculoVigenciaTests.CalcularFechaFin_FinDeMes_SumaDiasSinUsarMesCalendario: 
+System.NotImplementedException: Pendiente de extraer la regla de vigencia.</Message>
+          <StackTrace>   at Dfit.Models.ReglasMembresia.CalcularFechaFin(DateTime fechaInicio, Int32 duracionDias) in C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\ReglasMembresia.cs:line 7
+   at PruebasUnitarias.CalculoVigenciaTests.CalcularFechaFin_FinDeMes_SumaDiasSinUsarMesCalendario() in C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\CalculoVigenciaTests.cs:line 50
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="f8365135-ea4a-4791-bad5-9f0629b5e8ea" testId="14890852-f5ec-827b-b42c-94a90e388d08" testName="ValidarAcceso_ConMembresiaVigenteYActiva_DebePermitirAcceso" computerName="PCDIEGO" duration="00:00:00.7165557" startTime="2026-10-18T22:30:01.6405140+00:00" endTime="2026-10-18T22:30:02.3727767+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Failed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="f8365135-ea4a-4791-bad5-9f0629b5e8ea">
+      <Output>
+        <ErrorInfo>
+          <Message>Excepción método de prueba PruebasUnitarias.MembresiaAccesoTests.ValidarAcceso_ConMembresiaVigenteYActiva_DebePermitirAcceso: 
+System.NotImplementedException: Pendiente de extraer la regla de acceso.</Message>
+          <StackTrace>   at Dfit.Models.ReglasMembresia.PermiteAcceso(Boolean activa, DateTime fechaFin, DateTime ahora) in C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\ReglasMembresia.cs:line 10
+   at PruebasUnitarias.MembresiaAccesoTests.ValidarAcceso_ConMembresiaVigenteYActiva_DebePermitirAcceso() in C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\MembresiaAccesoTests.cs:line 18
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="96d9de5f-a876-4a17-b973-2cc61daaf6c0" testId="10d2cabf-1d7f-8307-90cf-879f10e8da7e" testName="CalcularFechaFin_MembresiaTrimestral_SumaExactamente90Dias" computerName="PCDIEGO" duration="00:00:00.7165297" startTime="2026-10-18T22:30:01.6404883+00:00" endTime="2026-10-18T22:30:02.3727651+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Failed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="96d9de5f-a876-4a17-b973-2cc61daaf6c0">
+      <Output>
+        <ErrorInfo>
+          <Message>Excepción método de prueba PruebasUnitarias.CalculoVigenciaTests.CalcularFechaFin_MembresiaTrimestral_SumaExactamente90Dias: 
+System.NotImplementedException: Pendiente de extraer la regla de vigencia.</Message>
+          <StackTrace>   at Dfit.Models.ReglasMembresia.CalcularFechaFin(DateTime fechaInicio, Int32 duracionDias) in C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\ReglasMembresia.cs:line 7
+   at PruebasUnitarias.CalculoVigenciaTests.CalcularFechaFin_MembresiaTrimestral_SumaExactamente90Dias() in C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\CalculoVigenciaTests.cs:line 39
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="a3f0a90a-9783-4666-986a-60b33939f07d" testId="192a3587-ef46-8314-8327-d28f707fdc01" testName="ExecutePayment_SinEstrategia_UsaEfectivo" computerName="PCDIEGO" duration="00:00:00.0029595" startTime="2026-10-18T22:30:02.3772371+00:00" endTime="2026-10-18T22:30:02.3809188+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="a3f0a90a-9783-4666-986a-60b33939f07d">
+      <Output>
+        <StdOut>
+
+Mensajes de TestContext:
+Esperado: 200 | Obtenido: 200
+</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="0889da77-c11c-4893-9d92-a65f6ee4a016" testId="1585422d-8cbe-8cf3-81f8-d516a5f6b142" testName="ExecutePayment_ConEfectivo_NoAplicaRecargo" computerName="PCDIEGO" duration="00:00:00.0029610" startTime="2026-10-18T22:30:02.3772356+00:00" endTime="2026-10-18T22:30:02.3809171+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="0889da77-c11c-4893-9d92-a65f6ee4a016">
+      <Output>
+        <StdOut>
+
+Mensajes de TestContext:
+Esperado: 100 | Obtenido: 100
+</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="ab71ab58-3e0a-486a-ad1c-d45bb9b94673" testId="168960b3-3744-8893-a75a-cf1e5575a34e" testName="ExecutePayment_ConTarjeta_AplicaCincoPorCiento" computerName="PCDIEGO" duration="00:00:00.0029406" startTime="2026-10-18T22:30:02.3772732+00:00" endTime="2026-10-18T22:30:02.3809137+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="ab71ab58-3e0a-486a-ad1c-d45bb9b94673">
+      <Output>
+        <StdOut>
+
+Mensajes de TestContext:
+Esperado: 210 | Obtenido: 210.00
+</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="463039dd-acb3-4992-a74f-0e615070fe70" testId="18a9d47f-0dc7-8249-81fb-ebe36f26ef81" testName="ExecutePaymentForAmount_MayorA100_UsaTarjetaSinRedondeoAdicional" computerName="PCDIEGO" duration="00:00:00.0118825" startTime="2026-10-18T22:30:02.3772447+00:00" endTime="2026-10-18T22:30:02.3896636+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Failed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="463039dd-acb3-4992-a74f-0e615070fe70">
+      <Output>
+        <ErrorInfo>
+          <Message>Excepción método de prueba PruebasUnitarias.PaymentContextTests.ExecutePaymentForAmount_MayorA100_UsaTarjetaSinRedondeoAdicional: 
+System.NotImplementedException: Pendiente de extraer la seleccion por monto.</Message>
+          <StackTrace>   at Dfit.Models.Patterns.Strategy.PaymentContext.ExecutePaymentForAmount(Decimal baseAmount) in C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\Patterns\Strategy\PaymentStrategy.cs:line 39
+   at PruebasUnitarias.PaymentContextTests.ExecutePaymentForAmount_MayorA100_UsaTarjetaSinRedondeoAdicional() in C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\Test1.cs:line 74
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="00e0e209-a988-4e85-b56a-772871579fb8" testId="111eb5aa-3e00-8ac7-8a42-c19f1c97d403" testName="ExecutePaymentForAmount_MenorA100_UsaEfectivo" computerName="PCDIEGO" duration="00:00:00.0118515" startTime="2026-10-18T22:30:02.3772445+00:00" endTime="2026-10-18T22:30:02.3896609+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Failed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="00e0e209-a988-4e85-b56a-772871579fb8">
+      <Output>
+        <ErrorInfo>
+          <Message>Excepción método de prueba PruebasUnitarias.PaymentContextTests.ExecutePaymentForAmount_MenorA100_UsaEfectivo: 
+System.NotImplementedException: Pendiente de extraer la seleccion por monto.</Message>
+          <StackTrace>   at Dfit.Models.Patterns.Strategy.PaymentContext.ExecutePaymentForAmount(Decimal baseAmount) in C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\Patterns\Strategy\PaymentStrategy.cs:line 39
+   at PruebasUnitarias.PaymentContextTests.ExecutePaymentForAmount_MenorA100_UsaEfectivo() in C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\Test1.cs:line 52
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="baf9310e-8e38-43d4-b949-5fc1a999f913" testId="17ad88b1-88e2-82fd-88ba-b1b40e8cd5df" testName="ExecutePaymentForAmount_PagosConsecutivos_ReevaluaEstrategia" computerName="PCDIEGO" duration="00:00:00.0118720" startTime="2026-10-18T22:30:02.3772440+00:00" endTime="2026-10-18T22:30:02.3896623+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Failed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="baf9310e-8e38-43d4-b949-5fc1a999f913">
+      <Output>
+        <ErrorInfo>
+          <Message>Excepción método de prueba PruebasUnitarias.PaymentContextTests.ExecutePaymentForAmount_PagosConsecutivos_ReevaluaEstrategia: 
+System.NotImplementedException: Pendiente de extraer la seleccion por monto.</Message>
+          <StackTrace>   at Dfit.Models.Patterns.Strategy.PaymentContext.ExecutePaymentForAmount(Decimal baseAmount) in C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\Patterns\Strategy\PaymentStrategy.cs:line 39
+   at PruebasUnitarias.PaymentContextTests.ExecutePaymentForAmount_PagosConsecutivos_ReevaluaEstrategia() in C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\Test1.cs:line 85
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="8bc0aa42-27c7-403b-a867-60b3142967ac" testId="14996ff8-7a4b-873a-a600-0f97079fd619" testName="ExecutePaymentForAmount_IgualA100_UsaEfectivo" computerName="PCDIEGO" duration="00:00:00.0118856" startTime="2026-10-18T22:30:02.3772441+00:00" endTime="2026-10-18T22:30:02.3896654+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Failed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="8bc0aa42-27c7-403b-a867-60b3142967ac">
+      <Output>
+        <ErrorInfo>
+          <Message>Excepción método de prueba PruebasUnitarias.PaymentContextTests.ExecutePaymentForAmount_IgualA100_UsaEfectivo: 
+System.NotImplementedException: Pendiente de extraer la seleccion por monto.</Message>
+          <StackTrace>   at Dfit.Models.Patterns.Strategy.PaymentContext.ExecutePaymentForAmount(Decimal baseAmount) in C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\Patterns\Strategy\PaymentStrategy.cs:line 39
+   at PruebasUnitarias.PaymentContextTests.ExecutePaymentForAmount_IgualA100_UsaEfectivo() in C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\Test1.cs:line 63
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="633f5969-2804-4c45-8336-237ebaae9597" testId="1f4fc229-03bf-8d2a-9a81-50b13ad93977" testName="LoadFile_CargaVariablesSimplesYConComillas" computerName="PCDIEGO" duration="00:00:00.0083661" startTime="2026-10-18T22:30:02.3899919+00:00" endTime="2026-10-18T22:30:02.3984697+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="633f5969-2804-4c45-8336-237ebaae9597">
+      <Output>
+        <StdOut>
+
+Mensajes de TestContext:
+Esperado: valor_simple_123 | Obtenido: valor_simple_123
+Esperado: valor con espacios y comillas | Obtenido: valor con espacios y comillas
+</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="883d4615-2ddd-49e9-b1b3-30b4349bf102" testId="19c26220-a6be-8140-92e9-b7879818106a" testName="LoadFile_NoSobrescribeVariableExistenteDelSistema" computerName="PCDIEGO" duration="00:00:00.0013935" startTime="2026-10-18T22:30:02.3986327+00:00" endTime="2026-10-18T22:30:02.4000950+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="883d4615-2ddd-49e9-b1b3-30b4349bf102">
+      <Output>
+        <StdOut>
+
+Mensajes de TestContext:
+Esperado: valor_del_sistema | Obtenido: valor_del_sistema
+</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="b1de27e4-b8b8-4678-b975-21e0290b8916" testId="1d5da787-ce2a-8bc1-8162-04e7464202cf" testName="LoadFile_ValorMultilinea_ConservaSaltosDeLinea" computerName="PCDIEGO" duration="00:00:00.0010798" startTime="2026-10-18T22:30:02.4001857+00:00" endTime="2026-10-18T22:30:02.4013293+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="b1de27e4-b8b8-4678-b975-21e0290b8916">
+      <Output>
+        <StdOut>
+
+Mensajes de TestContext:
+Esperado: linea1\nlinea2 | Obtenido: linea1\nlinea2
+</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="2f8beac9-9307-44b8-8dca-d7077180c8c6" testId="1391d41d-1875-8f40-b264-fa84fdf774e1" testName="LoadFile_ArchivoInexistente_NoCreaArchivoNiAlteraVariable" computerName="PCDIEGO" duration="00:00:00.0007173" startTime="2026-10-18T22:30:02.4013960+00:00" endTime="2026-10-18T22:30:02.4021581+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="2f8beac9-9307-44b8-8dca-d7077180c8c6">
+      <Output>
+        <StdOut>
+
+Mensajes de TestContext:
+Esperado: original | Obtenido: original
+Esperado: False | Obtenido: False
+</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="774738d9-a638-40f4-8638-d418e9740cac" testId="12cf5d4a-da86-8728-91dc-d06269d1a3c1" testName="LoadFile_LineasInvalidas_IgnoraYConservaIgualesDentroDelValor" computerName="PCDIEGO" duration="00:00:00.0009422" startTime="2026-10-18T22:30:02.4022241+00:00" endTime="2026-10-18T22:30:02.4036980+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="774738d9-a638-40f4-8638-d418e9740cac">
+      <Output>
+        <StdOut>
+
+Mensajes de TestContext:
+Esperado: uno=dos | Obtenido: uno=dos
+</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="CalcularFechaFin_MembresiaAnual_SumaExactamente365Dias" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="1a36ae16-dc42-857d-91f3-2be43c50104e">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Vigencia" />
+      </TestCategory>
+      <Execution id="83463a83-d959-4834-8e8f-6b93517fbdad" />
+      <Properties>
+        <Property>
+          <Key>Vigencia</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-VIG-002</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.CalculoVigenciaTests" name="CalcularFechaFin_MembresiaAnual_SumaExactamente365Dias" />
+    </UnitTest>
+    <UnitTest name="ValidarAcceso_ConMembresiaVencida_DebeDenegarAcceso" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="1989c2da-6bb0-8957-9ce7-7a4f7b91890c">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Acceso" />
+      </TestCategory>
+      <Execution id="d9fc4a21-5e06-4049-a553-fb00c36d6c1c" />
+      <Properties>
+        <Property>
+          <Key>Acceso</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-ACC-002</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.MembresiaAccesoTests" name="ValidarAcceso_ConMembresiaVencida_DebeDenegarAcceso" />
+    </UnitTest>
+    <UnitTest name="CalcularFechaFin_MembresiaMensual_SumaExactamente30Dias" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="10005642-9110-875c-8523-bb745f6550b6">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Vigencia" />
+      </TestCategory>
+      <Execution id="1d74e582-5585-48d7-9dd1-2b11b645e801" />
+      <Properties>
+        <Property>
+          <Key>Vigencia</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-VIG-001</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.CalculoVigenciaTests" name="CalcularFechaFin_MembresiaMensual_SumaExactamente30Dias" />
+    </UnitTest>
+    <UnitTest name="CalcularFechaFin_AnioBisiesto_Incluye29DeFebrero" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="1e261f79-cba7-8559-acee-399c85ad89eb">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Vigencia" />
+      </TestCategory>
+      <Execution id="f64e628d-9c20-48d1-aac8-874d10a03617" />
+      <Properties>
+        <Property>
+          <Key>Vigencia</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-VIG-005</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.CalculoVigenciaTests" name="CalcularFechaFin_AnioBisiesto_Incluye29DeFebrero" />
+    </UnitTest>
+    <UnitTest name="ValidarAcceso_UnTickDespuesDeVencer_DebeDenegarAcceso" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="19553bd1-b0b8-8b20-98f7-aff91f6989ce">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Acceso" />
+      </TestCategory>
+      <Execution id="022ab5b2-2ff6-4217-922b-c4acd8e8562a" />
+      <Properties>
+        <Property>
+          <Key>Acceso</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-ACC-006</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.MembresiaAccesoTests" name="ValidarAcceso_UnTickDespuesDeVencer_DebeDenegarAcceso" />
+    </UnitTest>
+    <UnitTest name="CalcularFechaFin_CambioDeAnio_ConservaHora" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="11649e3c-c640-8ca5-aee9-32af3bdd4610">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Vigencia" />
+      </TestCategory>
+      <Execution id="62321fbe-f8ad-4b13-aa10-c6f803045655" />
+      <Properties>
+        <Property>
+          <Key>Vigencia</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-VIG-006</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.CalculoVigenciaTests" name="CalcularFechaFin_CambioDeAnio_ConservaHora" />
+    </UnitTest>
+    <UnitTest name="ValidarAcceso_UnTickAntesDeVencer_DebePermitirAcceso" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="137d6b5d-8002-813a-88c6-ec77e7f1d04e">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Acceso" />
+      </TestCategory>
+      <Execution id="79c30be4-b0b0-4f84-84f5-b3be6eabad52" />
+      <Properties>
+        <Property>
+          <Key>Acceso</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-ACC-005</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.MembresiaAccesoTests" name="ValidarAcceso_UnTickAntesDeVencer_DebePermitirAcceso" />
+    </UnitTest>
+    <UnitTest name="ValidarAcceso_EnInstanteExactoDeVencimiento_DebeDenegarAcceso" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="1bd40c47-a9f1-854d-8621-7d5bd64a17fa">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Acceso" />
+      </TestCategory>
+      <Execution id="90877a99-ffb6-4c78-a717-e97840f7190b" />
+      <Properties>
+        <Property>
+          <Key>Acceso</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-ACC-004</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.MembresiaAccesoTests" name="ValidarAcceso_EnInstanteExactoDeVencimiento_DebeDenegarAcceso" />
+    </UnitTest>
+    <UnitTest name="ValidarAcceso_ConMembresiaInactiva_DebeDenegarAcceso" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="14e3528b-64ef-85ed-ae02-eb2acf782801">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Acceso" />
+      </TestCategory>
+      <Execution id="9c2080bc-9682-4aaf-8b78-c3e264886ca1" />
+      <Properties>
+        <Property>
+          <Key>Acceso</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-ACC-003</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.MembresiaAccesoTests" name="ValidarAcceso_ConMembresiaInactiva_DebeDenegarAcceso" />
+    </UnitTest>
+    <UnitTest name="CalcularFechaFin_FinDeMes_SumaDiasSinUsarMesCalendario" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="16d7d2c7-5024-872f-b1b9-5a0fcac36bf2">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Vigencia" />
+      </TestCategory>
+      <Execution id="6967f82c-e84f-4173-932a-d43d68907905" />
+      <Properties>
+        <Property>
+          <Key>Vigencia</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-VIG-004</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.CalculoVigenciaTests" name="CalcularFechaFin_FinDeMes_SumaDiasSinUsarMesCalendario" />
+    </UnitTest>
+    <UnitTest name="ValidarAcceso_ConMembresiaVigenteYActiva_DebePermitirAcceso" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="14890852-f5ec-827b-b42c-94a90e388d08">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Acceso" />
+      </TestCategory>
+      <Execution id="f8365135-ea4a-4791-bad5-9f0629b5e8ea" />
+      <Properties>
+        <Property>
+          <Key>Acceso</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-ACC-001</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.MembresiaAccesoTests" name="ValidarAcceso_ConMembresiaVigenteYActiva_DebePermitirAcceso" />
+    </UnitTest>
+    <UnitTest name="CalcularFechaFin_MembresiaTrimestral_SumaExactamente90Dias" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="10d2cabf-1d7f-8307-90cf-879f10e8da7e">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Vigencia" />
+      </TestCategory>
+      <Execution id="96d9de5f-a876-4a17-b973-2cc61daaf6c0" />
+      <Properties>
+        <Property>
+          <Key>Vigencia</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-VIG-003</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.CalculoVigenciaTests" name="CalcularFechaFin_MembresiaTrimestral_SumaExactamente90Dias" />
+    </UnitTest>
+    <UnitTest name="ExecutePayment_SinEstrategia_UsaEfectivo" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="192a3587-ef46-8314-8327-d28f707fdc01">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Pagos" />
+      </TestCategory>
+      <Execution id="a3f0a90a-9783-4666-986a-60b33939f07d" />
+      <Properties>
+        <Property>
+          <Key>Pagos</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-PAG-003</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.PaymentContextTests" name="ExecutePayment_SinEstrategia_UsaEfectivo" />
+    </UnitTest>
+    <UnitTest name="ExecutePayment_ConEfectivo_NoAplicaRecargo" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="1585422d-8cbe-8cf3-81f8-d516a5f6b142">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Pagos" />
+      </TestCategory>
+      <Execution id="0889da77-c11c-4893-9d92-a65f6ee4a016" />
+      <Properties>
+        <Property>
+          <Key>Pagos</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-PAG-002</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.PaymentContextTests" name="ExecutePayment_ConEfectivo_NoAplicaRecargo" />
+    </UnitTest>
+    <UnitTest name="ExecutePayment_ConTarjeta_AplicaCincoPorCiento" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="168960b3-3744-8893-a75a-cf1e5575a34e">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Pagos" />
+      </TestCategory>
+      <Execution id="ab71ab58-3e0a-486a-ad1c-d45bb9b94673" />
+      <Properties>
+        <Property>
+          <Key>Pagos</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-PAG-001</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.PaymentContextTests" name="ExecutePayment_ConTarjeta_AplicaCincoPorCiento" />
+    </UnitTest>
+    <UnitTest name="ExecutePaymentForAmount_MayorA100_UsaTarjetaSinRedondeoAdicional" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="18a9d47f-0dc7-8249-81fb-ebe36f26ef81">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Pagos" />
+      </TestCategory>
+      <Execution id="463039dd-acb3-4992-a74f-0e615070fe70" />
+      <Properties>
+        <Property>
+          <Key>Pagos</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-PAG-006</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.PaymentContextTests" name="ExecutePaymentForAmount_MayorA100_UsaTarjetaSinRedondeoAdicional" />
+    </UnitTest>
+    <UnitTest name="ExecutePaymentForAmount_MenorA100_UsaEfectivo" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="111eb5aa-3e00-8ac7-8a42-c19f1c97d403">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Pagos" />
+      </TestCategory>
+      <Execution id="00e0e209-a988-4e85-b56a-772871579fb8" />
+      <Properties>
+        <Property>
+          <Key>Pagos</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-PAG-004</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.PaymentContextTests" name="ExecutePaymentForAmount_MenorA100_UsaEfectivo" />
+    </UnitTest>
+    <UnitTest name="ExecutePaymentForAmount_PagosConsecutivos_ReevaluaEstrategia" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="17ad88b1-88e2-82fd-88ba-b1b40e8cd5df">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Pagos" />
+      </TestCategory>
+      <Execution id="baf9310e-8e38-43d4-b949-5fc1a999f913" />
+      <Properties>
+        <Property>
+          <Key>Pagos</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-PAG-007</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.PaymentContextTests" name="ExecutePaymentForAmount_PagosConsecutivos_ReevaluaEstrategia" />
+    </UnitTest>
+    <UnitTest name="ExecutePaymentForAmount_IgualA100_UsaEfectivo" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="14996ff8-7a4b-873a-a600-0f97079fd619">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Pagos" />
+      </TestCategory>
+      <Execution id="8bc0aa42-27c7-403b-a867-60b3142967ac" />
+      <Properties>
+        <Property>
+          <Key>Pagos</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-PAG-005</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.PaymentContextTests" name="ExecutePaymentForAmount_IgualA100_UsaEfectivo" />
+    </UnitTest>
+    <UnitTest name="LoadFile_CargaVariablesSimplesYConComillas" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="1f4fc229-03bf-8d2a-9a81-50b13ad93977">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Configuracion" />
+      </TestCategory>
+      <Execution id="633f5969-2804-4c45-8336-237ebaae9597" />
+      <Properties>
+        <Property>
+          <Key>Configuracion</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-ENV-001</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.EnvLoaderTests" name="LoadFile_CargaVariablesSimplesYConComillas" />
+    </UnitTest>
+    <UnitTest name="LoadFile_NoSobrescribeVariableExistenteDelSistema" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="19c26220-a6be-8140-92e9-b7879818106a">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Configuracion" />
+      </TestCategory>
+      <Execution id="883d4615-2ddd-49e9-b1b3-30b4349bf102" />
+      <Properties>
+        <Property>
+          <Key>Configuracion</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-ENV-002</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.EnvLoaderTests" name="LoadFile_NoSobrescribeVariableExistenteDelSistema" />
+    </UnitTest>
+    <UnitTest name="LoadFile_ValorMultilinea_ConservaSaltosDeLinea" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="1d5da787-ce2a-8bc1-8162-04e7464202cf">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Configuracion" />
+      </TestCategory>
+      <Execution id="b1de27e4-b8b8-4678-b975-21e0290b8916" />
+      <Properties>
+        <Property>
+          <Key>Configuracion</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-ENV-003</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.EnvLoaderTests" name="LoadFile_ValorMultilinea_ConservaSaltosDeLinea" />
+    </UnitTest>
+    <UnitTest name="LoadFile_ArchivoInexistente_NoCreaArchivoNiAlteraVariable" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="1391d41d-1875-8f40-b264-fa84fdf774e1">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Configuracion" />
+      </TestCategory>
+      <Execution id="2f8beac9-9307-44b8-8dca-d7077180c8c6" />
+      <Properties>
+        <Property>
+          <Key>Configuracion</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-ENV-004</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.EnvLoaderTests" name="LoadFile_ArchivoInexistente_NoCreaArchivoNiAlteraVariable" />
+    </UnitTest>
+    <UnitTest name="LoadFile_LineasInvalidas_IgnoraYConservaIgualesDentroDelValor" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="12cf5d4a-da86-8728-91dc-d06269d1a3c1">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Configuracion" />
+      </TestCategory>
+      <Execution id="774738d9-a638-40f4-8638-d418e9740cac" />
+      <Properties>
+        <Property>
+          <Key>Configuracion</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-ENV-005</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.EnvLoaderTests" name="LoadFile_LineasInvalidas_IgnoraYConservaIgualesDentroDelValor" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="1a36ae16-dc42-857d-91f3-2be43c50104e" executionId="83463a83-d959-4834-8e8f-6b93517fbdad" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="1989c2da-6bb0-8957-9ce7-7a4f7b91890c" executionId="d9fc4a21-5e06-4049-a553-fb00c36d6c1c" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="10005642-9110-875c-8523-bb745f6550b6" executionId="1d74e582-5585-48d7-9dd1-2b11b645e801" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="1e261f79-cba7-8559-acee-399c85ad89eb" executionId="f64e628d-9c20-48d1-aac8-874d10a03617" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="19553bd1-b0b8-8b20-98f7-aff91f6989ce" executionId="022ab5b2-2ff6-4217-922b-c4acd8e8562a" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="11649e3c-c640-8ca5-aee9-32af3bdd4610" executionId="62321fbe-f8ad-4b13-aa10-c6f803045655" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="137d6b5d-8002-813a-88c6-ec77e7f1d04e" executionId="79c30be4-b0b0-4f84-84f5-b3be6eabad52" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="1bd40c47-a9f1-854d-8621-7d5bd64a17fa" executionId="90877a99-ffb6-4c78-a717-e97840f7190b" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="14e3528b-64ef-85ed-ae02-eb2acf782801" executionId="9c2080bc-9682-4aaf-8b78-c3e264886ca1" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="16d7d2c7-5024-872f-b1b9-5a0fcac36bf2" executionId="6967f82c-e84f-4173-932a-d43d68907905" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="14890852-f5ec-827b-b42c-94a90e388d08" executionId="f8365135-ea4a-4791-bad5-9f0629b5e8ea" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="10d2cabf-1d7f-8307-90cf-879f10e8da7e" executionId="96d9de5f-a876-4a17-b973-2cc61daaf6c0" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="192a3587-ef46-8314-8327-d28f707fdc01" executionId="a3f0a90a-9783-4666-986a-60b33939f07d" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="1585422d-8cbe-8cf3-81f8-d516a5f6b142" executionId="0889da77-c11c-4893-9d92-a65f6ee4a016" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="168960b3-3744-8893-a75a-cf1e5575a34e" executionId="ab71ab58-3e0a-486a-ad1c-d45bb9b94673" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="18a9d47f-0dc7-8249-81fb-ebe36f26ef81" executionId="463039dd-acb3-4992-a74f-0e615070fe70" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="111eb5aa-3e00-8ac7-8a42-c19f1c97d403" executionId="00e0e209-a988-4e85-b56a-772871579fb8" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="17ad88b1-88e2-82fd-88ba-b1b40e8cd5df" executionId="baf9310e-8e38-43d4-b949-5fc1a999f913" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="14996ff8-7a4b-873a-a600-0f97079fd619" executionId="8bc0aa42-27c7-403b-a867-60b3142967ac" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="1f4fc229-03bf-8d2a-9a81-50b13ad93977" executionId="633f5969-2804-4c45-8336-237ebaae9597" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="19c26220-a6be-8140-92e9-b7879818106a" executionId="883d4615-2ddd-49e9-b1b3-30b4349bf102" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="1d5da787-ce2a-8bc1-8162-04e7464202cf" executionId="b1de27e4-b8b8-4678-b975-21e0290b8916" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="1391d41d-1875-8f40-b264-fa84fdf774e1" executionId="2f8beac9-9307-44b8-8dca-d7077180c8c6" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="12cf5d4a-da86-8728-91dc-d06269d1a3c1" executionId="774738d9-a638-40f4-8638-d418e9740cac" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="24" executed="24" passed="8" failed="16" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <RunInfos>
+      <RunInfo computerName="PCDIEGO" outcome="Error" timestamp="2026-10-18T22:30:02.4167974">
+        <Text>Exit code indicates failure: '2'. Please refer to https://aka.ms/testingplatform/exitcodes for more information.</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

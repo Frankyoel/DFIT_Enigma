@@ -1,0 +1,7 @@
+{
+  "comando": "dotnet test .\\PruebasUnitarias\\PruebasUnitarias.csproj",
+  "inicioUtc": "2026-10-18T22:32:09.3817890Z",
+  "finUtc": "2026-10-18T22:32:48.6497998Z",
+  "codigoSalida": 1,
+  "VSTEST_CONNECTION_TIMEOUT": 30
+}

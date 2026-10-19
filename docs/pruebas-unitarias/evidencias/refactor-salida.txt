@@ -1,0 +1,46 @@
+
+Esto es .NET 10.0.
+---------------------
+Versi├│n del SDK: 10.0.402
+
+----------------
+Escribir su primera aplicaci├│n: https://aka.ms/dotnet-hello-world
+Descubra las novedades: https://aka.ms/dotnet-whats-new
+Explore la documentaci├│n: https://aka.ms/dotnet-docs
+Notificar problemas y encontrar el c├│digo fuente en GitHub: https://github.com/dotnet/core
+Use "dotnet --help" para ver los comandos disponibles o visite: https://aka.ms/dotnet-cli
+--------------------------------------------------------------------------------------
+Se encontr├│ un problema al comprobar las cargas de trabajo. Para obtener m├ís informaci├│n, ejecute "dotnet workload update".
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\Rutina.cs(16,23): warning CS8618: El elemento propiedad "Nombre" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador "required'"o declarar el propiedad como un valor que acepta valores NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\Rutina.cs(20,23): warning CS8618: El elemento propiedad "Descripcion" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador "required'"o declarar el propiedad como un valor que acepta valores NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\Rutina.cs(24,23): warning CS8618: El elemento propiedad "Nivel" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador "required'"o declarar el propiedad como un valor que acepta valores NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\Rutina.cs(28,23): warning CS8618: El elemento propiedad "VideoUrl" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador "required'"o declarar el propiedad como un valor que acepta valores NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\Horario.cs(18,23): warning CS8618: El elemento propiedad "DiaSemana" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador "required'"o declarar el propiedad como un valor que acepta valores NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\Horario.cs(33,23): warning CS8618: El elemento propiedad "NombreClase" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador "required'"o declarar el propiedad como un valor que acepta valores NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\Horario.cs(37,23): warning CS8618: El elemento propiedad "Instructor" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador "required'"o declarar el propiedad como un valor que acepta valores NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\Patterns\Singleton\QRTokenManager.cs(19,16): warning CS8618: El elemento campo "_currentToken" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador "required'"o declarar el campo como un valor que acepta valores NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Utils\FirebaseConfig.cs(48,34): warning CS0618: 'GoogleCredential.FromJson(string)' est├í obsoleto: 'This method is being deprecated because of a potential security risk. Use the methods in the CredentialFactory class instead. A GoogleCredential object can then be created by calling the .ToGoogleCredential() method on the returned specific credential. ' [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Utils\FirebaseConfig.cs(77,42): warning CS0618: 'GoogleCredential.FromFile(string)' est├í obsoleto: 'This method is being deprecated because of a potential security risk. Use the methods in the CredentialFactory class instead. A GoogleCredential object can then be created by calling the .ToGoogleCredential() method on the returned specific credential. ' [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Views\Shared\_Layout.cshtml(30,65): warning CS8602: Desreferencia de una referencia posiblemente NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Views\Shared\_Layout.cshtml(31,66): warning CS8602: Desreferencia de una referencia posiblemente NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Views\Shared\_Layout.cshtml(32,73): warning CS8602: Desreferencia de una referencia posiblemente NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Views\Shared\_Layout.cshtml(33,66): warning CS8602: Desreferencia de una referencia posiblemente NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Views\Shared\_Layout.cshtml(34,63): warning CS8602: Desreferencia de una referencia posiblemente NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Views\Shared\_Layout.cshtml(35,64): warning CS8602: Desreferencia de una referencia posiblemente NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Views\Home\Asistencia.cshtml(63,56): warning CS8602: Desreferencia de una referencia posiblemente NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Views\Home\ReporteFinanciero.cshtml(40,56): warning CS8602: Desreferencia de una referencia posiblemente NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Views\Home\ReporteFinanciero.cshtml(41,30): warning CS8602: Desreferencia de una referencia posiblemente NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Views\Home\MiMembresia.cshtml(29,56): warning CS8602: Desreferencia de una referencia posiblemente NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Views\Home\PagosUsuario.cshtml(44,59): warning CS8602: Desreferencia de una referencia posiblemente NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+MSTest v4.0.2 (UTC 11/11/2025) [win-x64 - .NET 10.0.13]
+Probar paralelizaci├│n habilitada para C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll (Workers: 12, Scope: MethodLevel)
+
+  Artefactos de archivo en proceso producidos:
+    - C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\docs\pruebas-unitarias\evidencias\refactor.trx
+
+Resumen de la serie de pruebas: Correcta! - C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll (net10.0|x64)
+  total: 24
+  con errores: 0
+  correcto: 24
+  omitido: 0
+  duraci├│n: 790ms

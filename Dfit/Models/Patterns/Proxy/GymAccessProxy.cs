@@ -51,7 +51,8 @@ namespace Dfit.Models.Patterns.Proxy
                 
             bool tieneAcceso = false;
             foreach(var doc in snap.Documents) {
-                if (doc.GetValue<DateTime>("FechaFin") > DateTime.UtcNow) {
+                if (ReglasMembresia.PermiteAcceso(doc.GetValue<bool>("Activa"),
+                    doc.GetValue<DateTime>("FechaFin"), DateTime.UtcNow)) {
                     tieneAcceso = true;
                     break;
                 }

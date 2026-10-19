@@ -1,0 +1,23 @@
+{
+  "fase": "refactor",
+  "inicioUtc": "2026-10-18T22:31:26.5643611Z",
+  "finUtc": "2026-10-18T22:31:53.3172144Z",
+  "ejecutable": "dotnet",
+  "argumentos": [
+    "run",
+    "--project",
+    "C:\\Users\\diego\\OneDrive\\Documentos\\GitHub\\DFIT_Enigma\\PruebasUnitarias\\PruebasUnitarias.csproj",
+    "-p:UseVSTest=false",
+    "-p:EnableMicrosoftTestingExtensionsCodeCoverage=false",
+    "-p:RestoreIgnoreFailedSources=true",
+    "-p:NuGetAudit=false",
+    "--",
+    "--report-trx",
+    "--report-trx-filename",
+    "refactor.trx",
+    "--results-directory",
+    "C:\\Users\\diego\\OneDrive\\Documentos\\GitHub\\DFIT_Enigma\\docs\\pruebas-unitarias\\evidencias"
+  ],
+  "codigoSalida": 0,
+  "nota": "Runner oficial MSTest directo. NuGetAudit=false solo evita consulta de red en esta ejecucion."
+}

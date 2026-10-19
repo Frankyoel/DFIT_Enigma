@@ -1,0 +1,175 @@
+
+Esto es .NET 10.0.
+---------------------
+Versi├│n del SDK: 10.0.402
+
+----------------
+Escribir su primera aplicaci├│n: https://aka.ms/dotnet-hello-world
+Descubra las novedades: https://aka.ms/dotnet-whats-new
+Explore la documentaci├│n: https://aka.ms/dotnet-docs
+Notificar problemas y encontrar el c├│digo fuente en GitHub: https://github.com/dotnet/core
+Use "dotnet --help" para ver los comandos disponibles o visite: https://aka.ms/dotnet-cli
+--------------------------------------------------------------------------------------
+Se encontr├│ un problema al comprobar las cargas de trabajo. Para obtener m├ís informaci├│n, ejecute "dotnet workload update".
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\Rutina.cs(16,23): warning CS8618: El elemento propiedad "Nombre" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador "required'"o declarar el propiedad como un valor que acepta valores NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\Rutina.cs(20,23): warning CS8618: El elemento propiedad "Descripcion" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador "required'"o declarar el propiedad como un valor que acepta valores NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\Rutina.cs(24,23): warning CS8618: El elemento propiedad "Nivel" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador "required'"o declarar el propiedad como un valor que acepta valores NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\Rutina.cs(28,23): warning CS8618: El elemento propiedad "VideoUrl" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador "required'"o declarar el propiedad como un valor que acepta valores NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\Horario.cs(18,23): warning CS8618: El elemento propiedad "DiaSemana" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador "required'"o declarar el propiedad como un valor que acepta valores NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\Horario.cs(33,23): warning CS8618: El elemento propiedad "NombreClase" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador "required'"o declarar el propiedad como un valor que acepta valores NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\Horario.cs(37,23): warning CS8618: El elemento propiedad "Instructor" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador "required'"o declarar el propiedad como un valor que acepta valores NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\Patterns\Strategy\PaymentStrategy.cs(30,34): warning CS8618: El elemento campo "_strategy" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador "required'"o declarar el campo como un valor que acepta valores NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\Patterns\Singleton\QRTokenManager.cs(19,16): warning CS8618: El elemento campo "_currentToken" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador "required'"o declarar el campo como un valor que acepta valores NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Utils\FirebaseConfig.cs(48,34): warning CS0618: 'GoogleCredential.FromJson(string)' est├í obsoleto: 'This method is being deprecated because of a potential security risk. Use the methods in the CredentialFactory class instead. A GoogleCredential object can then be created by calling the .ToGoogleCredential() method on the returned specific credential. ' [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Utils\FirebaseConfig.cs(77,42): warning CS0618: 'GoogleCredential.FromFile(string)' est├í obsoleto: 'This method is being deprecated because of a potential security risk. Use the methods in the CredentialFactory class instead. A GoogleCredential object can then be created by calling the .ToGoogleCredential() method on the returned specific credential. ' [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Views\Shared\_Layout.cshtml(30,65): warning CS8602: Desreferencia de una referencia posiblemente NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Views\Shared\_Layout.cshtml(31,66): warning CS8602: Desreferencia de una referencia posiblemente NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Views\Shared\_Layout.cshtml(32,73): warning CS8602: Desreferencia de una referencia posiblemente NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Views\Shared\_Layout.cshtml(33,66): warning CS8602: Desreferencia de una referencia posiblemente NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Views\Shared\_Layout.cshtml(34,63): warning CS8602: Desreferencia de una referencia posiblemente NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Views\Shared\_Layout.cshtml(35,64): warning CS8602: Desreferencia de una referencia posiblemente NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Views\Home\Asistencia.cshtml(63,56): warning CS8602: Desreferencia de una referencia posiblemente NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Views\Home\ReporteFinanciero.cshtml(40,56): warning CS8602: Desreferencia de una referencia posiblemente NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Views\Home\ReporteFinanciero.cshtml(41,30): warning CS8602: Desreferencia de una referencia posiblemente NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Views\Home\PagosUsuario.cshtml(44,59): warning CS8602: Desreferencia de una referencia posiblemente NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Views\Home\MiMembresia.cshtml(29,56): warning CS8602: Desreferencia de una referencia posiblemente NULL. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj]
+MSTest v4.0.2 (UTC 11/11/2025) [win-x64 - .NET 10.0.13]
+Probar paralelizaci├│n habilitada para C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll (Workers: 12, Scope: MethodLevel)
+con errores CalcularFechaFin_MembresiaAnual_SumaExactamente365Dias (716ms)
+  Excepci├│n m├®todo de prueba PruebasUnitarias.CalculoVigenciaTests.CalcularFechaFin_MembresiaAnual_SumaExactamente365Dias: 
+  System.NotImplementedException: Pendiente de extraer la regla de vigencia.
+    a las Dfit.Models.ReglasMembresia.CalcularFechaFin(DateTime fechaInicio, Int32 duracionDias) en C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\ReglasMembresia.cs:7
+    a las PruebasUnitarias.CalculoVigenciaTests.CalcularFechaFin_MembresiaAnual_SumaExactamente365Dias() en C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\CalculoVigenciaTests.cs:28
+    a las System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+    a las System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    
+con errores ValidarAcceso_ConMembresiaVencida_DebeDenegarAcceso (716ms)
+  Excepci├│n m├®todo de prueba PruebasUnitarias.MembresiaAccesoTests.ValidarAcceso_ConMembresiaVencida_DebeDenegarAcceso: 
+  System.NotImplementedException: Pendiente de extraer la regla de acceso.
+    a las Dfit.Models.ReglasMembresia.PermiteAcceso(Boolean activa, DateTime fechaFin, DateTime ahora) en C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\ReglasMembresia.cs:10
+    a las PruebasUnitarias.MembresiaAccesoTests.ValidarAcceso_ConMembresiaVencida_DebeDenegarAcceso() en C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\MembresiaAccesoTests.cs:29
+    a las System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+    a las System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    
+con errores CalcularFechaFin_MembresiaMensual_SumaExactamente30Dias (716ms)
+  Excepci├│n m├®todo de prueba PruebasUnitarias.CalculoVigenciaTests.CalcularFechaFin_MembresiaMensual_SumaExactamente30Dias: 
+  System.NotImplementedException: Pendiente de extraer la regla de vigencia.
+    a las Dfit.Models.ReglasMembresia.CalcularFechaFin(DateTime fechaInicio, Int32 duracionDias) en C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\ReglasMembresia.cs:7
+    a las PruebasUnitarias.CalculoVigenciaTests.CalcularFechaFin_MembresiaMensual_SumaExactamente30Dias() en C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\CalculoVigenciaTests.cs:17
+    a las System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+    a las System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    
+con errores ValidarAcceso_UnTickDespuesDeVencer_DebeDenegarAcceso (716ms)
+  Excepci├│n m├®todo de prueba PruebasUnitarias.MembresiaAccesoTests.ValidarAcceso_UnTickDespuesDeVencer_DebeDenegarAcceso: 
+  System.NotImplementedException: Pendiente de extraer la regla de acceso.
+    a las Dfit.Models.ReglasMembresia.PermiteAcceso(Boolean activa, DateTime fechaFin, DateTime ahora) en C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\ReglasMembresia.cs:10
+    a las PruebasUnitarias.MembresiaAccesoTests.ValidarAcceso_UnTickDespuesDeVencer_DebeDenegarAcceso() en C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\MembresiaAccesoTests.cs:73
+    a las System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+    a las System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    
+con errores CalcularFechaFin_AnioBisiesto_Incluye29DeFebrero (716ms)
+  Excepci├│n m├®todo de prueba PruebasUnitarias.CalculoVigenciaTests.CalcularFechaFin_AnioBisiesto_Incluye29DeFebrero: 
+  System.NotImplementedException: Pendiente de extraer la regla de vigencia.
+    a las Dfit.Models.ReglasMembresia.CalcularFechaFin(DateTime fechaInicio, Int32 duracionDias) en C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\ReglasMembresia.cs:7
+    a las PruebasUnitarias.CalculoVigenciaTests.CalcularFechaFin_AnioBisiesto_Incluye29DeFebrero() en C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\CalculoVigenciaTests.cs:62
+    a las System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+    a las System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    
+con errores CalcularFechaFin_CambioDeAnio_ConservaHora (716ms)
+  Excepci├│n m├®todo de prueba PruebasUnitarias.CalculoVigenciaTests.CalcularFechaFin_CambioDeAnio_ConservaHora: 
+  System.NotImplementedException: Pendiente de extraer la regla de vigencia.
+    a las Dfit.Models.ReglasMembresia.CalcularFechaFin(DateTime fechaInicio, Int32 duracionDias) en C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\ReglasMembresia.cs:7
+    a las PruebasUnitarias.CalculoVigenciaTests.CalcularFechaFin_CambioDeAnio_ConservaHora() en C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\CalculoVigenciaTests.cs:73
+    a las System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+    a las System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    
+con errores ValidarAcceso_UnTickAntesDeVencer_DebePermitirAcceso (716ms)
+  Excepci├│n m├®todo de prueba PruebasUnitarias.MembresiaAccesoTests.ValidarAcceso_UnTickAntesDeVencer_DebePermitirAcceso: 
+  System.NotImplementedException: Pendiente de extraer la regla de acceso.
+    a las Dfit.Models.ReglasMembresia.PermiteAcceso(Boolean activa, DateTime fechaFin, DateTime ahora) en C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\ReglasMembresia.cs:10
+    a las PruebasUnitarias.MembresiaAccesoTests.ValidarAcceso_UnTickAntesDeVencer_DebePermitirAcceso() en C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\MembresiaAccesoTests.cs:62
+    a las System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+    a las System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    
+con errores ValidarAcceso_EnInstanteExactoDeVencimiento_DebeDenegarAcceso (716ms)
+  Excepci├│n m├®todo de prueba PruebasUnitarias.MembresiaAccesoTests.ValidarAcceso_EnInstanteExactoDeVencimiento_DebeDenegarAcceso: 
+  System.NotImplementedException: Pendiente de extraer la regla de acceso.
+    a las Dfit.Models.ReglasMembresia.PermiteAcceso(Boolean activa, DateTime fechaFin, DateTime ahora) en C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\ReglasMembresia.cs:10
+    a las PruebasUnitarias.MembresiaAccesoTests.ValidarAcceso_EnInstanteExactoDeVencimiento_DebeDenegarAcceso() en C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\MembresiaAccesoTests.cs:51
+    a las System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+    a las System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    
+con errores ValidarAcceso_ConMembresiaInactiva_DebeDenegarAcceso (716ms)
+  Excepci├│n m├®todo de prueba PruebasUnitarias.MembresiaAccesoTests.ValidarAcceso_ConMembresiaInactiva_DebeDenegarAcceso: 
+  System.NotImplementedException: Pendiente de extraer la regla de acceso.
+    a las Dfit.Models.ReglasMembresia.PermiteAcceso(Boolean activa, DateTime fechaFin, DateTime ahora) en C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\ReglasMembresia.cs:10
+    a las PruebasUnitarias.MembresiaAccesoTests.ValidarAcceso_ConMembresiaInactiva_DebeDenegarAcceso() en C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\MembresiaAccesoTests.cs:40
+    a las System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+    a las System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    
+con errores CalcularFechaFin_FinDeMes_SumaDiasSinUsarMesCalendario (716ms)
+  Excepci├│n m├®todo de prueba PruebasUnitarias.CalculoVigenciaTests.CalcularFechaFin_FinDeMes_SumaDiasSinUsarMesCalendario: 
+  System.NotImplementedException: Pendiente de extraer la regla de vigencia.
+    a las Dfit.Models.ReglasMembresia.CalcularFechaFin(DateTime fechaInicio, Int32 duracionDias) en C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\ReglasMembresia.cs:7
+    a las PruebasUnitarias.CalculoVigenciaTests.CalcularFechaFin_FinDeMes_SumaDiasSinUsarMesCalendario() en C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\CalculoVigenciaTests.cs:50
+    a las System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+    a las System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    
+con errores ValidarAcceso_ConMembresiaVigenteYActiva_DebePermitirAcceso (716ms)
+  Excepci├│n m├®todo de prueba PruebasUnitarias.MembresiaAccesoTests.ValidarAcceso_ConMembresiaVigenteYActiva_DebePermitirAcceso: 
+  System.NotImplementedException: Pendiente de extraer la regla de acceso.
+    a las Dfit.Models.ReglasMembresia.PermiteAcceso(Boolean activa, DateTime fechaFin, DateTime ahora) en C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\ReglasMembresia.cs:10
+    a las PruebasUnitarias.MembresiaAccesoTests.ValidarAcceso_ConMembresiaVigenteYActiva_DebePermitirAcceso() en C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\MembresiaAccesoTests.cs:18
+    a las System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+    a las System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    
+con errores CalcularFechaFin_MembresiaTrimestral_SumaExactamente90Dias (716ms)
+  Excepci├│n m├®todo de prueba PruebasUnitarias.CalculoVigenciaTests.CalcularFechaFin_MembresiaTrimestral_SumaExactamente90Dias: 
+  System.NotImplementedException: Pendiente de extraer la regla de vigencia.
+    a las Dfit.Models.ReglasMembresia.CalcularFechaFin(DateTime fechaInicio, Int32 duracionDias) en C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\ReglasMembresia.cs:7
+    a las PruebasUnitarias.CalculoVigenciaTests.CalcularFechaFin_MembresiaTrimestral_SumaExactamente90Dias() en C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\CalculoVigenciaTests.cs:39
+    a las System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+    a las System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    
+con errores ExecutePaymentForAmount_MayorA100_UsaTarjetaSinRedondeoAdicional (11ms)
+  Excepci├│n m├®todo de prueba PruebasUnitarias.PaymentContextTests.ExecutePaymentForAmount_MayorA100_UsaTarjetaSinRedondeoAdicional: 
+  System.NotImplementedException: Pendiente de extraer la seleccion por monto.
+    a las Dfit.Models.Patterns.Strategy.PaymentContext.ExecutePaymentForAmount(Decimal baseAmount) en C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\Patterns\Strategy\PaymentStrategy.cs:39
+    a las PruebasUnitarias.PaymentContextTests.ExecutePaymentForAmount_MayorA100_UsaTarjetaSinRedondeoAdicional() en C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\Test1.cs:74
+    a las System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+    a las System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    
+con errores ExecutePaymentForAmount_MenorA100_UsaEfectivo (11ms)
+  Excepci├│n m├®todo de prueba PruebasUnitarias.PaymentContextTests.ExecutePaymentForAmount_MenorA100_UsaEfectivo: 
+  System.NotImplementedException: Pendiente de extraer la seleccion por monto.
+    a las Dfit.Models.Patterns.Strategy.PaymentContext.ExecutePaymentForAmount(Decimal baseAmount) en C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\Patterns\Strategy\PaymentStrategy.cs:39
+    a las PruebasUnitarias.PaymentContextTests.ExecutePaymentForAmount_MenorA100_UsaEfectivo() en C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\Test1.cs:52
+    a las System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+    a las System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    
+con errores ExecutePaymentForAmount_PagosConsecutivos_ReevaluaEstrategia (11ms)
+  Excepci├│n m├®todo de prueba PruebasUnitarias.PaymentContextTests.ExecutePaymentForAmount_PagosConsecutivos_ReevaluaEstrategia: 
+  System.NotImplementedException: Pendiente de extraer la seleccion por monto.
+    a las Dfit.Models.Patterns.Strategy.PaymentContext.ExecutePaymentForAmount(Decimal baseAmount) en C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\Patterns\Strategy\PaymentStrategy.cs:39
+    a las PruebasUnitarias.PaymentContextTests.ExecutePaymentForAmount_PagosConsecutivos_ReevaluaEstrategia() en C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\Test1.cs:85
+    a las System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+    a las System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    
+con errores ExecutePaymentForAmount_IgualA100_UsaEfectivo (11ms)
+  Excepci├│n m├®todo de prueba PruebasUnitarias.PaymentContextTests.ExecutePaymentForAmount_IgualA100_UsaEfectivo: 
+  System.NotImplementedException: Pendiente de extraer la seleccion por monto.
+    a las Dfit.Models.Patterns.Strategy.PaymentContext.ExecutePaymentForAmount(Decimal baseAmount) en C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Models\Patterns\Strategy\PaymentStrategy.cs:39
+    a las PruebasUnitarias.PaymentContextTests.ExecutePaymentForAmount_IgualA100_UsaEfectivo() en C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\Test1.cs:63
+    a las System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+    a las System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    
+
+  Artefactos de archivo en proceso producidos:
+    - C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\docs\pruebas-unitarias\evidencias\red.trx
+
+Resumen de la serie de pruebas: Error! - C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll (net10.0|x64)
+  total: 24
+  con errores: 16
+  correcto: 8
+  omitido: 0
+  duraci├│n: 871ms

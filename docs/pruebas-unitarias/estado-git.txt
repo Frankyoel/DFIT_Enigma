@@ -1,0 +1,10 @@
+ M Dfit/Controllers/HomeController.cs
+ M Dfit/Models/Patterns/Proxy/GymAccessProxy.cs
+ M Dfit/Models/Patterns/Strategy/PaymentStrategy.cs
+ M PruebasUnitarias/CalculoVigenciaTests.cs
+ M PruebasUnitarias/EnvLoaderTests.cs
+ M PruebasUnitarias/MembresiaAccesoTests.cs
+ M PruebasUnitarias/Test1.cs
+?? Dfit/Models/ReglasMembresia.cs
+?? PruebasUnitarias/PruebaDocumentada.cs
+?? docs/

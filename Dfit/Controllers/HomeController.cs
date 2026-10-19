@@ -149,7 +149,7 @@ namespace Dfit.Controllers
             var muList = new List<MembresiaUsuario>();
             foreach(var doc in memSnap.Documents) {
                 var fechaFin = doc.GetValue<DateTime>("FechaFin");
-                if (fechaFin > DateTime.UtcNow) {
+                if (ReglasMembresia.PermiteAcceso(doc.GetValue<bool>("Activa"), fechaFin, DateTime.UtcNow)) {
                     var mu = new MembresiaUsuario {
                         Id = doc.Id,
                         UsuarioId = doc.GetValue<string>("UsuarioId"),
@@ -396,11 +396,12 @@ namespace Dfit.Controllers
             if (doc.Exists)
             {
                 var duracion = doc.GetValue<int>("DuracionDias");
+                var fechaInicio = DateTime.UtcNow;
                 await _db.Collection("MembresiasUsuarios").AddAsync(new {
                     UsuarioId = usuarioId,
                     MembresiaId = membresiaId,
-                    FechaInicio = DateTime.UtcNow,
-                    FechaFin = DateTime.UtcNow.AddDays(duracion),
+                    FechaInicio = fechaInicio,
+                    FechaFin = ReglasMembresia.CalcularFechaFin(fechaInicio, duracion),
                     Activa = true
                 });
             }
@@ -416,7 +417,7 @@ namespace Dfit.Controllers
             
             foreach(var doc in snap.Documents) {
                 var fechaFin = doc.GetValue<DateTime>("FechaFin");
-                if (fechaFin > DateTime.UtcNow) {
+                if (ReglasMembresia.PermiteAcceso(doc.GetValue<bool>("Activa"), fechaFin, DateTime.UtcNow)) {
                     var mu = new MembresiaUsuario {
                         Id = doc.Id,
                         UsuarioId = doc.GetValue<string>("UsuarioId"),
@@ -480,12 +481,7 @@ namespace Dfit.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (model.Monto > 100)
-                    _paymentContext.SetStrategy(new CardStrategy());
-                else
-                    _paymentContext.SetStrategy(new CashStrategy());
-
-                model.Monto = _paymentContext.ExecutePayment(model.Monto);
+                model.Monto = _paymentContext.ExecutePaymentForAmount(model.Monto);
 
                 await _db.Collection("Pagos").AddAsync(new {
                     UsuarioId = model.UsuarioId,
@@ -586,7 +582,8 @@ namespace Dfit.Controllers
                 
             bool membresiaActiva = false;
             foreach(var doc in snap.Documents) {
-                if (doc.GetValue<DateTime>("FechaFin") > DateTime.UtcNow) {
+                if (ReglasMembresia.PermiteAcceso(doc.GetValue<bool>("Activa"),
+                    doc.GetValue<DateTime>("FechaFin"), DateTime.UtcNow)) {
                     membresiaActiva = true;
                     break;
                 }

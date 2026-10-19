@@ -1,0 +1,27 @@
+
+Esto es .NET 10.0.
+---------------------
+Versi├│n del SDK: 10.0.402
+
+----------------
+Escribir su primera aplicaci├│n: https://aka.ms/dotnet-hello-world
+Descubra las novedades: https://aka.ms/dotnet-whats-new
+Explore la documentaci├│n: https://aka.ms/dotnet-docs
+Notificar problemas y encontrar el c├│digo fuente en GitHub: https://github.com/dotnet/core
+Use "dotnet --help" para ver los comandos disponibles o visite: https://aka.ms/dotnet-cli
+--------------------------------------------------------------------------------------
+Se encontr├│ un problema al comprobar las cargas de trabajo. Para obtener m├ís informaci├│n, ejecute "dotnet workload update".
+  Determinando los proyectos que se van a restaurar...
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\PruebasUnitarias.csproj : warning NU1900: Error al obtener los datos de vulnerabilidad del paquete: No se puede cargar el ├¡ndice de servicio para el origen https://api.nuget.org/v3/index.json.
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj : warning NU1900: Error al obtener los datos de vulnerabilidad del paquete: No se puede cargar el ├¡ndice de servicio para el origen https://api.nuget.org/v3/index.json. [C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\PruebasUnitarias.csproj]
+  Se ha restaurado C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj (en 5.91 s).
+  Se ha restaurado C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\PruebasUnitarias.csproj (en 5.91 s).
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\PruebasUnitarias.csproj : warning NU1900: Error al obtener los datos de vulnerabilidad del paquete: No se puede cargar el ├¡ndice de servicio para el origen https://api.nuget.org/v3/index.json.
+C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\Dfit.csproj : warning NU1900: Error al obtener los datos de vulnerabilidad del paquete: No se puede cargar el ├¡ndice de servicio para el origen https://api.nuget.org/v3/index.json.
+  Dfit -> C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\Dfit\bin\Debug\net10.0\Dfit.dll
+  PruebasUnitarias -> C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll
+Serie de pruebas para C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll (.NETCoreApp,Version=v10.0)
+1 archivos de prueba en total coincidieron con el patr├│n especificado.
+El proceso vstest.console no pudo conectar con el proceso testhost despu├®s de 30 segundos. Esto puede deberse a la lentitud de la m├íquina, configure la variable de entorno VSTEST_CONNECTION_TIMEOUT para aumentar el tiempo de espera. The process with id 29672 was still running when this message was reported.
+
+Serie de pruebas anulada.

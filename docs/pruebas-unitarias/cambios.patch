@@ -1,0 +1,628 @@
+diff --git a/Dfit/Controllers/HomeController.cs b/Dfit/Controllers/HomeController.cs
+index da2443e..a9da6b8 100644
+--- a/Dfit/Controllers/HomeController.cs
++++ b/Dfit/Controllers/HomeController.cs
+@@ -149,7 +149,7 @@ namespace Dfit.Controllers
+             var muList = new List<MembresiaUsuario>();
+             foreach(var doc in memSnap.Documents) {
+                 var fechaFin = doc.GetValue<DateTime>("FechaFin");
+-                if (fechaFin > DateTime.UtcNow) {
++                if (ReglasMembresia.PermiteAcceso(doc.GetValue<bool>("Activa"), fechaFin, DateTime.UtcNow)) {
+                     var mu = new MembresiaUsuario {
+                         Id = doc.Id,
+                         UsuarioId = doc.GetValue<string>("UsuarioId"),
+@@ -396,11 +396,12 @@ namespace Dfit.Controllers
+             if (doc.Exists)
+             {
+                 var duracion = doc.GetValue<int>("DuracionDias");
++                var fechaInicio = DateTime.UtcNow;
+                 await _db.Collection("MembresiasUsuarios").AddAsync(new {
+                     UsuarioId = usuarioId,
+                     MembresiaId = membresiaId,
+-                    FechaInicio = DateTime.UtcNow,
+-                    FechaFin = DateTime.UtcNow.AddDays(duracion),
++                    FechaInicio = fechaInicio,
++                    FechaFin = ReglasMembresia.CalcularFechaFin(fechaInicio, duracion),
+                     Activa = true
+                 });
+             }
+@@ -416,7 +417,7 @@ namespace Dfit.Controllers
+             
+             foreach(var doc in snap.Documents) {
+                 var fechaFin = doc.GetValue<DateTime>("FechaFin");
+-                if (fechaFin > DateTime.UtcNow) {
++                if (ReglasMembresia.PermiteAcceso(doc.GetValue<bool>("Activa"), fechaFin, DateTime.UtcNow)) {
+                     var mu = new MembresiaUsuario {
+                         Id = doc.Id,
+                         UsuarioId = doc.GetValue<string>("UsuarioId"),
+@@ -480,12 +481,7 @@ namespace Dfit.Controllers
+         {
+             if (ModelState.IsValid)
+             {
+-                if (model.Monto > 100)
+-                    _paymentContext.SetStrategy(new CardStrategy());
+-                else
+-                    _paymentContext.SetStrategy(new CashStrategy());
+-
+-                model.Monto = _paymentContext.ExecutePayment(model.Monto);
++                model.Monto = _paymentContext.ExecutePaymentForAmount(model.Monto);
+ 
+                 await _db.Collection("Pagos").AddAsync(new {
+                     UsuarioId = model.UsuarioId,
+@@ -586,7 +582,8 @@ namespace Dfit.Controllers
+                 
+             bool membresiaActiva = false;
+             foreach(var doc in snap.Documents) {
+-                if (doc.GetValue<DateTime>("FechaFin") > DateTime.UtcNow) {
++                if (ReglasMembresia.PermiteAcceso(doc.GetValue<bool>("Activa"),
++                    doc.GetValue<DateTime>("FechaFin"), DateTime.UtcNow)) {
+                     membresiaActiva = true;
+                     break;
+                 }
+diff --git a/Dfit/Models/Patterns/Proxy/GymAccessProxy.cs b/Dfit/Models/Patterns/Proxy/GymAccessProxy.cs
+index 3626581..7a3a318 100644
+--- a/Dfit/Models/Patterns/Proxy/GymAccessProxy.cs
++++ b/Dfit/Models/Patterns/Proxy/GymAccessProxy.cs
+@@ -51,7 +51,8 @@ namespace Dfit.Models.Patterns.Proxy
+                 
+             bool tieneAcceso = false;
+             foreach(var doc in snap.Documents) {
+-                if (doc.GetValue<DateTime>("FechaFin") > DateTime.UtcNow) {
++                if (ReglasMembresia.PermiteAcceso(doc.GetValue<bool>("Activa"),
++                    doc.GetValue<DateTime>("FechaFin"), DateTime.UtcNow)) {
+                     tieneAcceso = true;
+                     break;
+                 }
+diff --git a/Dfit/Models/Patterns/Strategy/PaymentStrategy.cs b/Dfit/Models/Patterns/Strategy/PaymentStrategy.cs
+index e318398..dd81ad5 100644
+--- a/Dfit/Models/Patterns/Strategy/PaymentStrategy.cs
++++ b/Dfit/Models/Patterns/Strategy/PaymentStrategy.cs
+@@ -27,19 +27,24 @@ namespace Dfit.Models.Patterns.Strategy
+     [FirestoreData]
+     public class PaymentContext
+     {
+-        private IPaymentStrategy _strategy;
++        private const decimal CardThreshold = 100m;
++        private IPaymentStrategy? _strategy;
+ 
+         public void SetStrategy(IPaymentStrategy strategy)
+         {
+             _strategy = strategy;
+         }
+ 
++        // Regla existente de RegistrarPago: la estrategia se elige por monto.
++        public decimal ExecutePaymentForAmount(decimal baseAmount)
++        {
++            SetStrategy(baseAmount > CardThreshold ? new CardStrategy() : new CashStrategy());
++            return ExecutePayment(baseAmount);
++        }
++
+         public decimal ExecutePayment(decimal baseAmount)
+         {
+-            if (_strategy == null)
+-            {
+-                _strategy = new CashStrategy(); // Default
+-            }
++            _strategy ??= new CashStrategy(); // Default
+             return _strategy.CalculateFinalAmount(baseAmount);
+         }
+     }
+diff --git a/PruebasUnitarias/CalculoVigenciaTests.cs b/PruebasUnitarias/CalculoVigenciaTests.cs
+index e982b8d..c9addb7 100644
+--- a/PruebasUnitarias/CalculoVigenciaTests.cs
++++ b/PruebasUnitarias/CalculoVigenciaTests.cs
+@@ -1,78 +1,77 @@
+-using System;
+-using Microsoft.VisualStudio.TestTools.UnitTesting;
+ using Dfit.Models;
++using Microsoft.VisualStudio.TestTools.UnitTesting;
+ 
+ namespace PruebasUnitarias;
+ 
+ [TestClass]
+-public class CalculoVigenciaTests
++[TestCategory("Vigencia")]
++public class CalculoVigenciaTests : PruebaDocumentada
+ {
++
+     [TestMethod]
++    [TestProperty("Caso", "CP-VIG-001")]
+     public void CalcularFechaFin_MembresiaMensual_SumaExactamente30Dias()
+     {
+-        // Regla del sistema (AssignMembresia): FechaFin = FechaInicio.AddDays(DuracionDias)
+-        var membresia = new Membresia
+-        {
+-            Id = "mem-30",
+-            Nombre = "Plan Mensual",
+-            DuracionDias = 30,
+-            Precio = 80m,
+-            Activa = true
+-        };
+-
+-        var fechaInicio = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+-        var fechaFinEsperada = new DateTime(2026, 1, 31, 0, 0, 0, DateTimeKind.Utc);
+-
+-        var fechaFinCalculada = fechaInicio.AddDays(membresia.DuracionDias);
+-
+-        Assert.AreEqual(fechaFinEsperada, fechaFinCalculada);
+-        Assert.AreEqual(30, (fechaFinCalculada - fechaInicio).TotalDays);
++        var inicio = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
++
++        var resultado = ReglasMembresia.CalcularFechaFin(inicio, 30);
++
++        Comprobar(new DateTime(2026, 1, 31, 0, 0, 0, DateTimeKind.Utc), resultado);
+     }
+ 
+     [TestMethod]
++    [TestProperty("Caso", "CP-VIG-002")]
+     public void CalcularFechaFin_MembresiaAnual_SumaExactamente365Dias()
+     {
+-        // Regla del sistema: membresía anual con 365 días
+-        var membresia = new Membresia
+-        {
+-            Id = "mem-anual",
+-            Nombre = "Plan Anual VIP",
+-            DuracionDias = 365,
+-            Precio = 600m,
+-            Activa = true
+-        };
+-
+-        var fechaInicio = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+-        var fechaFinCalculada = fechaInicio.AddDays(membresia.DuracionDias);
+-
+-        Assert.AreEqual(365, (fechaFinCalculada - fechaInicio).TotalDays);
+-        Assert.IsTrue(fechaFinCalculada > fechaInicio);
++        var inicio = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
++
++        var resultado = ReglasMembresia.CalcularFechaFin(inicio, 365);
++
++        Comprobar(new DateTime(2027, 1, 1, 0, 0, 0, DateTimeKind.Utc), resultado);
++    }
++
++    [TestMethod]
++    [TestProperty("Caso", "CP-VIG-003")]
++    public void CalcularFechaFin_MembresiaTrimestral_SumaExactamente90Dias()
++    {
++        var inicio = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
++
++        var resultado = ReglasMembresia.CalcularFechaFin(inicio, 90);
++
++        Comprobar(new DateTime(2026, 4, 1, 0, 0, 0, DateTimeKind.Utc), resultado);
+     }
+ 
+     [TestMethod]
+-    public void AsignarMembresia_CreaMembresiaUsuario_ConRangoDeVigenciaCorrecto()
++    [TestProperty("Caso", "CP-VIG-004")]
++    public void CalcularFechaFin_FinDeMes_SumaDiasSinUsarMesCalendario()
+     {
+-        // Simulación de la asignación de membresía realizada en el sistema
+-        var membresia = new Membresia
+-        {
+-            Id = "mem-trimestral",
+-            Nombre = "Plan Trimestral",
+-            DuracionDias = 90,
+-            Precio = 200m
+-        };
+-
+-        var fechaInicio = DateTime.UtcNow;
+-        var membresiaUsuario = new MembresiaUsuario
+-        {
+-            UsuarioId = "user-999",
+-            MembresiaId = membresia.Id,
+-            FechaInicio = fechaInicio,
+-            FechaFin = fechaInicio.AddDays(membresia.DuracionDias),
+-            Activa = true
+-        };
+-
+-        Assert.AreEqual(90, (membresiaUsuario.FechaFin - membresiaUsuario.FechaInicio).TotalDays);
+-        Assert.IsTrue(membresiaUsuario.Activa);
+-        Assert.IsTrue(membresiaUsuario.FechaFin > DateTime.UtcNow);
++        var inicio = new DateTime(2026, 1, 31, 14, 30, 0, DateTimeKind.Utc);
++
++        var resultado = ReglasMembresia.CalcularFechaFin(inicio, 30);
++
++        Comprobar(new DateTime(2026, 3, 2, 14, 30, 0, DateTimeKind.Utc), resultado);
++        Comprobar(DateTimeKind.Utc, resultado.Kind);
++    }
++
++    [TestMethod]
++    [TestProperty("Caso", "CP-VIG-005")]
++    public void CalcularFechaFin_AnioBisiesto_Incluye29DeFebrero()
++    {
++        var inicio = new DateTime(2028, 2, 28, 0, 0, 0, DateTimeKind.Utc);
++
++        var resultado = ReglasMembresia.CalcularFechaFin(inicio, 1);
++
++        Comprobar(new DateTime(2028, 2, 29, 0, 0, 0, DateTimeKind.Utc), resultado);
++    }
++
++    [TestMethod]
++    [TestProperty("Caso", "CP-VIG-006")]
++    public void CalcularFechaFin_CambioDeAnio_ConservaHora()
++    {
++        var inicio = new DateTime(2026, 12, 31, 23, 30, 0, DateTimeKind.Utc);
++
++        var resultado = ReglasMembresia.CalcularFechaFin(inicio, 1);
++
++        Comprobar(new DateTime(2027, 1, 1, 23, 30, 0, DateTimeKind.Utc), resultado);
+     }
+ }
+diff --git a/PruebasUnitarias/EnvLoaderTests.cs b/PruebasUnitarias/EnvLoaderTests.cs
+index 49ec235..123c53c 100644
+--- a/PruebasUnitarias/EnvLoaderTests.cs
++++ b/PruebasUnitarias/EnvLoaderTests.cs
+@@ -1,69 +1,109 @@
+-using System;
+-using System.IO;
+-using Microsoft.VisualStudio.TestTools.UnitTesting;
+ using Dfit.Utils;
++using Microsoft.VisualStudio.TestTools.UnitTesting;
+ 
+ namespace PruebasUnitarias;
+ 
+ [TestClass]
+-public class EnvLoaderTests
++[TestCategory("Configuracion")]
++[DoNotParallelize] // Variables de entorno: estado compartido del proceso.
++public class EnvLoaderTests : PruebaDocumentada
+ {
++
+     private string _tempEnvPath = string.Empty;
++    private readonly Dictionary<string, string?> _valoresOriginales = new();
+ 
+     [TestInitialize]
+     public void Setup()
+     {
+-        _tempEnvPath = Path.Combine(Path.GetTempPath(), $".env_test_{Guid.NewGuid():N}");
++        _tempEnvPath = Path.Combine(Path.GetTempPath(), $"dfit_env_test_{Guid.NewGuid():N}.tmp");
++        _valoresOriginales.Clear();
++    }
++
++    private string NuevaVariable()
++    {
++        var clave = "DFIT_TEST_" + Guid.NewGuid().ToString("N");
++        _valoresOriginales.Add(clave, Environment.GetEnvironmentVariable(clave));
++        Environment.SetEnvironmentVariable(clave, null);
++        return clave;
+     }
+ 
+     [TestCleanup]
+     public void Cleanup()
+     {
+-        if (File.Exists(_tempEnvPath))
++        try
++        {
++            foreach (var variable in _valoresOriginales)
++                Environment.SetEnvironmentVariable(variable.Key, variable.Value);
++        }
++        finally
+         {
+-            File.Delete(_tempEnvPath);
++            if (File.Exists(_tempEnvPath))
++                File.Delete(_tempEnvPath);
+         }
+     }
+ 
+     [TestMethod]
++    [TestProperty("Caso", "CP-ENV-001")]
+     public void LoadFile_CargaVariablesSimplesYConComillas()
+     {
+-        var testKey1 = "TEST_ENV_VAR_SIMPLE_" + Guid.NewGuid().ToString("N");
+-        var testKey2 = "TEST_ENV_VAR_QUOTED_" + Guid.NewGuid().ToString("N");
++        var simple = NuevaVariable();
++        var quoted = NuevaVariable();
++        File.WriteAllText(_tempEnvPath,
++            $"# Comentario\n{simple}=valor_simple_123\n\n{quoted}=\"valor con espacios y comillas\"\n");
+ 
+-        var content = $@"
+-# Comentario de prueba
+-{testKey1}=valor_simple_123
++        EnvLoader.LoadFile(_tempEnvPath);
+ 
+-{testKey2}=""valor con espacios y comillas""
+-";
+-        File.WriteAllText(_tempEnvPath, content);
++        Comprobar("valor_simple_123", Environment.GetEnvironmentVariable(simple));
++        Comprobar("valor con espacios y comillas", Environment.GetEnvironmentVariable(quoted));
++    }
+ 
+-        EnvLoader.LoadFile(_tempEnvPath);
++    [TestMethod]
++    [TestProperty("Caso", "CP-ENV-002")]
++    public void LoadFile_NoSobrescribeVariableExistenteDelSistema()
++    {
++        var clave = NuevaVariable();
++        Environment.SetEnvironmentVariable(clave, "valor_del_sistema");
++        File.WriteAllText(_tempEnvPath, $"{clave}=valor_del_archivo_env");
+ 
+-        Assert.AreEqual("valor_simple_123", Environment.GetEnvironmentVariable(testKey1));
+-        Assert.AreEqual("valor con espacios y comillas", Environment.GetEnvironmentVariable(testKey2));
++        EnvLoader.LoadFile(_tempEnvPath);
+ 
+-        // Limpieza de variables
+-        Environment.SetEnvironmentVariable(testKey1, null);
+-        Environment.SetEnvironmentVariable(testKey2, null);
++        Comprobar("valor_del_sistema", Environment.GetEnvironmentVariable(clave));
+     }
+ 
+     [TestMethod]
+-    public void LoadFile_NoSobrescribeVariableExistenteDelSistema()
++    [TestProperty("Caso", "CP-ENV-003")]
++    public void LoadFile_ValorMultilinea_ConservaSaltosDeLinea()
+     {
+-        var testKey = "TEST_PREEXISTING_VAR_" + Guid.NewGuid().ToString("N");
+-        Environment.SetEnvironmentVariable(testKey, "valor_del_sistema");
++        var clave = NuevaVariable();
++        File.WriteAllText(_tempEnvPath, $"{clave}=\"linea1\nlinea2\"\n");
++
++        EnvLoader.LoadFile(_tempEnvPath);
+ 
+-        var content = $"{testKey}=valor_del_archivo_env";
+-        File.WriteAllText(_tempEnvPath, content);
++        Comprobar("linea1\nlinea2", Environment.GetEnvironmentVariable(clave));
++    }
++
++    [TestMethod]
++    [TestProperty("Caso", "CP-ENV-004")]
++    public void LoadFile_ArchivoInexistente_NoCreaArchivoNiAlteraVariable()
++    {
++        var clave = NuevaVariable();
++        Environment.SetEnvironmentVariable(clave, "original");
+ 
+         EnvLoader.LoadFile(_tempEnvPath);
+ 
+-        // Debe mantener la del sistema (prioridad Render / SO)
+-        Assert.AreEqual("valor_del_sistema", Environment.GetEnvironmentVariable(testKey));
++        Comprobar("original", Environment.GetEnvironmentVariable(clave));
++        Comprobar(false, File.Exists(_tempEnvPath));
++    }
++
++    [TestMethod]
++    [TestProperty("Caso", "CP-ENV-005")]
++    public void LoadFile_LineasInvalidas_IgnoraYConservaIgualesDentroDelValor()
++    {
++        var clave = NuevaVariable();
++        File.WriteAllText(_tempEnvPath, $"# comentario\n\nlinea_sin_separador\n=sin_clave\n{clave}=uno=dos\n");
++
++        EnvLoader.LoadFile(_tempEnvPath);
+ 
+-        // Limpieza
+-        Environment.SetEnvironmentVariable(testKey, null);
++        Comprobar("uno=dos", Environment.GetEnvironmentVariable(clave));
+     }
+ }
+diff --git a/PruebasUnitarias/MembresiaAccesoTests.cs b/PruebasUnitarias/MembresiaAccesoTests.cs
+index 6401fa0..128e89b 100644
+--- a/PruebasUnitarias/MembresiaAccesoTests.cs
++++ b/PruebasUnitarias/MembresiaAccesoTests.cs
+@@ -1,63 +1,77 @@
+-using System;
+-using Microsoft.VisualStudio.TestTools.UnitTesting;
+ using Dfit.Models;
++using Microsoft.VisualStudio.TestTools.UnitTesting;
+ 
+ namespace PruebasUnitarias;
+ 
+ [TestClass]
+-public class MembresiaAccesoTests
++[TestCategory("Acceso")]
++public class MembresiaAccesoTests : PruebaDocumentada
+ {
++    private static readonly DateTime Ahora = new(2026, 10, 18, 12, 0, 0, DateTimeKind.Utc);
++
+     [TestMethod]
++    [TestProperty("Caso", "CP-ACC-001")]
+     public void ValidarAcceso_ConMembresiaVigenteYActiva_DebePermitirAcceso()
+     {
+-        // Regla del sistema: un usuario tiene acceso si Activa es true y FechaFin > UtcNow
+-        var membresiaUsuario = new MembresiaUsuario
+-        {
+-            UsuarioId = "user-001",
+-            MembresiaId = "plan-mensual",
+-            FechaInicio = DateTime.UtcNow.AddDays(-5),
+-            FechaFin = DateTime.UtcNow.AddDays(25),
+-            Activa = true
+-        };
+-
+-        bool tieneAcceso = membresiaUsuario.Activa && membresiaUsuario.FechaFin > DateTime.UtcNow;
+-
+-        Assert.IsTrue(tieneAcceso, "El usuario con membresía activa y fecha fin futura debe tener acceso.");
++        var fin = new DateTime(2026, 10, 19, 12, 0, 0, DateTimeKind.Utc);
++
++        var resultado = ReglasMembresia.PermiteAcceso(true, fin, Ahora);
++
++        Comprobar(true, resultado);
+     }
+ 
+     [TestMethod]
++    [TestProperty("Caso", "CP-ACC-002")]
+     public void ValidarAcceso_ConMembresiaVencida_DebeDenegarAcceso()
+     {
+-        // Regla del sistema: si la fecha fin es menor o igual a UtcNow, el acceso debe ser denegado
+-        var membresiaUsuario = new MembresiaUsuario
+-        {
+-            UsuarioId = "user-002",
+-            MembresiaId = "plan-mensual",
+-            FechaInicio = DateTime.UtcNow.AddDays(-35),
+-            FechaFin = DateTime.UtcNow.AddDays(-5), // Vencida
+-            Activa = true
+-        };
+-
+-        bool tieneAcceso = membresiaUsuario.Activa && membresiaUsuario.FechaFin > DateTime.UtcNow;
+-
+-        Assert.IsFalse(tieneAcceso, "El usuario con membresía vencida no debe tener acceso.");
++        var fin = new DateTime(2026, 10, 17, 12, 0, 0, DateTimeKind.Utc);
++
++        var resultado = ReglasMembresia.PermiteAcceso(true, fin, Ahora);
++
++        Comprobar(false, resultado);
+     }
+ 
+     [TestMethod]
++    [TestProperty("Caso", "CP-ACC-003")]
+     public void ValidarAcceso_ConMembresiaInactiva_DebeDenegarAcceso()
+     {
+-        // Regla del sistema: si Activa es false (cancelada), se deniega aunque la fecha no haya expirado
+-        var membresiaUsuario = new MembresiaUsuario
+-        {
+-            UsuarioId = "user-003",
+-            MembresiaId = "plan-mensual",
+-            FechaInicio = DateTime.UtcNow.AddDays(-5),
+-            FechaFin = DateTime.UtcNow.AddDays(25),
+-            Activa = false // Cancelada/Inactiva
+-        };
+-
+-        bool tieneAcceso = membresiaUsuario.Activa && membresiaUsuario.FechaFin > DateTime.UtcNow;
+-
+-        Assert.IsFalse(tieneAcceso, "El usuario con membresía inactiva/cancelada debe tener el acceso denegado.");
++        var fin = new DateTime(2026, 10, 19, 12, 0, 0, DateTimeKind.Utc);
++
++        var resultado = ReglasMembresia.PermiteAcceso(false, fin, Ahora);
++
++        Comprobar(false, resultado);
++    }
++
++    [TestMethod]
++    [TestProperty("Caso", "CP-ACC-004")]
++    public void ValidarAcceso_EnInstanteExactoDeVencimiento_DebeDenegarAcceso()
++    {
++        var fin = Ahora;
++
++        var resultado = ReglasMembresia.PermiteAcceso(true, fin, Ahora);
++
++        Comprobar(false, resultado);
++    }
++
++    [TestMethod]
++    [TestProperty("Caso", "CP-ACC-005")]
++    public void ValidarAcceso_UnTickAntesDeVencer_DebePermitirAcceso()
++    {
++        var fin = Ahora.AddTicks(1);
++
++        var resultado = ReglasMembresia.PermiteAcceso(true, fin, Ahora);
++
++        Comprobar(true, resultado);
++    }
++
++    [TestMethod]
++    [TestProperty("Caso", "CP-ACC-006")]
++    public void ValidarAcceso_UnTickDespuesDeVencer_DebeDenegarAcceso()
++    {
++        var fin = Ahora.AddTicks(-1);
++
++        var resultado = ReglasMembresia.PermiteAcceso(true, fin, Ahora);
++
++        Comprobar(false, resultado);
+     }
+ }
+diff --git a/PruebasUnitarias/Test1.cs b/PruebasUnitarias/Test1.cs
+index 8a4a9c4..f6ab9f2 100644
+--- a/PruebasUnitarias/Test1.cs
++++ b/PruebasUnitarias/Test1.cs
+@@ -1,26 +1,91 @@
+-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+ using Dfit.Models.Patterns.Strategy;
++using Microsoft.VisualStudio.TestTools.UnitTesting;
+ 
+ namespace PruebasUnitarias;
+ 
+ [TestClass]
+-public class PaymentContextTests
++[TestCategory("Pagos")]
++public class PaymentContextTests : PruebaDocumentada
+ {
++
++    [TestMethod]
++    [TestProperty("Caso", "CP-PAG-001")]
++    public void ExecutePayment_ConTarjeta_AplicaCincoPorCiento()
++    {
++        var contexto = new PaymentContext();
++        contexto.SetStrategy(new CardStrategy());
++
++        var resultado = contexto.ExecutePayment(200m);
++
++        Comprobar(210m, resultado);
++    }
++
++    [TestMethod]
++    [TestProperty("Caso", "CP-PAG-002")]
++    public void ExecutePayment_ConEfectivo_NoAplicaRecargo()
++    {
++        var contexto = new PaymentContext();
++        contexto.SetStrategy(new CashStrategy());
++
++        var resultado = contexto.ExecutePayment(100m);
++
++        Comprobar(100m, resultado);
++    }
++
++    [TestMethod]
++    [TestProperty("Caso", "CP-PAG-003")]
++    public void ExecutePayment_SinEstrategia_UsaEfectivo()
++    {
++        var contexto = new PaymentContext();
++
++        var resultado = contexto.ExecutePayment(200m);
++
++        Comprobar(200m, resultado);
++    }
++
++    [TestMethod]
++    [TestProperty("Caso", "CP-PAG-004")]
++    public void ExecutePaymentForAmount_MenorA100_UsaEfectivo()
++    {
++        var contexto = new PaymentContext();
++
++        var resultado = contexto.ExecutePaymentForAmount(99.99m);
++
++        Comprobar(99.99m, resultado);
++    }
++
++    [TestMethod]
++    [TestProperty("Caso", "CP-PAG-005")]
++    public void ExecutePaymentForAmount_IgualA100_UsaEfectivo()
++    {
++        var contexto = new PaymentContext();
++
++        var resultado = contexto.ExecutePaymentForAmount(100m);
++
++        Comprobar(100m, resultado);
++    }
++
+     [TestMethod]
+-    public void RegistrarPago_AplicaEstrategiaTarjeta_CuandoMontoMayorA100()
++    [TestProperty("Caso", "CP-PAG-006")]
++    public void ExecutePaymentForAmount_MayorA100_UsaTarjetaSinRedondeoAdicional()
+     {
+-        var Paymentctx = new PaymentContext();
+-        Paymentctx.SetStrategy(new CardStrategy());
+-        var result = Paymentctx.ExecutePayment(200m);
+-        Assert.AreEqual(200m * 1.05m, result);
++        var contexto = new PaymentContext();
++
++        var resultado = contexto.ExecutePaymentForAmount(100.01m);
++
++        Comprobar(105.0105m, resultado);
+     }
+-    
++
+     [TestMethod]
+-    public void RegistrarPago_AplicaEstrategiaEfectivo_CuandoMontoMenorOIgual100()
++    [TestProperty("Caso", "CP-PAG-007")]
++    public void ExecutePaymentForAmount_PagosConsecutivos_ReevaluaEstrategia()
+     {
+-        var Paymentctx = new PaymentContext();
+-        Paymentctx.SetStrategy(new CashStrategy());
+-        var result = Paymentctx.ExecutePayment(100m);
+-        Assert.AreEqual(100m, result);
++        var contexto = new PaymentContext();
++
++        var primero = contexto.ExecutePaymentForAmount(200m);
++        var segundo = contexto.ExecutePaymentForAmount(100m);
++
++        Comprobar(210m, primero);
++        Comprobar(100m, segundo);
+     }
+-}
+\ No newline at end of file
++}
