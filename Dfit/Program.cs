@@ -21,7 +21,14 @@ EnvLoader.Load(builder.Environment.ContentRootPath);
 var port = Environment.GetEnvironmentVariable("PORT");
 if (!string.IsNullOrEmpty(port))
 {
-    builder.WebHost.UseUrls($"http://*:{port}");
+    if (builder.Environment.IsDevelopment())
+    {
+        builder.WebHost.UseUrls($"http://localhost:{port}");
+    }
+    else
+    {
+        builder.WebHost.UseUrls($"http://*:{port}");
+    }
 }
 
 builder.Services.AddControllersWithViews();
