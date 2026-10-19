@@ -11,7 +11,10 @@
         <h2>Horarios de Clases</h2>
         <p class="text-muted" style="margin-top: 4px;">Configuración de disponibilidad del gimnasio.</p>
     </div>
-    <a href="/Home/CreateHorario" class="btn btn-primary">+ Nueva Clase</a>
+    @if (User.IsInRole("Admin"))
+    {
+        <a href="/Home/CreateHorario" class="btn btn-primary">+ Nueva Clase</a>
+    }
 </div>
 
 <div class="row">
@@ -39,13 +42,16 @@
                                 <p class="text-muted" style="margin-bottom: 0.5rem; font-size: 13px;">
                                     Instructor: @clase.Instructor | Cupo: @clase.CupoMaximo
                                 </p>
-                                <div style="display: flex; gap: 0.5rem;">
-                                    <a href="/Home/EditHorario/@clase.Id" style="font-size: 12px; font-weight: 600; color: var(--primary); text-decoration: none;">Editar</a>
-                                    <form asp-action="DeleteHorario" method="post" style="display: inline;">
-                                        <input type="hidden" name="id" value="@clase.Id" />
-                                        <button type="submit" style="background: none; border: none; font-size: 12px; font-weight: 600; color: var(--danger); cursor: pointer; padding: 0;" onclick="return confirm('¿Eliminar esta clase?');">Eliminar</button>
-                                    </form>
-                                </div>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <div style="display: flex; gap: 0.5rem;">
+                                        <a href="/Home/EditHorario/@clase.Id" style="font-size: 12px; font-weight: 600; color: var(--primary); text-decoration: none;">Editar</a>
+                                        <form asp-action="DeleteHorario" method="post" style="display: inline;">
+                                            <input type="hidden" name="id" value="@clase.Id" />
+                                            <button type="submit" style="background: none; border: none; font-size: 12px; font-weight: 600; color: var(--danger); cursor: pointer; padding: 0;" onclick="return confirm('¿Eliminar esta clase?');">Eliminar</button>
+                                        </form>
+                                    </div>
+                                }
                             </div>
                         }
                     </div>
@@ -59,6 +65,6 @@
 {
     <div class="card" style="padding: 4rem; text-align: center;">
         <h3 class="text-muted">No hay horarios registrados</h3>
-        <p class="text-muted">Aún no has configurado las clases del gimnasio. Haz clic en "Nueva Clase" para comenzar.</p>
+        <p class="text-muted">Aún no has configurado las clases del gimnasio.@(User.IsInRole("Admin") ? " Haz clic en \"Nueva Clase\" para comenzar." : "")</p>
     </div>
 }

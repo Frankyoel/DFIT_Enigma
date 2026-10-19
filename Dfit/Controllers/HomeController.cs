@@ -10,11 +10,12 @@ using Google.Cloud.Firestore;
 using Dfit.Models.Patterns.Singleton;
 using Dfit.Models.Patterns.Proxy;
 using Dfit.Models.Patterns.Strategy;
-using Dfit.Models.Patterns.Observer;
-using Dfit.Models.Patterns.Builder;
+using Microsoft.AspNetCore.Authorization;
+using Dfit.Utils;
 
 namespace Dfit.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -23,97 +24,52 @@ namespace Dfit.Controllers
         private readonly IQRTokenService _qrTokenService;
         private readonly IGymAccess _gymAccess;
         private readonly PaymentContext _paymentContext;
-        private readonly ISubject _userRegistrationSubject;
 
         public HomeController(
             ILogger<HomeController> logger, 
             FirestoreDb db,
             IQRTokenService qrTokenService,
             IGymAccess gymAccess,
-            PaymentContext paymentContext,
-            ISubject userRegistrationSubject)
+            PaymentContext paymentContext)
         {
             _logger = logger;
             _db = db;
             _qrTokenService = qrTokenService;
             _gymAccess = gymAccess;
             _paymentContext = paymentContext;
-            _userRegistrationSubject = userRegistrationSubject;
         }
 
-        public IActionResult Index() => View();
-        public IActionResult Login() => View();
-
-        [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public IActionResult Index()
         {
-            if (ModelState.IsValid)
+            if (User.EsAdmin())
             {
-                var query = _db.Collection("Usuarios").WhereEqualTo("Correo", model.Correo).WhereEqualTo("PasswordHash", model.Password);
-                var snap = await query.GetSnapshotAsync();
-                
-                if (snap.Documents.Count > 0)
-                {
-                    var doc = snap.Documents[0];
-                    var activo = doc.GetValue<bool>("Activo");
-                    if (!activo)
-                    {
-                        ModelState.AddModelError("", "Tu cuenta ha sido desactivada. Contacta al administrador.");
-                        return View(model);
-                    }
-                    
-                    return RedirectToAction("Dashboard");
-                }
-                ModelState.AddModelError("", "Correo o contraseña incorrectos.");
+                return RedirectToAction("Dashboard");
             }
-            return View(model);
+
+            var currentUserId = User.ObtenerUsuarioId();
+            return RedirectToAction("MiMembresia", new { id = currentUserId });
         }
 
-        public IActionResult Register() => View();
+        // =========================================================================
+        // REDIRECCIONES DE COMPATIBILIDAD (AUTENTICACIÓN DELEGADA A AUTHCONTROLLER)
+        // =========================================================================
 
-        [HttpPost]
-        public async Task<IActionResult> Register(RegisterViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var snap = await _db.Collection("Usuarios").WhereEqualTo("Correo", model.Correo).GetSnapshotAsync();
-                if (snap.Documents.Count > 0)
-                {
-                    ModelState.AddModelError("Correo", "Este correo ya está registrado.");
-                    return View(model);
-                }
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("Home/Login")]
+        public IActionResult Login() => RedirectToAction("Login", "Auth");
 
-                var docRef = _db.Collection("Usuarios").Document();
-                var builder = new UsuarioBuilder();
-                var nuevoUsuario = builder
-                    .SetDatosBasicos(model.Nombres, model.Apellidos, model.Correo)
-                    .SetPassword(model.Password)
-                    .SetRol("Usuario")
-                    .SetDefaults()
-                    .Build();
-                
-                nuevoUsuario.Id = docRef.Id;
-                nuevoUsuario.DNI = model.DNI;
-                nuevoUsuario.Celular = model.Celular;
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("Home/Register")]
+        public IActionResult Register() => RedirectToAction("Register", "Auth");
 
-                await docRef.SetAsync(new {
-                    Nombres = nuevoUsuario.Nombres,
-                    Apellidos = nuevoUsuario.Apellidos,
-                    Correo = nuevoUsuario.Correo,
-                    DNI = nuevoUsuario.DNI ?? "",
-                    Celular = nuevoUsuario.Celular ?? "",
-                    PasswordHash = nuevoUsuario.PasswordHash,
-                    Rol = nuevoUsuario.Rol,
-                    FechaRegistro = DateTime.UtcNow,
-                    Activo = nuevoUsuario.Activo
-                });
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("Home/Logout")]
+        public IActionResult Logout() => RedirectToAction("Logout", "Auth");
 
-                _userRegistrationSubject.Notify(nuevoUsuario);
-                return RedirectToAction("Login");
-            }
-            return View(model);
-        }
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Dashboard(string? search = null)
         {
             var snap = await _db.Collection("Usuarios").GetSnapshotAsync();
@@ -169,8 +125,10 @@ namespace Dfit.Controllers
             return View(usuarios);
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult CreateUser() => View();
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateUser(Usuario model)
         {
@@ -194,6 +152,7 @@ namespace Dfit.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> EditUser(string id)
         {
             var doc = await _db.Collection("Usuarios").Document(id).GetSnapshotAsync();
@@ -213,6 +172,7 @@ namespace Dfit.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> EditUser(EditUserViewModel model)
         {
@@ -234,6 +194,7 @@ namespace Dfit.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> DeleteUser(string id)
         {
@@ -241,6 +202,7 @@ namespace Dfit.Controllers
             return RedirectToAction("Dashboard");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> ToggleUserStatus(string id)
         {
@@ -253,9 +215,20 @@ namespace Dfit.Controllers
             return RedirectToAction("Dashboard");
         }
 
-        public async Task<IActionResult> Profile(string id) 
+        public async Task<IActionResult> Profile(string? id) 
         {
-            var doc = await _db.Collection("Usuarios").Document(id).GetSnapshotAsync();
+            var currentUserId = User.ObtenerUsuarioId();
+            if (string.IsNullOrEmpty(id))
+            {
+                id = currentUserId;
+            }
+
+            if (!User.EsAdminOPropietario(id))
+            {
+                return RedirectToAction("Profile", new { id = currentUserId });
+            }
+
+            var doc = await _db.Collection("Usuarios").Document(id!).GetSnapshotAsync();
             if (!doc.Exists) return NotFound();
 
             var model = new ProfileViewModel
@@ -271,6 +244,11 @@ namespace Dfit.Controllers
         [HttpPost]
         public async Task<IActionResult> Profile(ProfileViewModel model)
         {
+            if (!User.EsAdminOPropietario(model.Id))
+            {
+                return Forbid();
+            }
+
             if (ModelState.IsValid)
             {
                 var dict = new Dictionary<string, object>
@@ -293,6 +271,7 @@ namespace Dfit.Controllers
         // FASE 3: PLANES Y MEMBRESÍAS
         // ==========================================
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Membresias()
         {
             var snap = await _db.Collection("Membresias").GetSnapshotAsync();
@@ -310,8 +289,10 @@ namespace Dfit.Controllers
             return View(list);
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult CreateMembresia() => View();
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateMembresia(Membresia model)
         {
@@ -330,6 +311,7 @@ namespace Dfit.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> EditMembresia(string id)
         {
             var doc = await _db.Collection("Membresias").Document(id).GetSnapshotAsync();
@@ -345,6 +327,7 @@ namespace Dfit.Controllers
             return View(m);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> EditMembresia(Membresia model)
         {
@@ -362,6 +345,7 @@ namespace Dfit.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> DeleteMembresia(string id)
         {
@@ -369,6 +353,7 @@ namespace Dfit.Controllers
             return RedirectToAction("Membresias");
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AssignMembresia(string usuarioId)
         {
             ViewBag.UsuarioId = usuarioId;
@@ -389,6 +374,7 @@ namespace Dfit.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> AssignMembresia(string usuarioId, string membresiaId)
         {
@@ -407,8 +393,19 @@ namespace Dfit.Controllers
             return RedirectToAction("Dashboard");
         }
 
-        public async Task<IActionResult> MiMembresia(string id) 
+        public async Task<IActionResult> MiMembresia(string? id) 
         {
+            var currentUserId = User.ObtenerUsuarioId();
+            if (string.IsNullOrEmpty(id))
+            {
+                id = currentUserId;
+            }
+
+            if (string.IsNullOrEmpty(id) || !User.EsAdminOPropietario(id))
+            {
+                return Forbid();
+            }
+
             var snap = await _db.Collection("MembresiasUsuarios")
                 .WhereEqualTo("UsuarioId", id)
                 .WhereEqualTo("Activa", true)
@@ -441,10 +438,16 @@ namespace Dfit.Controllers
         [HttpPost]
         public async Task<IActionResult> CancelMembresia(string membresiaUsuarioId, string usuarioId)
         {
+            if (!User.EsAdminOPropietario(usuarioId))
+            {
+                return Forbid();
+            }
+
             await _db.Collection("MembresiasUsuarios").Document(membresiaUsuarioId).UpdateAsync("Activa", false);
             return RedirectToAction("MiMembresia", new { id = usuarioId });
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> AdminRemoveMembresia(string membresiaUsuarioId)
         {
@@ -456,6 +459,7 @@ namespace Dfit.Controllers
         // FASE 4: PAGOS Y REPORTES
         // ==========================================
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> RegistrarPago(string usuarioId)
         {
             var uDoc = await _db.Collection("Usuarios").Document(usuarioId).GetSnapshotAsync();
@@ -475,6 +479,7 @@ namespace Dfit.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> RegistrarPago(Pago model)
         {
@@ -498,8 +503,19 @@ namespace Dfit.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> PagosUsuario(string id) 
+        public async Task<IActionResult> PagosUsuario(string? id) 
         {
+            var currentUserId = User.ObtenerUsuarioId();
+            if (string.IsNullOrEmpty(id))
+            {
+                id = currentUserId;
+            }
+
+            if (string.IsNullOrEmpty(id) || !User.EsAdminOPropietario(id))
+            {
+                return Forbid();
+            }
+
             var snap = await _db.Collection("Pagos").WhereEqualTo("UsuarioId", id).GetSnapshotAsync();
             var list = new List<Pago>();
             foreach(var doc in snap.Documents) {
@@ -517,6 +533,7 @@ namespace Dfit.Controllers
             return View(list.OrderByDescending(x => x.FechaPago).ToList());
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ReporteFinanciero()
         {
             var snap = await _db.Collection("Pagos").GetSnapshotAsync();
@@ -548,6 +565,7 @@ namespace Dfit.Controllers
         // FASE 5: OPERACIONES DEL GIMNASIO
         // ==========================================
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Asistencia()
         {
             var snap = await _db.Collection("Asistencias").GetSnapshotAsync();
@@ -576,6 +594,7 @@ namespace Dfit.Controllers
             return View(asistencias.OrderByDescending(x => x.FechaHoraEntrada).ToList());
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> RegistrarAsistencia(string usuarioId)
         {
@@ -607,15 +626,19 @@ namespace Dfit.Controllers
             return RedirectToAction("Asistencia");
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult PantallaQR() => View();
+
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult GenerarTokenQR() => Json(new { token = _qrTokenService.GetCurrentToken() });
 
         [HttpGet]
         public IActionResult CheckIn(string token)
         {
-            var userIdString = HttpContext.Session.GetString("UserId");
-            if (string.IsNullOrEmpty(userIdString)) return RedirectToAction("Login");
+            var userIdString = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
+                               ?? HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userIdString)) return RedirectToAction("Login", "Auth");
 
             if (!_qrTokenService.ValidateToken(token))
             {
@@ -651,8 +674,10 @@ namespace Dfit.Controllers
             return View(list);
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult CreateRutina() => View();
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateRutina(Rutina model)
         {
@@ -670,6 +695,7 @@ namespace Dfit.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> EditRutina(string id)
         {
             var doc = await _db.Collection("Rutinas").Document(id).GetSnapshotAsync();
@@ -684,6 +710,7 @@ namespace Dfit.Controllers
             });
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> EditRutina(Rutina model)
         {
@@ -701,6 +728,7 @@ namespace Dfit.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> DeleteRutina(string id)
         {
@@ -726,8 +754,10 @@ namespace Dfit.Controllers
             return View(list.OrderBy(h => h.HoraInicio).ToList());
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult CreateHorario() => View();
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateHorario(Horario model)
         {
@@ -746,6 +776,7 @@ namespace Dfit.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> EditHorario(string id)
         {
             var doc = await _db.Collection("Horarios").Document(id).GetSnapshotAsync();
@@ -761,6 +792,7 @@ namespace Dfit.Controllers
             });
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> EditHorario(Horario model)
         {
@@ -779,6 +811,7 @@ namespace Dfit.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> DeleteHorario(string id)
         {
@@ -786,8 +819,10 @@ namespace Dfit.Controllers
             return RedirectToAction("Horarios");
         }
 
+        [AllowAnonymous]
         public IActionResult Privacy() => View();
 
+        [AllowAnonymous]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error() => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }

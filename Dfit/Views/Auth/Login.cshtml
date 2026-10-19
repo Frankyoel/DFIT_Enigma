@@ -51,7 +51,7 @@
             }
 
             <!-- Formulario de Acceso -->
-            <form asp-controller="Home" asp-action="Login" method="post" id="main-login-form" novalidate>
+            <form asp-controller="Auth" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" id="main-login-form" novalidate>
                 @Html.AntiForgeryToken()
 
                 <!-- Campo Correo Electrónico con botón X para borrar -->
@@ -136,7 +136,7 @@
 
                 <div class="text-center">
                     <span class="text-caption">¿Aún no tienes cuenta? </span>
-                    <a asp-controller="Home" asp-action="Register" class="link-accent">Regístrate aquí</a>
+                    <a asp-controller="Auth" asp-action="Register" class="link-accent">Regístrate aquí</a>
                 </div>
 
                 <!-- Enlace sutil para Canales de Asistencia -->

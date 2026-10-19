@@ -8,7 +8,10 @@
         <h2>Rutinas de Entrenamiento</h2>
         <p class="text-muted" style="margin-top: 4px;">Gestión de planes y videos predeterminados.</p>
     </div>
-    <a href="/Home/CreateRutina" class="btn btn-primary">+ Nueva Rutina</a>
+    @if (User.IsInRole("Admin"))
+    {
+        <a href="/Home/CreateRutina" class="btn btn-primary">+ Nueva Rutina</a>
+    }
 </div>
 
 <div class="row" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem;">
@@ -37,13 +40,16 @@
                 </div>
             }
 
-            <div style="display: flex; gap: 0.5rem; margin-top: auto;">
-                <a href="/Home/EditRutina/@rutina.Id" class="btn btn-secondary" style="flex: 1; text-align: center; font-size: 13px;">Editar</a>
-                <form asp-action="DeleteRutina" method="post" style="flex: 1;">
-                    <input type="hidden" name="id" value="@rutina.Id" />
-                    <button type="submit" class="btn btn-danger" style="width: 100%; font-size: 13px;" onclick="return confirm('¿Seguro que deseas eliminar esta rutina?');">Eliminar</button>
-                </form>
-            </div>
+            @if (User.IsInRole("Admin"))
+            {
+                <div style="display: flex; gap: 0.5rem; margin-top: auto;">
+                    <a href="/Home/EditRutina/@rutina.Id" class="btn btn-secondary" style="flex: 1; text-align: center; font-size: 13px;">Editar</a>
+                    <form asp-action="DeleteRutina" method="post" style="flex: 1;">
+                        <input type="hidden" name="id" value="@rutina.Id" />
+                        <button type="submit" class="btn btn-danger" style="width: 100%; font-size: 13px;" onclick="return confirm('¿Seguro que deseas eliminar esta rutina?');">Eliminar</button>
+                    </form>
+                </div>
+            }
         </div>
     }
 
@@ -51,7 +57,7 @@
     {
         <div class="card" style="grid-column: 1 / -1; padding: 4rem; text-align: center;">
             <h3 class="text-muted">No hay rutinas registradas</h3>
-            <p class="text-muted">Aún no has agregado ninguna rutina o video. Haz clic en "Nueva Rutina" para comenzar.</p>
+            <p class="text-muted">Aún no has agregado ninguna rutina o video.@(User.IsInRole("Admin") ? " Haz clic en \"Nueva Rutina\" para comenzar." : "")</p>
         </div>
     }
 </div>
