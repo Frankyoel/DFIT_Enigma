@@ -1,63 +1,77 @@
-using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dfit.Models;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace PruebasUnitarias;
 
 [TestClass]
-public class MembresiaAccesoTests
+[TestCategory("Acceso")]
+public class MembresiaAccesoTests : PruebaDocumentada
 {
+    private static readonly DateTime Ahora = new(2026, 10, 18, 12, 0, 0, DateTimeKind.Utc);
+
     [TestMethod]
+    [TestProperty("Caso", "CP-ACC-001")]
     public void ValidarAcceso_ConMembresiaVigenteYActiva_DebePermitirAcceso()
     {
-        // Regla del sistema: un usuario tiene acceso si Activa es true y FechaFin > UtcNow
-        var membresiaUsuario = new MembresiaUsuario
-        {
-            UsuarioId = "user-001",
-            MembresiaId = "plan-mensual",
-            FechaInicio = DateTime.UtcNow.AddDays(-5),
-            FechaFin = DateTime.UtcNow.AddDays(25),
-            Activa = true
-        };
+        var fin = new DateTime(2026, 10, 19, 12, 0, 0, DateTimeKind.Utc);
 
-        bool tieneAcceso = membresiaUsuario.Activa && membresiaUsuario.FechaFin > DateTime.UtcNow;
+        var resultado = ReglasMembresia.PermiteAcceso(true, fin, Ahora);
 
-        Assert.IsTrue(tieneAcceso, "El usuario con membresía activa y fecha fin futura debe tener acceso.");
+        Comprobar(true, resultado);
     }
 
     [TestMethod]
+    [TestProperty("Caso", "CP-ACC-002")]
     public void ValidarAcceso_ConMembresiaVencida_DebeDenegarAcceso()
     {
-        // Regla del sistema: si la fecha fin es menor o igual a UtcNow, el acceso debe ser denegado
-        var membresiaUsuario = new MembresiaUsuario
-        {
-            UsuarioId = "user-002",
-            MembresiaId = "plan-mensual",
-            FechaInicio = DateTime.UtcNow.AddDays(-35),
-            FechaFin = DateTime.UtcNow.AddDays(-5), // Vencida
-            Activa = true
-        };
+        var fin = new DateTime(2026, 10, 17, 12, 0, 0, DateTimeKind.Utc);
 
-        bool tieneAcceso = membresiaUsuario.Activa && membresiaUsuario.FechaFin > DateTime.UtcNow;
+        var resultado = ReglasMembresia.PermiteAcceso(true, fin, Ahora);
 
-        Assert.IsFalse(tieneAcceso, "El usuario con membresía vencida no debe tener acceso.");
+        Comprobar(false, resultado);
     }
 
     [TestMethod]
+    [TestProperty("Caso", "CP-ACC-003")]
     public void ValidarAcceso_ConMembresiaInactiva_DebeDenegarAcceso()
     {
-        // Regla del sistema: si Activa es false (cancelada), se deniega aunque la fecha no haya expirado
-        var membresiaUsuario = new MembresiaUsuario
-        {
-            UsuarioId = "user-003",
-            MembresiaId = "plan-mensual",
-            FechaInicio = DateTime.UtcNow.AddDays(-5),
-            FechaFin = DateTime.UtcNow.AddDays(25),
-            Activa = false // Cancelada/Inactiva
-        };
+        var fin = new DateTime(2026, 10, 19, 12, 0, 0, DateTimeKind.Utc);
 
-        bool tieneAcceso = membresiaUsuario.Activa && membresiaUsuario.FechaFin > DateTime.UtcNow;
+        var resultado = ReglasMembresia.PermiteAcceso(false, fin, Ahora);
 
-        Assert.IsFalse(tieneAcceso, "El usuario con membresía inactiva/cancelada debe tener el acceso denegado.");
+        Comprobar(false, resultado);
+    }
+
+    [TestMethod]
+    [TestProperty("Caso", "CP-ACC-004")]
+    public void ValidarAcceso_EnInstanteExactoDeVencimiento_DebeDenegarAcceso()
+    {
+        var fin = Ahora;
+
+        var resultado = ReglasMembresia.PermiteAcceso(true, fin, Ahora);
+
+        Comprobar(false, resultado);
+    }
+
+    [TestMethod]
+    [TestProperty("Caso", "CP-ACC-005")]
+    public void ValidarAcceso_UnTickAntesDeVencer_DebePermitirAcceso()
+    {
+        var fin = Ahora.AddTicks(1);
+
+        var resultado = ReglasMembresia.PermiteAcceso(true, fin, Ahora);
+
+        Comprobar(true, resultado);
+    }
+
+    [TestMethod]
+    [TestProperty("Caso", "CP-ACC-006")]
+    public void ValidarAcceso_UnTickDespuesDeVencer_DebeDenegarAcceso()
+    {
+        var fin = Ahora.AddTicks(-1);
+
+        var resultado = ReglasMembresia.PermiteAcceso(true, fin, Ahora);
+
+        Comprobar(false, resultado);
     }
 }

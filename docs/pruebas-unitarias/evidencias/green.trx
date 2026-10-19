@@ -1,0 +1,672 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="a1480daf-31f2-4f4a-a1c0-29bcb2ba53f8" name="diego@PCDIEGO 2026-10-18 22:30:57.9629225" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-18T22:30:57.2005147Z" queuing="2026-10-18T22:30:57.2005147Z" start="2026-10-18T22:30:57.2005147Z" finish="2026-10-18T22:30:57.9632478Z" />
+  <TestSettings name="default" id="88c5d214-3727-41c9-9f96-d507624c7976">
+    <Deployment runDeploymentRoot="diego_PCDIEGO_2026-10-18_22_30_57.9629225" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="e779949c-e185-4534-98b8-c35b1885829d" testId="1989c2da-6bb0-8957-9ce7-7a4f7b91890c" testName="ValidarAcceso_ConMembresiaVencida_DebeDenegarAcceso" computerName="PCDIEGO" duration="00:00:00.6394361" startTime="2026-10-18T22:30:57.2802662+00:00" endTime="2026-10-18T22:30:57.9351775+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="e779949c-e185-4534-98b8-c35b1885829d">
+      <Output>
+        <StdOut>
+
+Mensajes de TestContext:
+Esperado: False | Obtenido: False
+</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="7266d798-3f50-448a-b104-54ab1c384e76" testId="1a36ae16-dc42-857d-91f3-2be43c50104e" testName="CalcularFechaFin_MembresiaAnual_SumaExactamente365Dias" computerName="PCDIEGO" duration="00:00:00.6394661" startTime="2026-10-18T22:30:57.2802849+00:00" endTime="2026-10-18T22:30:57.9351879+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="7266d798-3f50-448a-b104-54ab1c384e76">
+      <Output>
+        <StdOut>
+
+Mensajes de TestContext:
+Esperado: 2027-01-01T00:00:00.0000000Z | Obtenido: 2027-01-01T00:00:00.0000000Z
+</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="9f8cf38d-567d-4756-b251-9b6da1ef2ac3" testId="10005642-9110-875c-8523-bb745f6550b6" testName="CalcularFechaFin_MembresiaMensual_SumaExactamente30Dias" computerName="PCDIEGO" duration="00:00:00.6394444" startTime="2026-10-18T22:30:57.2802742+00:00" endTime="2026-10-18T22:30:57.9351573+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="9f8cf38d-567d-4756-b251-9b6da1ef2ac3">
+      <Output>
+        <StdOut>
+
+Mensajes de TestContext:
+Esperado: 2026-01-31T00:00:00.0000000Z | Obtenido: 2026-01-31T00:00:00.0000000Z
+</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="66081e75-9b9e-49cd-a0fd-f7dc88582bd7" testId="14e3528b-64ef-85ed-ae02-eb2acf782801" testName="ValidarAcceso_ConMembresiaInactiva_DebeDenegarAcceso" computerName="PCDIEGO" duration="00:00:00.6394835" startTime="2026-10-18T22:30:57.2802587+00:00" endTime="2026-10-18T22:30:57.9351573+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="66081e75-9b9e-49cd-a0fd-f7dc88582bd7">
+      <Output>
+        <StdOut>
+
+Mensajes de TestContext:
+Esperado: False | Obtenido: False
+</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="5a96e0d4-b9c4-4b24-b249-8bdbd1fc30c1" testId="137d6b5d-8002-813a-88c6-ec77e7f1d04e" testName="ValidarAcceso_UnTickAntesDeVencer_DebePermitirAcceso" computerName="PCDIEGO" duration="00:00:00.6394598" startTime="2026-10-18T22:30:57.2802893+00:00" endTime="2026-10-18T22:30:57.9351600+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="5a96e0d4-b9c4-4b24-b249-8bdbd1fc30c1">
+      <Output>
+        <StdOut>
+
+Mensajes de TestContext:
+Esperado: True | Obtenido: True
+</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="a98eda49-8e80-4f49-ae94-453f47f135fd" testId="11649e3c-c640-8ca5-aee9-32af3bdd4610" testName="CalcularFechaFin_CambioDeAnio_ConservaHora" computerName="PCDIEGO" duration="00:00:00.6394968" startTime="2026-10-18T22:30:57.2802595+00:00" endTime="2026-10-18T22:30:57.9351684+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="a98eda49-8e80-4f49-ae94-453f47f135fd">
+      <Output>
+        <StdOut>
+
+Mensajes de TestContext:
+Esperado: 2027-01-01T23:30:00.0000000Z | Obtenido: 2027-01-01T23:30:00.0000000Z
+</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="a9fb8482-3323-44cb-929d-454125be1ca8" testId="1bd40c47-a9f1-854d-8621-7d5bd64a17fa" testName="ValidarAcceso_EnInstanteExactoDeVencimiento_DebeDenegarAcceso" computerName="PCDIEGO" duration="00:00:00.6394837" startTime="2026-10-18T22:30:57.2802833+00:00" endTime="2026-10-18T22:30:57.9351961+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="a9fb8482-3323-44cb-929d-454125be1ca8">
+      <Output>
+        <StdOut>
+
+Mensajes de TestContext:
+Esperado: False | Obtenido: False
+</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="4489f0e0-d619-422c-93e6-f39c2d466550" testId="10d2cabf-1d7f-8307-90cf-879f10e8da7e" testName="CalcularFechaFin_MembresiaTrimestral_SumaExactamente90Dias" computerName="PCDIEGO" duration="00:00:00.6394540" startTime="2026-10-18T22:30:57.2802770+00:00" endTime="2026-10-18T22:30:57.9351573+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="4489f0e0-d619-422c-93e6-f39c2d466550">
+      <Output>
+        <StdOut>
+
+Mensajes de TestContext:
+Esperado: 2026-04-01T00:00:00.0000000Z | Obtenido: 2026-04-01T00:00:00.0000000Z
+</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="7d45bc4a-a599-4fb9-b93f-5e9afb21e8bd" testId="16d7d2c7-5024-872f-b1b9-5a0fcac36bf2" testName="CalcularFechaFin_FinDeMes_SumaDiasSinUsarMesCalendario" computerName="PCDIEGO" duration="00:00:00.6394546" startTime="2026-10-18T22:30:57.2802588+00:00" endTime="2026-10-18T22:30:57.9351572+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="7d45bc4a-a599-4fb9-b93f-5e9afb21e8bd">
+      <Output>
+        <StdOut>
+
+Mensajes de TestContext:
+Esperado: 2026-03-02T14:30:00.0000000Z | Obtenido: 2026-03-02T14:30:00.0000000Z
+Esperado: Utc | Obtenido: Utc
+</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="63e76b72-d7ab-4a86-9f5c-22d8891d3c96" testId="14890852-f5ec-827b-b42c-94a90e388d08" testName="ValidarAcceso_ConMembresiaVigenteYActiva_DebePermitirAcceso" computerName="PCDIEGO" duration="00:00:00.6394384" startTime="2026-10-18T22:30:57.2802594+00:00" endTime="2026-10-18T22:30:57.9351798+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="63e76b72-d7ab-4a86-9f5c-22d8891d3c96">
+      <Output>
+        <StdOut>
+
+Mensajes de TestContext:
+Esperado: True | Obtenido: True
+</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="0d4b5761-5293-437a-9c1f-44bf55f06e0b" testId="1e261f79-cba7-8559-acee-399c85ad89eb" testName="CalcularFechaFin_AnioBisiesto_Incluye29DeFebrero" computerName="PCDIEGO" duration="00:00:00.6394233" startTime="2026-10-18T22:30:57.2802865+00:00" endTime="2026-10-18T22:30:57.9351700+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="0d4b5761-5293-437a-9c1f-44bf55f06e0b">
+      <Output>
+        <StdOut>
+
+Mensajes de TestContext:
+Esperado: 2028-02-29T00:00:00.0000000Z | Obtenido: 2028-02-29T00:00:00.0000000Z
+</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="6b71d115-a45b-4b85-93a0-d1291b56a2db" testId="19553bd1-b0b8-8b20-98f7-aff91f6989ce" testName="ValidarAcceso_UnTickDespuesDeVencer_DebeDenegarAcceso" computerName="PCDIEGO" duration="00:00:00.6394864" startTime="2026-10-18T22:30:57.2802587+00:00" endTime="2026-10-18T22:30:57.9351932+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="6b71d115-a45b-4b85-93a0-d1291b56a2db">
+      <Output>
+        <StdOut>
+
+Mensajes de TestContext:
+Esperado: False | Obtenido: False
+</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d80b9398-46ee-4498-a44b-076d6d020f20" testId="168960b3-3744-8893-a75a-cf1e5575a34e" testName="ExecutePayment_ConTarjeta_AplicaCincoPorCiento" computerName="PCDIEGO" duration="00:00:00.0007209" startTime="2026-10-18T22:30:57.9395952+00:00" endTime="2026-10-18T22:30:57.9408938+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="d80b9398-46ee-4498-a44b-076d6d020f20">
+      <Output>
+        <StdOut>
+
+Mensajes de TestContext:
+Esperado: 210 | Obtenido: 210.00
+</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="1095f6e7-4779-4bbd-9a19-d23f2c19439a" testId="1585422d-8cbe-8cf3-81f8-d516a5f6b142" testName="ExecutePayment_ConEfectivo_NoAplicaRecargo" computerName="PCDIEGO" duration="00:00:00.0007378" startTime="2026-10-18T22:30:57.9395789+00:00" endTime="2026-10-18T22:30:57.9408956+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="1095f6e7-4779-4bbd-9a19-d23f2c19439a">
+      <Output>
+        <StdOut>
+
+Mensajes de TestContext:
+Esperado: 100 | Obtenido: 100
+</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="79ac6b45-67ec-4fb0-8938-89798383057f" testId="14996ff8-7a4b-873a-a600-0f97079fd619" testName="ExecutePaymentForAmount_IgualA100_UsaEfectivo" computerName="PCDIEGO" duration="00:00:00.0011433" startTime="2026-10-18T22:30:57.9396007+00:00" endTime="2026-10-18T22:30:57.9409001+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="79ac6b45-67ec-4fb0-8938-89798383057f">
+      <Output>
+        <StdOut>
+
+Mensajes de TestContext:
+Esperado: 100 | Obtenido: 100
+</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="e6783e21-52cd-467a-97e0-db25ab765d0c" testId="192a3587-ef46-8314-8327-d28f707fdc01" testName="ExecutePayment_SinEstrategia_UsaEfectivo" computerName="PCDIEGO" duration="00:00:00.0011470" startTime="2026-10-18T22:30:57.9395996+00:00" endTime="2026-10-18T22:30:57.9408986+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="e6783e21-52cd-467a-97e0-db25ab765d0c">
+      <Output>
+        <StdOut>
+
+Mensajes de TestContext:
+Esperado: 200 | Obtenido: 200
+</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="da87dce1-da72-4d88-96f3-ce428aa157f0" testId="111eb5aa-3e00-8ac7-8a42-c19f1c97d403" testName="ExecutePaymentForAmount_MenorA100_UsaEfectivo" computerName="PCDIEGO" duration="00:00:00.0011485" startTime="2026-10-18T22:30:57.9396036+00:00" endTime="2026-10-18T22:30:57.9408970+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="da87dce1-da72-4d88-96f3-ce428aa157f0">
+      <Output>
+        <StdOut>
+
+Mensajes de TestContext:
+Esperado: 99.99 | Obtenido: 99.99
+</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="9e99d870-d44a-4656-8f12-01e6fa81d744" testId="17ad88b1-88e2-82fd-88ba-b1b40e8cd5df" testName="ExecutePaymentForAmount_PagosConsecutivos_ReevaluaEstrategia" computerName="PCDIEGO" duration="00:00:00.0007302" startTime="2026-10-18T22:30:57.9396080+00:00" endTime="2026-10-18T22:30:57.9409060+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="9e99d870-d44a-4656-8f12-01e6fa81d744">
+      <Output>
+        <StdOut>
+
+Mensajes de TestContext:
+Esperado: 210 | Obtenido: 210.00
+Esperado: 100 | Obtenido: 100
+</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="a54442e3-4d4a-4ead-9c8f-cf1fa2206e11" testId="18a9d47f-0dc7-8249-81fb-ebe36f26ef81" testName="ExecutePaymentForAmount_MayorA100_UsaTarjetaSinRedondeoAdicional" computerName="PCDIEGO" duration="00:00:00.0007213" startTime="2026-10-18T22:30:57.9396081+00:00" endTime="2026-10-18T22:30:57.9409206+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="a54442e3-4d4a-4ead-9c8f-cf1fa2206e11">
+      <Output>
+        <StdOut>
+
+Mensajes de TestContext:
+Esperado: 105.0105 | Obtenido: 105.0105
+</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="c146b94d-6ba6-420a-a57c-ac34e1ed9c2a" testId="1f4fc229-03bf-8d2a-9a81-50b13ad93977" testName="LoadFile_CargaVariablesSimplesYConComillas" computerName="PCDIEGO" duration="00:00:00.0079225" startTime="2026-10-18T22:30:57.9415060+00:00" endTime="2026-10-18T22:30:57.9495239+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="c146b94d-6ba6-420a-a57c-ac34e1ed9c2a">
+      <Output>
+        <StdOut>
+
+Mensajes de TestContext:
+Esperado: valor_simple_123 | Obtenido: valor_simple_123
+Esperado: valor con espacios y comillas | Obtenido: valor con espacios y comillas
+</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="81ca7717-68f7-45ec-ab6e-2106d28b8f79" testId="19c26220-a6be-8140-92e9-b7879818106a" testName="LoadFile_NoSobrescribeVariableExistenteDelSistema" computerName="PCDIEGO" duration="00:00:00.0012814" startTime="2026-10-18T22:30:57.9495948+00:00" endTime="2026-10-18T22:30:57.9509303+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="81ca7717-68f7-45ec-ab6e-2106d28b8f79">
+      <Output>
+        <StdOut>
+
+Mensajes de TestContext:
+Esperado: valor_del_sistema | Obtenido: valor_del_sistema
+</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="3c4a8404-a9ea-460f-8e8a-586b157dcf6a" testId="1d5da787-ce2a-8bc1-8162-04e7464202cf" testName="LoadFile_ValorMultilinea_ConservaSaltosDeLinea" computerName="PCDIEGO" duration="00:00:00.0008983" startTime="2026-10-18T22:30:57.9510102+00:00" endTime="2026-10-18T22:30:57.9519473+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="3c4a8404-a9ea-460f-8e8a-586b157dcf6a">
+      <Output>
+        <StdOut>
+
+Mensajes de TestContext:
+Esperado: linea1\nlinea2 | Obtenido: linea1\nlinea2
+</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="6aa2cd53-280b-446c-a589-1afde43f240a" testId="1391d41d-1875-8f40-b264-fa84fdf774e1" testName="LoadFile_ArchivoInexistente_NoCreaArchivoNiAlteraVariable" computerName="PCDIEGO" duration="00:00:00.0003650" startTime="2026-10-18T22:30:57.9520064+00:00" endTime="2026-10-18T22:30:57.9524073+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="6aa2cd53-280b-446c-a589-1afde43f240a">
+      <Output>
+        <StdOut>
+
+Mensajes de TestContext:
+Esperado: original | Obtenido: original
+Esperado: False | Obtenido: False
+</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="7ede4518-3d75-416b-9414-b83ad8ea5bc4" testId="12cf5d4a-da86-8728-91dc-d06269d1a3c1" testName="LoadFile_LineasInvalidas_IgnoraYConservaIgualesDentroDelValor" computerName="PCDIEGO" duration="00:00:00.0008075" startTime="2026-10-18T22:30:57.9524659+00:00" endTime="2026-10-18T22:30:57.9537724+00:00" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" relativeResultsDirectory="7ede4518-3d75-416b-9414-b83ad8ea5bc4">
+      <Output>
+        <StdOut>
+
+Mensajes de TestContext:
+Esperado: uno=dos | Obtenido: uno=dos
+</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="ValidarAcceso_ConMembresiaVencida_DebeDenegarAcceso" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="1989c2da-6bb0-8957-9ce7-7a4f7b91890c">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Acceso" />
+      </TestCategory>
+      <Execution id="e779949c-e185-4534-98b8-c35b1885829d" />
+      <Properties>
+        <Property>
+          <Key>Acceso</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-ACC-002</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.MembresiaAccesoTests" name="ValidarAcceso_ConMembresiaVencida_DebeDenegarAcceso" />
+    </UnitTest>
+    <UnitTest name="CalcularFechaFin_MembresiaAnual_SumaExactamente365Dias" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="1a36ae16-dc42-857d-91f3-2be43c50104e">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Vigencia" />
+      </TestCategory>
+      <Execution id="7266d798-3f50-448a-b104-54ab1c384e76" />
+      <Properties>
+        <Property>
+          <Key>Vigencia</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-VIG-002</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.CalculoVigenciaTests" name="CalcularFechaFin_MembresiaAnual_SumaExactamente365Dias" />
+    </UnitTest>
+    <UnitTest name="CalcularFechaFin_MembresiaMensual_SumaExactamente30Dias" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="10005642-9110-875c-8523-bb745f6550b6">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Vigencia" />
+      </TestCategory>
+      <Execution id="9f8cf38d-567d-4756-b251-9b6da1ef2ac3" />
+      <Properties>
+        <Property>
+          <Key>Vigencia</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-VIG-001</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.CalculoVigenciaTests" name="CalcularFechaFin_MembresiaMensual_SumaExactamente30Dias" />
+    </UnitTest>
+    <UnitTest name="ValidarAcceso_ConMembresiaInactiva_DebeDenegarAcceso" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="14e3528b-64ef-85ed-ae02-eb2acf782801">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Acceso" />
+      </TestCategory>
+      <Execution id="66081e75-9b9e-49cd-a0fd-f7dc88582bd7" />
+      <Properties>
+        <Property>
+          <Key>Acceso</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-ACC-003</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.MembresiaAccesoTests" name="ValidarAcceso_ConMembresiaInactiva_DebeDenegarAcceso" />
+    </UnitTest>
+    <UnitTest name="ValidarAcceso_UnTickAntesDeVencer_DebePermitirAcceso" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="137d6b5d-8002-813a-88c6-ec77e7f1d04e">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Acceso" />
+      </TestCategory>
+      <Execution id="5a96e0d4-b9c4-4b24-b249-8bdbd1fc30c1" />
+      <Properties>
+        <Property>
+          <Key>Acceso</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-ACC-005</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.MembresiaAccesoTests" name="ValidarAcceso_UnTickAntesDeVencer_DebePermitirAcceso" />
+    </UnitTest>
+    <UnitTest name="CalcularFechaFin_CambioDeAnio_ConservaHora" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="11649e3c-c640-8ca5-aee9-32af3bdd4610">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Vigencia" />
+      </TestCategory>
+      <Execution id="a98eda49-8e80-4f49-ae94-453f47f135fd" />
+      <Properties>
+        <Property>
+          <Key>Vigencia</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-VIG-006</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.CalculoVigenciaTests" name="CalcularFechaFin_CambioDeAnio_ConservaHora" />
+    </UnitTest>
+    <UnitTest name="ValidarAcceso_EnInstanteExactoDeVencimiento_DebeDenegarAcceso" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="1bd40c47-a9f1-854d-8621-7d5bd64a17fa">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Acceso" />
+      </TestCategory>
+      <Execution id="a9fb8482-3323-44cb-929d-454125be1ca8" />
+      <Properties>
+        <Property>
+          <Key>Acceso</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-ACC-004</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.MembresiaAccesoTests" name="ValidarAcceso_EnInstanteExactoDeVencimiento_DebeDenegarAcceso" />
+    </UnitTest>
+    <UnitTest name="CalcularFechaFin_MembresiaTrimestral_SumaExactamente90Dias" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="10d2cabf-1d7f-8307-90cf-879f10e8da7e">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Vigencia" />
+      </TestCategory>
+      <Execution id="4489f0e0-d619-422c-93e6-f39c2d466550" />
+      <Properties>
+        <Property>
+          <Key>Vigencia</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-VIG-003</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.CalculoVigenciaTests" name="CalcularFechaFin_MembresiaTrimestral_SumaExactamente90Dias" />
+    </UnitTest>
+    <UnitTest name="CalcularFechaFin_FinDeMes_SumaDiasSinUsarMesCalendario" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="16d7d2c7-5024-872f-b1b9-5a0fcac36bf2">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Vigencia" />
+      </TestCategory>
+      <Execution id="7d45bc4a-a599-4fb9-b93f-5e9afb21e8bd" />
+      <Properties>
+        <Property>
+          <Key>Vigencia</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-VIG-004</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.CalculoVigenciaTests" name="CalcularFechaFin_FinDeMes_SumaDiasSinUsarMesCalendario" />
+    </UnitTest>
+    <UnitTest name="ValidarAcceso_ConMembresiaVigenteYActiva_DebePermitirAcceso" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="14890852-f5ec-827b-b42c-94a90e388d08">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Acceso" />
+      </TestCategory>
+      <Execution id="63e76b72-d7ab-4a86-9f5c-22d8891d3c96" />
+      <Properties>
+        <Property>
+          <Key>Acceso</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-ACC-001</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.MembresiaAccesoTests" name="ValidarAcceso_ConMembresiaVigenteYActiva_DebePermitirAcceso" />
+    </UnitTest>
+    <UnitTest name="CalcularFechaFin_AnioBisiesto_Incluye29DeFebrero" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="1e261f79-cba7-8559-acee-399c85ad89eb">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Vigencia" />
+      </TestCategory>
+      <Execution id="0d4b5761-5293-437a-9c1f-44bf55f06e0b" />
+      <Properties>
+        <Property>
+          <Key>Vigencia</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-VIG-005</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.CalculoVigenciaTests" name="CalcularFechaFin_AnioBisiesto_Incluye29DeFebrero" />
+    </UnitTest>
+    <UnitTest name="ValidarAcceso_UnTickDespuesDeVencer_DebeDenegarAcceso" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="19553bd1-b0b8-8b20-98f7-aff91f6989ce">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Acceso" />
+      </TestCategory>
+      <Execution id="6b71d115-a45b-4b85-93a0-d1291b56a2db" />
+      <Properties>
+        <Property>
+          <Key>Acceso</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-ACC-006</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.MembresiaAccesoTests" name="ValidarAcceso_UnTickDespuesDeVencer_DebeDenegarAcceso" />
+    </UnitTest>
+    <UnitTest name="ExecutePayment_ConTarjeta_AplicaCincoPorCiento" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="168960b3-3744-8893-a75a-cf1e5575a34e">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Pagos" />
+      </TestCategory>
+      <Execution id="d80b9398-46ee-4498-a44b-076d6d020f20" />
+      <Properties>
+        <Property>
+          <Key>Pagos</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-PAG-001</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.PaymentContextTests" name="ExecutePayment_ConTarjeta_AplicaCincoPorCiento" />
+    </UnitTest>
+    <UnitTest name="ExecutePayment_ConEfectivo_NoAplicaRecargo" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="1585422d-8cbe-8cf3-81f8-d516a5f6b142">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Pagos" />
+      </TestCategory>
+      <Execution id="1095f6e7-4779-4bbd-9a19-d23f2c19439a" />
+      <Properties>
+        <Property>
+          <Key>Pagos</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-PAG-002</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.PaymentContextTests" name="ExecutePayment_ConEfectivo_NoAplicaRecargo" />
+    </UnitTest>
+    <UnitTest name="ExecutePaymentForAmount_IgualA100_UsaEfectivo" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="14996ff8-7a4b-873a-a600-0f97079fd619">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Pagos" />
+      </TestCategory>
+      <Execution id="79ac6b45-67ec-4fb0-8938-89798383057f" />
+      <Properties>
+        <Property>
+          <Key>Pagos</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-PAG-005</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.PaymentContextTests" name="ExecutePaymentForAmount_IgualA100_UsaEfectivo" />
+    </UnitTest>
+    <UnitTest name="ExecutePayment_SinEstrategia_UsaEfectivo" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="192a3587-ef46-8314-8327-d28f707fdc01">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Pagos" />
+      </TestCategory>
+      <Execution id="e6783e21-52cd-467a-97e0-db25ab765d0c" />
+      <Properties>
+        <Property>
+          <Key>Pagos</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-PAG-003</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.PaymentContextTests" name="ExecutePayment_SinEstrategia_UsaEfectivo" />
+    </UnitTest>
+    <UnitTest name="ExecutePaymentForAmount_MenorA100_UsaEfectivo" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="111eb5aa-3e00-8ac7-8a42-c19f1c97d403">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Pagos" />
+      </TestCategory>
+      <Execution id="da87dce1-da72-4d88-96f3-ce428aa157f0" />
+      <Properties>
+        <Property>
+          <Key>Pagos</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-PAG-004</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.PaymentContextTests" name="ExecutePaymentForAmount_MenorA100_UsaEfectivo" />
+    </UnitTest>
+    <UnitTest name="ExecutePaymentForAmount_PagosConsecutivos_ReevaluaEstrategia" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="17ad88b1-88e2-82fd-88ba-b1b40e8cd5df">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Pagos" />
+      </TestCategory>
+      <Execution id="9e99d870-d44a-4656-8f12-01e6fa81d744" />
+      <Properties>
+        <Property>
+          <Key>Pagos</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-PAG-007</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.PaymentContextTests" name="ExecutePaymentForAmount_PagosConsecutivos_ReevaluaEstrategia" />
+    </UnitTest>
+    <UnitTest name="ExecutePaymentForAmount_MayorA100_UsaTarjetaSinRedondeoAdicional" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="18a9d47f-0dc7-8249-81fb-ebe36f26ef81">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Pagos" />
+      </TestCategory>
+      <Execution id="a54442e3-4d4a-4ead-9c8f-cf1fa2206e11" />
+      <Properties>
+        <Property>
+          <Key>Pagos</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-PAG-006</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.PaymentContextTests" name="ExecutePaymentForAmount_MayorA100_UsaTarjetaSinRedondeoAdicional" />
+    </UnitTest>
+    <UnitTest name="LoadFile_CargaVariablesSimplesYConComillas" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="1f4fc229-03bf-8d2a-9a81-50b13ad93977">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Configuracion" />
+      </TestCategory>
+      <Execution id="c146b94d-6ba6-420a-a57c-ac34e1ed9c2a" />
+      <Properties>
+        <Property>
+          <Key>Configuracion</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-ENV-001</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.EnvLoaderTests" name="LoadFile_CargaVariablesSimplesYConComillas" />
+    </UnitTest>
+    <UnitTest name="LoadFile_NoSobrescribeVariableExistenteDelSistema" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="19c26220-a6be-8140-92e9-b7879818106a">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Configuracion" />
+      </TestCategory>
+      <Execution id="81ca7717-68f7-45ec-ab6e-2106d28b8f79" />
+      <Properties>
+        <Property>
+          <Key>Configuracion</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-ENV-002</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.EnvLoaderTests" name="LoadFile_NoSobrescribeVariableExistenteDelSistema" />
+    </UnitTest>
+    <UnitTest name="LoadFile_ValorMultilinea_ConservaSaltosDeLinea" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="1d5da787-ce2a-8bc1-8162-04e7464202cf">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Configuracion" />
+      </TestCategory>
+      <Execution id="3c4a8404-a9ea-460f-8e8a-586b157dcf6a" />
+      <Properties>
+        <Property>
+          <Key>Configuracion</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-ENV-003</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.EnvLoaderTests" name="LoadFile_ValorMultilinea_ConservaSaltosDeLinea" />
+    </UnitTest>
+    <UnitTest name="LoadFile_ArchivoInexistente_NoCreaArchivoNiAlteraVariable" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="1391d41d-1875-8f40-b264-fa84fdf774e1">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Configuracion" />
+      </TestCategory>
+      <Execution id="6aa2cd53-280b-446c-a589-1afde43f240a" />
+      <Properties>
+        <Property>
+          <Key>Configuracion</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-ENV-004</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.EnvLoaderTests" name="LoadFile_ArchivoInexistente_NoCreaArchivoNiAlteraVariable" />
+    </UnitTest>
+    <UnitTest name="LoadFile_LineasInvalidas_IgnoraYConservaIgualesDentroDelValor" storage="c:\users\diego\onedrive\documentos\github\dfit_enigma\pruebasunitarias\bin\debug\net10.0\pruebasunitarias.dll" id="12cf5d4a-da86-8728-91dc-d06269d1a3c1">
+      <TestCategory>
+        <TestCategoryItem TestCategory="Configuracion" />
+      </TestCategory>
+      <Execution id="7ede4518-3d75-416b-9414-b83ad8ea5bc4" />
+      <Properties>
+        <Property>
+          <Key>Configuracion</Key>
+          <Value></Value>
+        </Property>
+        <Property>
+          <Key>Caso</Key>
+          <Value>CP-ENV-005</Value>
+        </Property>
+      </Properties>
+      <TestMethod codeBase="C:\Users\diego\OneDrive\Documentos\GitHub\DFIT_Enigma\PruebasUnitarias\bin\Debug\net10.0\PruebasUnitarias.dll" adapterTypeName="executor://MSTest.Sdk/4.0.2" className="PruebasUnitarias.EnvLoaderTests" name="LoadFile_LineasInvalidas_IgnoraYConservaIgualesDentroDelValor" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="1989c2da-6bb0-8957-9ce7-7a4f7b91890c" executionId="e779949c-e185-4534-98b8-c35b1885829d" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="1a36ae16-dc42-857d-91f3-2be43c50104e" executionId="7266d798-3f50-448a-b104-54ab1c384e76" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="10005642-9110-875c-8523-bb745f6550b6" executionId="9f8cf38d-567d-4756-b251-9b6da1ef2ac3" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="14e3528b-64ef-85ed-ae02-eb2acf782801" executionId="66081e75-9b9e-49cd-a0fd-f7dc88582bd7" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="137d6b5d-8002-813a-88c6-ec77e7f1d04e" executionId="5a96e0d4-b9c4-4b24-b249-8bdbd1fc30c1" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="11649e3c-c640-8ca5-aee9-32af3bdd4610" executionId="a98eda49-8e80-4f49-ae94-453f47f135fd" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="1bd40c47-a9f1-854d-8621-7d5bd64a17fa" executionId="a9fb8482-3323-44cb-929d-454125be1ca8" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="10d2cabf-1d7f-8307-90cf-879f10e8da7e" executionId="4489f0e0-d619-422c-93e6-f39c2d466550" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="16d7d2c7-5024-872f-b1b9-5a0fcac36bf2" executionId="7d45bc4a-a599-4fb9-b93f-5e9afb21e8bd" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="14890852-f5ec-827b-b42c-94a90e388d08" executionId="63e76b72-d7ab-4a86-9f5c-22d8891d3c96" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="1e261f79-cba7-8559-acee-399c85ad89eb" executionId="0d4b5761-5293-437a-9c1f-44bf55f06e0b" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="19553bd1-b0b8-8b20-98f7-aff91f6989ce" executionId="6b71d115-a45b-4b85-93a0-d1291b56a2db" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="168960b3-3744-8893-a75a-cf1e5575a34e" executionId="d80b9398-46ee-4498-a44b-076d6d020f20" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="1585422d-8cbe-8cf3-81f8-d516a5f6b142" executionId="1095f6e7-4779-4bbd-9a19-d23f2c19439a" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="14996ff8-7a4b-873a-a600-0f97079fd619" executionId="79ac6b45-67ec-4fb0-8938-89798383057f" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="192a3587-ef46-8314-8327-d28f707fdc01" executionId="e6783e21-52cd-467a-97e0-db25ab765d0c" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="111eb5aa-3e00-8ac7-8a42-c19f1c97d403" executionId="da87dce1-da72-4d88-96f3-ce428aa157f0" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="17ad88b1-88e2-82fd-88ba-b1b40e8cd5df" executionId="9e99d870-d44a-4656-8f12-01e6fa81d744" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="18a9d47f-0dc7-8249-81fb-ebe36f26ef81" executionId="a54442e3-4d4a-4ead-9c8f-cf1fa2206e11" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="1f4fc229-03bf-8d2a-9a81-50b13ad93977" executionId="c146b94d-6ba6-420a-a57c-ac34e1ed9c2a" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="19c26220-a6be-8140-92e9-b7879818106a" executionId="81ca7717-68f7-45ec-ab6e-2106d28b8f79" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="1d5da787-ce2a-8bc1-8162-04e7464202cf" executionId="3c4a8404-a9ea-460f-8e8a-586b157dcf6a" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="1391d41d-1875-8f40-b264-fa84fdf774e1" executionId="6aa2cd53-280b-446c-a589-1afde43f240a" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestEntry testId="12cf5d4a-da86-8728-91dc-d06269d1a3c1" executionId="7ede4518-3d75-416b-9414-b83ad8ea5bc4" testListId="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8C84FA94-04C1-424b-9868-57A2D4851A1D" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="24" executed="24" passed="24" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+</TestRun>

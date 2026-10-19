@@ -1,78 +1,77 @@
-using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dfit.Models;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace PruebasUnitarias;
 
 [TestClass]
-public class CalculoVigenciaTests
+[TestCategory("Vigencia")]
+public class CalculoVigenciaTests : PruebaDocumentada
 {
+
     [TestMethod]
+    [TestProperty("Caso", "CP-VIG-001")]
     public void CalcularFechaFin_MembresiaMensual_SumaExactamente30Dias()
     {
-        // Regla del sistema (AssignMembresia): FechaFin = FechaInicio.AddDays(DuracionDias)
-        var membresia = new Membresia
-        {
-            Id = "mem-30",
-            Nombre = "Plan Mensual",
-            DuracionDias = 30,
-            Precio = 80m,
-            Activa = true
-        };
+        var inicio = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-        var fechaInicio = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-        var fechaFinEsperada = new DateTime(2026, 1, 31, 0, 0, 0, DateTimeKind.Utc);
+        var resultado = ReglasMembresia.CalcularFechaFin(inicio, 30);
 
-        var fechaFinCalculada = fechaInicio.AddDays(membresia.DuracionDias);
-
-        Assert.AreEqual(fechaFinEsperada, fechaFinCalculada);
-        Assert.AreEqual(30, (fechaFinCalculada - fechaInicio).TotalDays);
+        Comprobar(new DateTime(2026, 1, 31, 0, 0, 0, DateTimeKind.Utc), resultado);
     }
 
     [TestMethod]
+    [TestProperty("Caso", "CP-VIG-002")]
     public void CalcularFechaFin_MembresiaAnual_SumaExactamente365Dias()
     {
-        // Regla del sistema: membresía anual con 365 días
-        var membresia = new Membresia
-        {
-            Id = "mem-anual",
-            Nombre = "Plan Anual VIP",
-            DuracionDias = 365,
-            Precio = 600m,
-            Activa = true
-        };
+        var inicio = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-        var fechaInicio = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-        var fechaFinCalculada = fechaInicio.AddDays(membresia.DuracionDias);
+        var resultado = ReglasMembresia.CalcularFechaFin(inicio, 365);
 
-        Assert.AreEqual(365, (fechaFinCalculada - fechaInicio).TotalDays);
-        Assert.IsTrue(fechaFinCalculada > fechaInicio);
+        Comprobar(new DateTime(2027, 1, 1, 0, 0, 0, DateTimeKind.Utc), resultado);
     }
 
     [TestMethod]
-    public void AsignarMembresia_CreaMembresiaUsuario_ConRangoDeVigenciaCorrecto()
+    [TestProperty("Caso", "CP-VIG-003")]
+    public void CalcularFechaFin_MembresiaTrimestral_SumaExactamente90Dias()
     {
-        // Simulación de la asignación de membresía realizada en el sistema
-        var membresia = new Membresia
-        {
-            Id = "mem-trimestral",
-            Nombre = "Plan Trimestral",
-            DuracionDias = 90,
-            Precio = 200m
-        };
+        var inicio = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-        var fechaInicio = DateTime.UtcNow;
-        var membresiaUsuario = new MembresiaUsuario
-        {
-            UsuarioId = "user-999",
-            MembresiaId = membresia.Id,
-            FechaInicio = fechaInicio,
-            FechaFin = fechaInicio.AddDays(membresia.DuracionDias),
-            Activa = true
-        };
+        var resultado = ReglasMembresia.CalcularFechaFin(inicio, 90);
 
-        Assert.AreEqual(90, (membresiaUsuario.FechaFin - membresiaUsuario.FechaInicio).TotalDays);
-        Assert.IsTrue(membresiaUsuario.Activa);
-        Assert.IsTrue(membresiaUsuario.FechaFin > DateTime.UtcNow);
+        Comprobar(new DateTime(2026, 4, 1, 0, 0, 0, DateTimeKind.Utc), resultado);
+    }
+
+    [TestMethod]
+    [TestProperty("Caso", "CP-VIG-004")]
+    public void CalcularFechaFin_FinDeMes_SumaDiasSinUsarMesCalendario()
+    {
+        var inicio = new DateTime(2026, 1, 31, 14, 30, 0, DateTimeKind.Utc);
+
+        var resultado = ReglasMembresia.CalcularFechaFin(inicio, 30);
+
+        Comprobar(new DateTime(2026, 3, 2, 14, 30, 0, DateTimeKind.Utc), resultado);
+        Comprobar(DateTimeKind.Utc, resultado.Kind);
+    }
+
+    [TestMethod]
+    [TestProperty("Caso", "CP-VIG-005")]
+    public void CalcularFechaFin_AnioBisiesto_Incluye29DeFebrero()
+    {
+        var inicio = new DateTime(2028, 2, 28, 0, 0, 0, DateTimeKind.Utc);
+
+        var resultado = ReglasMembresia.CalcularFechaFin(inicio, 1);
+
+        Comprobar(new DateTime(2028, 2, 29, 0, 0, 0, DateTimeKind.Utc), resultado);
+    }
+
+    [TestMethod]
+    [TestProperty("Caso", "CP-VIG-006")]
+    public void CalcularFechaFin_CambioDeAnio_ConservaHora()
+    {
+        var inicio = new DateTime(2026, 12, 31, 23, 30, 0, DateTimeKind.Utc);
+
+        var resultado = ReglasMembresia.CalcularFechaFin(inicio, 1);
+
+        Comprobar(new DateTime(2027, 1, 1, 23, 30, 0, DateTimeKind.Utc), resultado);
     }
 }

@@ -1,0 +1,23 @@
+{
+  "fase": "red",
+  "inicioUtc": "2026-10-18T22:29:35.2935314Z",
+  "finUtc": "2026-10-18T22:30:02.4611532Z",
+  "ejecutable": "dotnet",
+  "argumentos": [
+    "run",
+    "--project",
+    "C:\\Users\\diego\\OneDrive\\Documentos\\GitHub\\DFIT_Enigma\\PruebasUnitarias\\PruebasUnitarias.csproj",
+    "-p:UseVSTest=false",
+    "-p:EnableMicrosoftTestingExtensionsCodeCoverage=false",
+    "-p:RestoreIgnoreFailedSources=true",
+    "-p:NuGetAudit=false",
+    "--",
+    "--report-trx",
+    "--report-trx-filename",
+    "red.trx",
+    "--results-directory",
+    "C:\\Users\\diego\\OneDrive\\Documentos\\GitHub\\DFIT_Enigma\\docs\\pruebas-unitarias\\evidencias"
+  ],
+  "codigoSalida": 2,
+  "nota": "Runner oficial MSTest directo. NuGetAudit=false solo evita consulta de red en esta ejecucion."
+}
