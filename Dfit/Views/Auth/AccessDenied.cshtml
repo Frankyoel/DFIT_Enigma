@@ -1,0 +1,78 @@
+@{
+    Layout = null;
+    ViewData["Title"] = "Acceso Denegado - DFIT Power";
+    var usuarioId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+    var esAdmin = User.IsInRole("Admin");
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+
+    <!-- Tipografía Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Framework de estilos Bootstrap & Estilos DFIT -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/dfit-login.css" asp-append-version="true" />
+</head>
+<body>
+
+    <main class="login-container" role="main">
+        <div class="login-card text-center" style="max-width: 460px;">
+            
+            <!-- Icono de Seguridad / Acceso Restringido -->
+            <div class="mb-3" style="display: inline-flex; align-items: center; justify-content: center; width: 70px; height: 70px; border-radius: 50%; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3);">
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+            </div>
+
+            <h1 class="text-h1" style="font-size: 1.5rem; margin-bottom: 0.5rem;">Acceso Restringido</h1>
+            <p class="text-caption mb-4" style="font-size: 13.5px; line-height: 1.5;">
+                Tu cuenta no tiene los permisos necesarios para acceder a este módulo. Si consideras que se trata de un error, comunícate con la administración del gimnasio.
+            </p>
+
+            <!-- Acciones de Regreso Seguro según Rol -->
+            <div class="d-grid gap-2">
+                @if (esAdmin)
+                {
+                    <a href="/Home/Dashboard" class="btn btn-primary">
+                        <span>Ir al Panel de Administrador</span>
+                    </a>
+                }
+                else if (!string.IsNullOrEmpty(usuarioId))
+                {
+                    <a href="/Home/MiMembresia/@usuarioId" class="btn btn-primary">
+                        <span>Ir a Mi Membresía</span>
+                    </a>
+                    <a href="/Home/Rutinas" class="btn btn-secondary" style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.12); color: #fff;">
+                        <span>Ver Rutinas</span>
+                    </a>
+                }
+                else
+                {
+                    <a href="/login" class="btn btn-primary">
+                        <span>Volver a Iniciar Sesión</span>
+                    </a>
+                }
+            </div>
+
+            <!-- Divisor y Enlace de Soporte -->
+            <div class="text-center mt-4 pt-3" style="border-top: 1px solid rgba(255, 255, 255, 0.08);">
+                <a asp-controller="Auth" asp-action="Logout" class="link-muted" style="font-size: 12.5px; text-decoration: none;">
+                    🚪 Cerrar sesión e ingresar con otra cuenta
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
