@@ -51,7 +51,7 @@
             }
 
             <!-- Formulario de Registro -->
-            <form asp-controller="Home" asp-action="Register" method="post" id="main-register-form" novalidate>
+            <form asp-controller="Auth" asp-action="Register" method="post" id="main-register-form" novalidate>
                 @Html.AntiForgeryToken()
 
                 <!-- Fila 1: Nombres y Apellidos en dos columnas -->
@@ -67,7 +67,7 @@
                                        placeholder="Ej. Juan" 
                                        autocomplete="given-name" 
                                        required 
-                                       aria-required="true"
+                                       aria-required="true" 
                                        aria-describedby="nombres-error" />
                                 <button type="button" class="btn-clear-input" aria-label="Limpiar campo Nombres" title="Limpiar casilla">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -90,7 +90,7 @@
                                        placeholder="Ej. Pérez" 
                                        autocomplete="family-name" 
                                        required 
-                                       aria-required="true"
+                                       aria-required="true" 
                                        aria-describedby="apellidos-error" />
                                 <button type="button" class="btn-clear-input" aria-label="Limpiar campo Apellidos" title="Limpiar casilla">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -113,13 +113,13 @@
                                 <input asp-for="DNI" 
                                        id="DniInput" 
                                        type="text" 
-                                       inputmode="numeric"
-                                       pattern="[0-9]{8}"
-                                       maxlength="8"
+                                       inputmode="numeric" 
+                                       pattern="[0-9]{8}" 
+                                       maxlength="8" 
                                        class="input-dark js-clearable-input js-numeric-only" 
                                        placeholder="12345678" 
                                        required 
-                                       aria-required="true"
+                                       aria-required="true" 
                                        aria-describedby="dni-error" />
                                 <button type="button" class="btn-clear-input" aria-label="Limpiar campo DNI" title="Limpiar casilla">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -138,14 +138,14 @@
                                 <input asp-for="Celular" 
                                        id="CelularInput" 
                                        type="tel" 
-                                       inputmode="numeric"
-                                       pattern="[0-9]{9}"
-                                       maxlength="9"
+                                       inputmode="numeric" 
+                                       pattern="[0-9]{9}" 
+                                       maxlength="9" 
                                        class="input-dark js-clearable-input js-numeric-only" 
                                        placeholder="987654321" 
                                        autocomplete="tel" 
                                        required 
-                                       aria-required="true"
+                                       aria-required="true" 
                                        aria-describedby="celular-error" />
                                 <button type="button" class="btn-clear-input" aria-label="Limpiar campo Celular" title="Limpiar casilla">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -170,7 +170,7 @@
                                placeholder="ejemplo@dfitpower.com" 
                                autocomplete="email" 
                                required 
-                               aria-required="true"
+                               aria-required="true" 
                                aria-describedby="correo-error" />
                         <button type="button" class="btn-clear-input" aria-label="Limpiar campo Correo" title="Limpiar casilla">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -195,7 +195,7 @@
                                        placeholder="Mín. 6 caracteres" 
                                        autocomplete="new-password" 
                                        required 
-                                       aria-required="true"
+                                       aria-required="true" 
                                        aria-describedby="password-error" />
                                 <button type="button" class="btn-clear-input" aria-label="Limpiar campo Contraseña" title="Limpiar casilla">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -209,58 +209,58 @@
                                         aria-label="Mostrar contraseña" 
                                         aria-pressed="false" 
                                         title="Mostrar u ocultar contraseña">
-                            <svg class="eye-show" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                                <circle cx="12" cy="12" r="3" />
-                            </svg>
-                            <svg class="eye-hide" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display: none;">
-                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
-                                <line x1="1" y1="1" x2="23" y2="23" />
-                            </svg>
-                        </button>
+                                    <svg class="eye-show" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                        <circle cx="12" cy="12" r="3" />
+                                    </svg>
+                                    <svg class="eye-hide" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display: none;">
+                                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                                        <line x1="1" y1="1" x2="23" y2="23" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <span asp-validation-for="Password" id="password-error" class="field-error-message" role="alert"></span>
+                        </div>
                     </div>
-                    <span asp-validation-for="Password" id="password-error" class="field-error-message" role="alert"></span>
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="input-group mb-0">
-                    <label asp-for="ConfirmPassword" class="form-label" for="ConfirmPasswordInput">Confirmar</label>
-                    <div class="input-actions-container has-both-actions">
-                        <input asp-for="ConfirmPassword" 
-                               id="ConfirmPasswordInput" 
-                               type="password" 
-                               class="input-dark js-clearable-input" 
-                               placeholder="Repetir clave" 
-                               autocomplete="new-password" 
-                               required 
-                               aria-required="true"
-                               aria-describedby="confirm-password-error" />
-                        <button type="button" class="btn-clear-input" aria-label="Limpiar campo Confirmar" title="Limpiar casilla">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                <line x1="18" y1="6" x2="6" y2="18"></line>
-                                <line x1="6" y1="6" x2="18" y2="18"></line>
-                            </svg>
-                        </button>
-                        <button type="button" 
-                                class="password-toggle-btn js-toggle-pwd" 
-                                data-target="ConfirmPasswordInput" 
-                                aria-label="Mostrar contraseña confirmada" 
-                                aria-pressed="false" 
-                                title="Mostrar u ocultar contraseña">
-                            <svg class="eye-show" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                                <circle cx="12" cy="12" r="3" />
-                            </svg>
-                            <svg class="eye-hide" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display: none;">
-                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
-                                <line x1="1" y1="1" x2="23" y2="23" />
-                            </svg>
-                        </button>
+                    <div class="col-sm-6">
+                        <div class="input-group mb-0">
+                            <label asp-for="ConfirmPassword" class="form-label" for="ConfirmPasswordInput">Confirmar</label>
+                            <div class="input-actions-container has-both-actions">
+                                <input asp-for="ConfirmPassword" 
+                                       id="ConfirmPasswordInput" 
+                                       type="password" 
+                                       class="input-dark js-clearable-input" 
+                                       placeholder="Repetir clave" 
+                                       autocomplete="new-password" 
+                                       required 
+                                       aria-required="true" 
+                                       aria-describedby="confirm-password-error" />
+                                <button type="button" class="btn-clear-input" aria-label="Limpiar campo Confirmar" title="Limpiar casilla">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                                <button type="button" 
+                                        class="password-toggle-btn js-toggle-pwd" 
+                                        data-target="ConfirmPasswordInput" 
+                                        aria-label="Mostrar contraseña confirmada" 
+                                        aria-pressed="false" 
+                                        title="Mostrar u ocultar contraseña">
+                                    <svg class="eye-show" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                        <circle cx="12" cy="12" r="3" />
+                                    </svg>
+                                    <svg class="eye-hide" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display: none;">
+                                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                                        <line x1="1" y1="1" x2="23" y2="23" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <span asp-validation-for="ConfirmPassword" id="confirm-password-error" class="field-error-message" role="alert"></span>
+                        </div>
                     </div>
-                    <span asp-validation-for="ConfirmPassword" id="confirm-password-error" class="field-error-message" role="alert"></span>
                 </div>
-            </div>
-        </div>
 
                 <!-- Botón de Registro -->
                 <button type="submit" class="btn btn-primary" id="btnSubmitRegister">
@@ -274,7 +274,7 @@
 
                 <div class="text-center">
                     <span class="text-caption">¿Ya tienes una cuenta? </span>
-                    <a asp-controller="Home" asp-action="Login" class="link-accent">Inicia sesión aquí</a>
+                    <a asp-controller="Auth" asp-action="Login" class="link-accent">Inicia sesión aquí</a>
                 </div>
 
                 <!-- Enlace sutil para Canales de Asistencia -->
