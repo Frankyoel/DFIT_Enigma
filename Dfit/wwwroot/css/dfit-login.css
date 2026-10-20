@@ -132,6 +132,16 @@ body::after {
     outline: none;
 }
 
+.input-dark:disabled,
+.input-dark[readonly].is-locked,
+.input-dark.is-locked {
+    background: rgba(35, 22, 22, 0.75);
+    border-color: rgba(239, 68, 68, 0.4);
+    color: rgba(255, 255, 255, 0.45);
+    cursor: not-allowed;
+    user-select: none;
+}
+
 /* ==========================================================================
    BUTTONS
    ========================================================================== */
@@ -155,6 +165,14 @@ body::after {
 
 .btn-primary:active {
     transform: translateY(0);
+}
+
+.btn-primary:disabled {
+    background: rgba(45, 55, 45, 0.6) !important;
+    color: rgba(255, 255, 255, 0.4) !important;
+    box-shadow: none !important;
+    cursor: not-allowed !important;
+    transform: none !important;
 }
 
 /* ==========================================================================

@@ -12,6 +12,7 @@ using Google.Cloud.Firestore;
 using Dfit.Models;
 using Dfit.Models.Patterns.Builder;
 using Dfit.Models.Patterns.Observer;
+using Dfit.Services;
 
 namespace Dfit.Controllers
 {
@@ -24,15 +25,18 @@ namespace Dfit.Controllers
         private readonly ILogger<AuthController> _logger;
         private readonly FirestoreDb _db;
         private readonly ISubject _userRegistrationSubject;
+        private readonly IRateLimiter _rateLimiter;
 
         public AuthController(
             ILogger<AuthController> logger,
             FirestoreDb db,
-            ISubject userRegistrationSubject)
+            ISubject userRegistrationSubject,
+            IRateLimiter? rateLimiter = null)
         {
             _logger = logger;
             _db = db;
             _userRegistrationSubject = userRegistrationSubject;
+            _rateLimiter = rateLimiter ?? new RateLimiter();
         }
 
         // =========================================================================
@@ -65,6 +69,16 @@ namespace Dfit.Controllers
 
             ViewData["HideSidebar"] = true;
             ViewData["ReturnUrl"] = returnUrl;
+
+            var ipCliente = ObtenerIpCliente();
+            var estadoIp = _rateLimiter.Verificar("login", null, ipCliente);
+            if (estadoIp.EstaBloqueado)
+            {
+                ViewData["EstaBloqueado"] = true;
+                ViewData["SegundosRestantesBloqueo"] = (int)Math.Max(1, estadoIp.TiempoRestanteBloqueo.TotalSeconds);
+                ModelState.AddModelError("", estadoIp.MensajeBloqueo ?? "Acceso bloqueado temporalmente por exceso de intentos.");
+            }
+
             return View();
         }
 
@@ -84,6 +98,21 @@ namespace Dfit.Controllers
                 return View(model);
             }
 
+            var ipCliente = ObtenerIpCliente();
+
+            // Reverse Guard de Seguridad: Si el usuario o la IP excedieron el límite, bloquear sin consultar Firestore
+            var estadoAcceso = _rateLimiter.Verificar("login", model.Correo, ipCliente);
+            if (estadoAcceso.EstaBloqueado)
+            {
+                _logger.LogWarning("Intento de login denegado por bloqueo temporal: Correo={Email}, IP={Ip}, TiempoRestante={Tiempo}",
+                    model.Correo, ipCliente, estadoAcceso.TiempoRestanteBloqueo);
+                ViewData["EstaBloqueado"] = true;
+                ViewData["SegundosRestantesBloqueo"] = (int)Math.Max(1, estadoAcceso.TiempoRestanteBloqueo.TotalSeconds);
+                model.Password = string.Empty;
+                ModelState.AddModelError("", estadoAcceso.MensajeBloqueo ?? "Acceso bloqueado temporalmente por exceso de intentos.");
+                return View(model);
+            }
+
             try
             {
                 var query = _db.Collection("Usuarios")
@@ -94,7 +123,18 @@ namespace Dfit.Controllers
 
                 if (snapshot.Documents.Count == 0)
                 {
-                    ModelState.AddModelError("", "Correo o contraseña incorrectos.");
+                    var estadoFallo = _rateLimiter.RegistrarFallo("login", model.Correo, ipCliente);
+                    _logger.LogWarning("Credenciales incorrectas para {Email} desde IP {Ip}. Intentos restantes: {Restantes}, Bloqueado: {Bloqueado}",
+                        model.Correo, ipCliente, estadoFallo.IntentosRestantes, estadoFallo.EstaBloqueado);
+
+                    if (estadoFallo.EstaBloqueado)
+                    {
+                        ViewData["EstaBloqueado"] = true;
+                        ViewData["SegundosRestantesBloqueo"] = (int)Math.Max(1, estadoFallo.TiempoRestanteBloqueo.TotalSeconds);
+                        model.Password = string.Empty;
+                    }
+
+                    ModelState.AddModelError("", estadoFallo.MensajeBloqueo ?? "Correo o contraseña incorrectos.");
                     return View(model);
                 }
 
@@ -104,6 +144,9 @@ namespace Dfit.Controllers
                     ModelState.AddModelError("", "Tu cuenta ha sido desactivada. Contacta al administrador.");
                     return View(model);
                 }
+
+                // Autenticación exitosa: restablecer el contador de intentos fallidos
+                _rateLimiter.RegistrarExito("login", model.Correo, ipCliente);
 
                 var nombre = userDoc.ContainsField("Nombres") ? userDoc.GetValue<string>("Nombres") : model.Correo;
                 var rol = userDoc.ContainsField("Rol") ? userDoc.GetValue<string>("Rol") : "Usuario";
@@ -295,6 +338,20 @@ namespace Dfit.Controllers
             usuario.DNI = model.DNI;
             usuario.Celular = model.Celular;
             return usuario;
+        }
+
+        private string ObtenerIpCliente()
+        {
+            if (Request.Headers.TryGetValue("X-Forwarded-For", out var forwardHeader) && !string.IsNullOrWhiteSpace(forwardHeader))
+            {
+                var primeraIp = forwardHeader.ToString().Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)[0];
+                if (!string.IsNullOrEmpty(primeraIp))
+                {
+                    return primeraIp;
+                }
+            }
+
+            return HttpContext.Connection.RemoteIpAddress?.ToString() ?? "127.0.0.1";
         }
     }
 }

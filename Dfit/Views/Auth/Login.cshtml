@@ -2,6 +2,8 @@
 @{
     Layout = null;
     ViewData["Title"] = "Iniciar Sesión - DFIT Power";
+    var estaBloqueado = (bool)(ViewData["EstaBloqueado"] ?? false);
+    var segundosRestantes = (int)(ViewData["SegundosRestantesBloqueo"] ?? 0);
 }
 
 <!DOCTYPE html>
@@ -61,12 +63,13 @@
                         <input asp-for="Correo" 
                                id="CorreoInput" 
                                type="email" 
-                               class="input-dark js-clearable-input" 
+                               class="input-dark js-clearable-input @(estaBloqueado ? "is-locked" : "")" 
                                placeholder="ejemplo@dfitpower.com" 
                                autocomplete="username" 
                                required 
                                aria-required="true"
-                               aria-describedby="correo-error" />
+                               aria-describedby="correo-error" 
+                               readonly="@(estaBloqueado ? "readonly" : null)" />
                         <button type="button" class="btn-clear-input" aria-label="Limpiar campo Correo" title="Limpiar casilla">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                 <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -84,12 +87,13 @@
                         <input asp-for="Password" 
                                id="PasswordInput" 
                                type="password" 
-                               class="input-dark js-clearable-input" 
-                               placeholder="••••••••" 
+                               class="input-dark js-clearable-input @(estaBloqueado ? "is-locked" : "")" 
+                               placeholder="@(estaBloqueado ? "Acceso temporalmente bloqueado" : "••••••••")" 
                                autocomplete="current-password" 
                                required 
                                aria-required="true"
-                               aria-describedby="password-error" />
+                               aria-describedby="password-error" 
+                               disabled="@(estaBloqueado ? "disabled" : null)" />
                         <button type="button" class="btn-clear-input" aria-label="Limpiar campo Contraseña" title="Limpiar casilla">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                 <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -125,9 +129,10 @@
                 </div>
 
                 <!-- Botón de Ingreso -->
-                <button type="submit" class="btn btn-primary" id="btnSubmitLogin">
-                    <span>Iniciar sesión</span>
+                <button type="submit" class="btn btn-primary" id="btnSubmitLogin" disabled="@(estaBloqueado ? "disabled" : null)">
+                    <span id="btnSubmitText">@(estaBloqueado ? "Acceso bloqueado" : "Iniciar sesión")</span>
                 </button>
+                <div id="lockCountdownNotice" class="text-center mt-2" style="font-size: 12.5px; font-weight: 500; color: #f87171; display: @(estaBloqueado ? "block" : "none");"></div>
 
                 <!-- Divisor y Enlace a Registro -->
                 <div class="divider">
@@ -240,6 +245,72 @@
                         }
                     });
                 }
+            }
+
+            // 4. TEMPORIZADOR DE COOLDOWN Y BLOQUEO DE ESCRITURA
+            const isLocked = @(estaBloqueado ? "true" : "false");
+            let remainingSeconds = @segundosRestantes;
+
+            if (isLocked && remainingSeconds > 0) {
+                const passwordInput = document.getElementById("PasswordInput");
+                const submitBtn = document.getElementById("btnSubmitLogin");
+                const submitText = document.getElementById("btnSubmitText");
+                const notice = document.getElementById("lockCountdownNotice");
+                const togglePasswordBtn = document.getElementById("btnTogglePassword");
+                const clearBtns = document.querySelectorAll(".btn-clear-input");
+
+                if (togglePasswordBtn) {
+                    togglePasswordBtn.disabled = true;
+                }
+                clearBtns.forEach(btn => btn.style.display = "none");
+
+                function formatTime(totalSec) {
+                    const m = Math.floor(totalSec / 60);
+                    const s = totalSec % 60;
+                    return (m < 10 ? "0" : "") + m + ":" + (s < 10 ? "0" : "") + s;
+                }
+
+                function updateLockUI() {
+                    if (remainingSeconds <= 0) {
+                        if (passwordInput) {
+                            passwordInput.disabled = false;
+                            passwordInput.classList.remove("is-locked");
+                            passwordInput.placeholder = "••••••••";
+                            passwordInput.focus();
+                        }
+                        if (correoInput) {
+                            correoInput.removeAttribute("readonly");
+                            correoInput.classList.remove("is-locked");
+                        }
+                        if (submitBtn) {
+                            submitBtn.disabled = false;
+                        }
+                        if (submitText) {
+                            submitText.textContent = "Iniciar sesión";
+                        }
+                        if (togglePasswordBtn) {
+                            togglePasswordBtn.disabled = false;
+                        }
+                        if (notice) {
+                            notice.style.color = "#86efac";
+                            notice.textContent = "El tiempo de bloqueo ha finalizado. Ya puedes escribir tu contraseña.";
+                        }
+                        clearInterval(timerInterval);
+                        return;
+                    }
+
+                    if (submitText) {
+                        submitText.textContent = "Bloqueado (" + formatTime(remainingSeconds) + ")";
+                    }
+                    if (notice) {
+                        notice.textContent = "Acceso bloqueado. Podrás intentar de nuevo en " + formatTime(remainingSeconds);
+                    }
+
+                    remainingSeconds--;
+                }
+
+                updateLockUI();
+                const timerInterval = setInterval(updateLockUI, 1000);
             }
         })();
     </script>

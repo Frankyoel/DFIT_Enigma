@@ -4,6 +4,7 @@ using Dfit.Models.Patterns.Singleton;
 using Dfit.Models.Patterns.Proxy;
 using Dfit.Models.Patterns.Strategy;
 using Dfit.Models.Patterns.Observer;
+using Dfit.Services;
 
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
@@ -62,6 +63,7 @@ FirebaseConfig.Configure(builder);
 // builder.Services.AddDbContext<AppDbContext>(...); // Eliminado en migración a Firebase
 
 builder.Services.AddSingleton<IQRTokenService, QRTokenManager>();
+builder.Services.AddSingleton<IRateLimiter, RateLimiter>();
 builder.Services.AddScoped<RealGymAccess>();
 builder.Services.AddScoped<IGymAccess, GymAccessProxy>();
 builder.Services.AddScoped<PaymentContext>();
