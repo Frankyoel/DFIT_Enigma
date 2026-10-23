@@ -282,13 +282,34 @@ namespace Dfit.Controllers
 
             try
             {
-                var snap = await _db.Collection("Usuarios")
-                    .WhereEqualTo("Correo", model.Correo)
-                    .GetSnapshotAsync();
+                // Validación de unicidad obligatoria en campos clave (Correo, DNI, Celular)
+                var correoTask = _db.Collection("Usuarios").WhereEqualTo("Correo", model.Correo).GetSnapshotAsync();
+                var dniTask = _db.Collection("Usuarios").WhereEqualTo("DNI", model.DNI).GetSnapshotAsync();
+                var celularTask = _db.Collection("Usuarios").WhereEqualTo("Celular", model.Celular).GetSnapshotAsync();
 
-                if (snap.Documents.Count > 0)
+                await Task.WhenAll(correoTask, dniTask, celularTask);
+
+                var correoSnap = await correoTask;
+                var dniSnap = await dniTask;
+                var celularSnap = await celularTask;
+
+                if (correoSnap.Documents.Count > 0)
                 {
                     ModelState.AddModelError("Correo", "Este correo ya está registrado.");
+                }
+
+                if (dniSnap.Documents.Count > 0)
+                {
+                    ModelState.AddModelError("DNI", "Este DNI ya se encuentra registrado.");
+                }
+
+                if (celularSnap.Documents.Count > 0)
+                {
+                    ModelState.AddModelError("Celular", "Este número de celular ya se encuentra registrado.");
+                }
+
+                if (!ModelState.IsValid)
+                {
                     return View(model);
                 }
 
@@ -350,14 +371,13 @@ namespace Dfit.Controllers
             var builder = new UsuarioBuilder();
             var usuario = builder
                 .SetDatosBasicos(model.Nombres, model.Apellidos, model.Correo)
+                .SetDatosIdentidad(model.DNI, model.Celular)
                 .SetPassword(model.Password)
                 .SetRol("Usuario")
                 .SetDefaults()
                 .Build();
 
             usuario.Id = documentId;
-            usuario.DNI = model.DNI;
-            usuario.Celular = model.Celular;
             return usuario;
         }
 

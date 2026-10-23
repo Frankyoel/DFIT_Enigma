@@ -1,7 +1,6 @@
 using System;
 using Google.Cloud.Firestore;
 
-
 namespace Dfit.Models.Patterns.Builder
 {
     [FirestoreData]
@@ -14,6 +13,13 @@ namespace Dfit.Models.Patterns.Builder
             _usuario.Nombres = nombres;
             _usuario.Apellidos = apellidos;
             _usuario.Correo = correo;
+            return this;
+        }
+
+        public UsuarioBuilder SetDatosIdentidad(string dni, string celular)
+        {
+            _usuario.DNI = dni;
+            _usuario.Celular = celular;
             return this;
         }
 
