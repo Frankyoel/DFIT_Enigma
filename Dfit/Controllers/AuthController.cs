@@ -13,6 +13,7 @@ using Dfit.Models;
 using Dfit.Models.Patterns.Builder;
 using Dfit.Models.Patterns.Observer;
 using Dfit.Services;
+using Dfit.Utils;
 
 namespace Dfit.Controllers
 {
@@ -71,12 +72,18 @@ namespace Dfit.Controllers
             ViewData["ReturnUrl"] = returnUrl;
 
             var ipCliente = ObtenerIpCliente();
-            var estadoIp = _rateLimiter.Verificar("login", null, ipCliente);
-            if (estadoIp.EstaBloqueado)
+
+            // Solo evaluar bloqueo previo por IP en GET si es una IP pública legítima
+            // (evita que un loopback o IP interna de proxy de Render bloquee la pantalla para todos)
+            if (IpHelper.EsIpPublica(ipCliente))
             {
-                ViewData["EstaBloqueado"] = true;
-                ViewData["SegundosRestantesBloqueo"] = (int)Math.Max(1, estadoIp.TiempoRestanteBloqueo.TotalSeconds);
-                ModelState.AddModelError("", estadoIp.MensajeBloqueo ?? "Acceso bloqueado temporalmente por exceso de intentos.");
+                var estadoIp = _rateLimiter.Verificar("login", null, ipCliente);
+                if (estadoIp.EstaBloqueado)
+                {
+                    ViewData["EstaBloqueado"] = true;
+                    ViewData["SegundosRestantesBloqueo"] = (int)Math.Max(1, estadoIp.TiempoRestanteBloqueo.TotalSeconds);
+                    ModelState.AddModelError("", estadoIp.MensajeBloqueo ?? "Acceso bloqueado temporalmente por exceso de intentos.");
+                }
             }
 
             return View();
@@ -99,9 +106,11 @@ namespace Dfit.Controllers
             }
 
             var ipCliente = ObtenerIpCliente();
+            // Si la IP es loopback/privada (Render/Docker sin cabeceras), aislar el rate-limit por cuenta para no perjudicar a otros usuarios
+            var ipParaRateLimit = IpHelper.EsIpPublica(ipCliente) ? ipCliente : null;
 
             // Reverse Guard de Seguridad: Si el usuario o la IP excedieron el límite, bloquear sin consultar Firestore
-            var estadoAcceso = _rateLimiter.Verificar("login", model.Correo, ipCliente);
+            var estadoAcceso = _rateLimiter.Verificar("login", model.Correo, ipParaRateLimit);
             if (estadoAcceso.EstaBloqueado)
             {
                 _logger.LogWarning("Intento de login denegado por bloqueo temporal: Correo={Email}, IP={Ip}, TiempoRestante={Tiempo}",
@@ -123,7 +132,7 @@ namespace Dfit.Controllers
 
                 if (snapshot.Documents.Count == 0)
                 {
-                    var estadoFallo = _rateLimiter.RegistrarFallo("login", model.Correo, ipCliente);
+                    var estadoFallo = _rateLimiter.RegistrarFallo("login", model.Correo, ipParaRateLimit);
                     _logger.LogWarning("Credenciales incorrectas para {Email} desde IP {Ip}. Intentos restantes: {Restantes}, Bloqueado: {Bloqueado}",
                         model.Correo, ipCliente, estadoFallo.IntentosRestantes, estadoFallo.EstaBloqueado);
 
@@ -146,7 +155,7 @@ namespace Dfit.Controllers
                 }
 
                 // Autenticación exitosa: restablecer el contador de intentos fallidos
-                _rateLimiter.RegistrarExito("login", model.Correo, ipCliente);
+                _rateLimiter.RegistrarExito("login", model.Correo, ipParaRateLimit);
 
                 var nombre = userDoc.ContainsField("Nombres") ? userDoc.GetValue<string>("Nombres") : model.Correo;
                 var rol = userDoc.ContainsField("Rol") ? userDoc.GetValue<string>("Rol") : "Usuario";
@@ -342,16 +351,7 @@ namespace Dfit.Controllers
 
         private string ObtenerIpCliente()
         {
-            if (Request.Headers.TryGetValue("X-Forwarded-For", out var forwardHeader) && !string.IsNullOrWhiteSpace(forwardHeader))
-            {
-                var primeraIp = forwardHeader.ToString().Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)[0];
-                if (!string.IsNullOrEmpty(primeraIp))
-                {
-                    return primeraIp;
-                }
-            }
-
-            return HttpContext.Connection.RemoteIpAddress?.ToString() ?? "127.0.0.1";
+            return IpHelper.ObtenerIpCliente(HttpContext);
         }
     }
 }

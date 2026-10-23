@@ -12,6 +12,7 @@ using Google.Cloud.Firestore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 using Dfit.Utils;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -74,6 +75,15 @@ registrationSubject.Attach(new LogNotificationObserver());
 builder.Services.AddSingleton<ISubject>(registrationSubject);
 
 var app = builder.Build();
+
+// Configuración de proxies inversos para Cloud (Render, Cloudflare, Docker)
+var forwardedHeadersOptions = new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+};
+forwardedHeadersOptions.KnownIPNetworks.Clear();
+forwardedHeadersOptions.KnownProxies.Clear();
+app.UseForwardedHeaders(forwardedHeadersOptions);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
