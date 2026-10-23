@@ -124,17 +124,30 @@ namespace Dfit.Controllers
 
             try
             {
+                var correoNormalizado = model.Correo.Trim();
+
+                // 1. Validar si el correo existe en el sistema (sin consumir intentos del RateLimiter)
                 var query = _db.Collection("Usuarios")
-                    .WhereEqualTo("Correo", model.Correo)
-                    .WhereEqualTo("PasswordHash", model.Password);
+                    .WhereEqualTo("Correo", correoNormalizado);
 
                 var snapshot = await query.GetSnapshotAsync();
 
                 if (snapshot.Documents.Count == 0)
                 {
-                    var estadoFallo = _rateLimiter.RegistrarFallo("login", model.Correo, ipParaRateLimit);
-                    _logger.LogWarning("Credenciales incorrectas para {Email} desde IP {Ip}. Intentos restantes: {Restantes}, Bloqueado: {Bloqueado}",
-                        model.Correo, ipCliente, estadoFallo.IntentosRestantes, estadoFallo.EstaBloqueado);
+                    _logger.LogInformation("Intento de acceso con correo no registrado: {Email} desde IP {Ip}", correoNormalizado, ipCliente);
+                    ModelState.AddModelError("Correo", "El correo electrónico ingresado no se encuentra asociado a ninguna cuenta registrada.");
+                    return View(model);
+                }
+
+                var userDoc = snapshot.Documents[0];
+                var passwordAlmacenada = userDoc.ContainsField("PasswordHash") ? userDoc.GetValue<string>("PasswordHash") : null;
+
+                // 2. Si el correo sí existe pero la contraseña es errónea, aplicar el RateLimiter específico de la cuenta
+                if (string.IsNullOrEmpty(passwordAlmacenada) || passwordAlmacenada != model.Password)
+                {
+                    var estadoFallo = _rateLimiter.RegistrarFallo("login", correoNormalizado, ipParaRateLimit);
+                    _logger.LogWarning("Contraseña incorrecta para {Email} desde IP {Ip}. Intentos restantes: {Restantes}, Bloqueado: {Bloqueado}",
+                        correoNormalizado, ipCliente, estadoFallo.IntentosRestantes, estadoFallo.EstaBloqueado);
 
                     if (estadoFallo.EstaBloqueado)
                     {
@@ -143,11 +156,10 @@ namespace Dfit.Controllers
                         model.Password = string.Empty;
                     }
 
-                    ModelState.AddModelError("", estadoFallo.MensajeBloqueo ?? "Correo o contraseña incorrectos.");
+                    ModelState.AddModelError("Password", estadoFallo.MensajeBloqueo ?? "Contraseña incorrecta.");
                     return View(model);
                 }
 
-                var userDoc = snapshot.Documents[0];
                 if (!IsUserActive(userDoc))
                 {
                     ModelState.AddModelError("", "Tu cuenta ha sido desactivada. Contacta al administrador.");
@@ -155,7 +167,7 @@ namespace Dfit.Controllers
                 }
 
                 // Autenticación exitosa: restablecer el contador de intentos fallidos
-                _rateLimiter.RegistrarExito("login", model.Correo, ipParaRateLimit);
+                _rateLimiter.RegistrarExito("login", correoNormalizado, ipParaRateLimit);
 
                 var nombre = userDoc.ContainsField("Nombres") ? userDoc.GetValue<string>("Nombres") : model.Correo;
                 var rol = userDoc.ContainsField("Rol") ? userDoc.GetValue<string>("Rol") : "Usuario";
