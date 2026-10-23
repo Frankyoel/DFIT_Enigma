@@ -30,7 +30,7 @@ namespace Dfit.Models
 
         [Required(ErrorMessage = "La contraseña es requerida")]
         [DataType(DataType.Password)]
-        [MinLength(6, ErrorMessage = "La contraseña debe tener al menos 6 caracteres")]
+        [MinLength(8, ErrorMessage = "La contraseña debe tener al menos 8 caracteres")]
         public string Password { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Confirmar la contraseña es requerido")]
