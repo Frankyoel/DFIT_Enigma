@@ -74,4 +74,42 @@ public class CalculoVigenciaTests : PruebaDocumentada
 
         Comprobar(new DateTime(2027, 1, 1, 23, 30, 0, DateTimeKind.Utc), resultado);
     }
+
+    [TestMethod]
+    [TestProperty("Caso", "CP-VIG-007")]
+    public void CalcularPeriodoVigencia_SocioSinMembresiaPrevia_IniciaHoyYSumaDias()
+    {
+        var ahora = new DateTime(2026, 10, 26, 10, 0, 0, DateTimeKind.Utc);
+
+        var (inicio, fin) = ReglasMembresia.CalcularPeriodoVigencia(null, 30, ahora);
+
+        Comprobar(ahora, inicio);
+        Comprobar(new DateTime(2026, 11, 25, 10, 0, 0, DateTimeKind.Utc), fin);
+    }
+
+    [TestMethod]
+    [TestProperty("Caso", "CP-VIG-008")]
+    public void CalcularPeriodoVigencia_SocioConMembresiaVencida_IniciaHoyYSumaDias()
+    {
+        var ahora = new DateTime(2026, 10, 26, 10, 0, 0, DateTimeKind.Utc);
+        var vencida = new DateTime(2026, 10, 20, 10, 0, 0, DateTimeKind.Utc);
+
+        var (inicio, fin) = ReglasMembresia.CalcularPeriodoVigencia(vencida, 30, ahora);
+
+        Comprobar(ahora, inicio);
+        Comprobar(new DateTime(2026, 11, 25, 10, 0, 0, DateTimeKind.Utc), fin);
+    }
+
+    [TestMethod]
+    [TestProperty("Caso", "CP-VIG-009")]
+    public void CalcularPeriodoVigencia_SocioConMembresiaVigente_ExtiendeDesdeFechaFinActual()
+    {
+        var ahora = new DateTime(2026, 10, 26, 10, 0, 0, DateTimeKind.Utc);
+        var vigenteHasta = new DateTime(2026, 11, 5, 10, 0, 0, DateTimeKind.Utc);
+
+        var (inicio, fin) = ReglasMembresia.CalcularPeriodoVigencia(vigenteHasta, 30, ahora);
+
+        Comprobar(ahora, inicio);
+        Comprobar(new DateTime(2026, 12, 5, 10, 0, 0, DateTimeKind.Utc), fin);
+    }
 }

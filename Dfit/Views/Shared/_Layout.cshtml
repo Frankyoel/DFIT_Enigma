@@ -32,8 +32,14 @@
                     @if (User.IsInRole("Admin"))
                     {
                         <a href="/Home/Dashboard" class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Dashboard" ? "active" : "")">Usuarios</a>
+                        <a href="/Home/Recepcion" class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Recepcion" ? "active" : "")">Recepción y Pagos</a>
                         <a href="/Home/Membresias" class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Membresias" ? "active" : "")">Membresías</a>
                         <a href="/Home/ReporteFinanciero" class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "ReporteFinanciero" ? "active" : "")">Reportes</a>
+                        <a href="/Home/Asistencia" class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Asistencia" ? "active" : "")">Control Asistencia</a>
+                    }
+                    else if (User.IsInRole("Recepcionista"))
+                    {
+                        <a href="/Home/Recepcion" class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Recepcion" ? "active" : "")">Recepción y Pagos</a>
                         <a href="/Home/Asistencia" class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Asistencia" ? "active" : "")">Control Asistencia</a>
                     }
                     else
@@ -56,10 +62,10 @@
                 <header class="topbar">
                     <a href="/Home/Profile/@(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value)" style="display:flex; gap: 1rem; align-items:center; text-decoration:none; color:inherit;">
                         <span style="font-weight: 500; font-size:14px; color:var(--text-muted);">
-                            @(User.IsInRole("Admin") ? "Admin Panel" : (User.Identity?.Name ?? "Portal Socio"))
+                            @(User.IsInRole("Admin") ? "Admin Panel" : (User.IsInRole("Recepcionista") ? "Panel Recepción" : (User.Identity?.Name ?? "Portal Socio")))
                         </span>
                         <div style="width: 32px; height: 32px; background: var(--primary); border-radius: 50%; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold;">
-                            @(User.IsInRole("Admin") ? "A" : (User.Identity?.Name?.Length > 0 ? User.Identity.Name.Substring(0, 1).ToUpper() : "S"))
+                            @(User.IsInRole("Admin") ? "A" : (User.IsInRole("Recepcionista") ? "R" : (User.Identity?.Name?.Length > 0 ? User.Identity.Name.Substring(0, 1).ToUpper() : "S")))
                         </div>
                     </a>
                 </header>

@@ -8,20 +8,24 @@
         <h2>Registrar Pago</h2>
         <p class="text-muted" style="margin-top: 4px;">Registrando pago para: <strong>@ViewBag.Usuario?.Nombres @ViewBag.Usuario?.Apellidos</strong></p>
     </div>
-    <a href="/Home/Dashboard" class="btn btn-secondary">← Volver</a>
+    @{
+        var volverUrl = !string.IsNullOrEmpty((string?)ViewBag.ReturnUrl) ? (string)ViewBag.ReturnUrl : (User.IsInRole("Recepcionista") ? "/Home/Recepcion" : "/Home/Dashboard");
+    }
+    <a href="@volverUrl" class="btn btn-secondary">← Volver</a>
 </div>
 
 <div class="card" style="max-width: 600px;">
     <form asp-action="RegistrarPago" method="post">
         <input type="hidden" asp-for="UsuarioId" value="@ViewBag.Usuario?.Id" />
+        <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
         
         <div class="form-group">
             <label asp-for="MembresiaId" class="form-label">Membresía Asociada</label>
-            <select asp-for="MembresiaId" class="form-control" style="appearance: auto;">
+            <select asp-for="MembresiaId" id="selectMembresia" class="form-control" style="appearance: auto;">
                 @if(ViewBag.Membresias != null) {
                     foreach (var plan in ViewBag.Membresias)
                     {
-                        <option value="@plan.Id">@plan.Nombre - S/ @plan.Precio</option>
+                        <option value="@plan.Id" data-precio="@plan.Precio" data-dias="@plan.DuracionDias">@plan.Nombre - S/ @plan.Precio (@plan.DuracionDias días)</option>
                     }
                 }
             </select>
@@ -29,18 +33,47 @@
 
         <div class="form-group">
             <label asp-for="Monto" class="form-label">Monto Recibido (S/)</label>
-            <input asp-for="Monto" type="number" step="0.01" class="form-control" required />
+            <input asp-for="Monto" id="inputMonto" type="number" step="0.01" class="form-control" required />
+            <small class="text-muted">Se actualizará automáticamente el estado y la vigencia de la membresía del socio.</small>
         </div>
 
         <div class="form-group mb-4">
             <label asp-for="MetodoPago" class="form-label">Método de Pago</label>
             <select asp-for="MetodoPago" class="form-control" style="appearance: auto;">
                 <option value="Efectivo">Efectivo</option>
-                <option value="Tarjeta Crédito/Débito">Tarjeta Crédito/Débito</option>
+                <option value="Tarjeta">Tarjeta Crédito/Débito</option>
                 <option value="Transferencia">Transferencia (Yape/Plin)</option>
             </select>
         </div>
 
-        <button type="submit" class="btn btn-primary" style="width: 100%;">Confirmar Pago</button>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Confirmar Pago y Actualizar Membresía</button>
     </form>
 </div>
+
+@section Scripts {
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const select = document.getElementById("selectMembresia");
+        const montoInput = document.getElementById("inputMonto");
+        
+        function actualizarPrecio() {
+            if (select && select.selectedOptions.length > 0) {
+                const precio = select.selectedOptions[0].getAttribute("data-precio");
+                if (precio && (!montoInput.value || montoInput.value === "0")) {
+                    montoInput.value = parseFloat(precio).toFixed(2);
+                }
+            }
+        }
+        
+        if (select) {
+            select.addEventListener("change", function() {
+                const precio = this.selectedOptions[0].getAttribute("data-precio");
+                if (precio) {
+                    montoInput.value = parseFloat(precio).toFixed(2);
+                }
+            });
+            actualizarPrecio();
+        }
+    });
+</script>
+}

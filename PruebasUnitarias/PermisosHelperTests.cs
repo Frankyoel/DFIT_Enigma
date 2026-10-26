@@ -111,5 +111,64 @@ namespace PruebasUnitarias
 
             Assert.AreEqual("usuario-abc", id);
         }
+
+        [TestMethod]
+        public void EsRecepcionista_UsuarioConRolRecepcionista_RetornaTrue()
+        {
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, "recep-01"),
+                new Claim(ClaimTypes.Role, "Recepcionista")
+            };
+            var identity = new ClaimsIdentity(claims, "TestAuth");
+            var principal = new ClaimsPrincipal(identity);
+
+            Assert.IsTrue(principal.EsRecepcionista());
+        }
+
+        [TestMethod]
+        public void EsRecepcionista_UsuarioConRolAdmin_RetornaFalse()
+        {
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, "admin-01"),
+                new Claim(ClaimTypes.Role, "Admin")
+            };
+            var identity = new ClaimsIdentity(claims, "TestAuth");
+            var principal = new ClaimsPrincipal(identity);
+
+            Assert.IsFalse(principal.EsRecepcionista());
+        }
+
+        [TestMethod]
+        public void EsAdminORecepcionista_RolRecepcionistaOAdmin_RetornaTrue()
+        {
+            var identityAdmin = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Role, "Admin") }, "TestAuth");
+            var principalAdmin = new ClaimsPrincipal(identityAdmin);
+
+            var identityRecep = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Role, "Recepcionista") }, "TestAuth");
+            var principalRecep = new ClaimsPrincipal(identityRecep);
+
+            var identityUsuario = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Role, "Usuario") }, "TestAuth");
+            var principalUsuario = new ClaimsPrincipal(identityUsuario);
+
+            Assert.IsTrue(principalAdmin.EsAdminORecepcionista());
+            Assert.IsTrue(principalRecep.EsAdminORecepcionista());
+            Assert.IsFalse(principalUsuario.EsAdminORecepcionista());
+        }
+
+        [TestMethod]
+        public void EsAdminOPropietario_RecepcionistaAccediendoAOtroUsuario_RetornaTrue()
+        {
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, "recep-01"),
+                new Claim(ClaimTypes.Role, "Recepcionista")
+            };
+            var identity = new ClaimsIdentity(claims, "TestAuth");
+            var principal = new ClaimsPrincipal(identity);
+
+            Assert.IsTrue(principal.EsAdminOPropietario("socio-777"));
+        }
     }
 }

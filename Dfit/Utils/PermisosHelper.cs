@@ -9,10 +9,11 @@ namespace Dfit.Utils
     public static class PermisosHelper
     {
         public const string RolAdmin = "Admin";
+        public const string RolRecepcionista = "Recepcionista";
         public const string RolUsuario = "Usuario";
 
         /// <summary>
-        /// Comprueba si el usuario autenticado tiene rol de Administrador o es el propietario del recurso.
+        /// Comprueba si el usuario autenticado tiene rol de Administrador o Recepcionista o es el propietario del recurso.
         /// </summary>
         public static bool EsAdminOPropietario(this ClaimsPrincipal? usuario, string? usuarioIdObjetivo)
         {
@@ -21,7 +22,7 @@ namespace Dfit.Utils
                 return false;
             }
 
-            if (usuario.EsAdmin())
+            if (usuario.EsAdminORecepcionista())
             {
                 return true;
             }
@@ -36,6 +37,22 @@ namespace Dfit.Utils
         public static bool EsAdmin(this ClaimsPrincipal? usuario)
         {
             return usuario?.IsInRole(RolAdmin) ?? false;
+        }
+
+        /// <summary>
+        /// Comprueba si el usuario autenticado tiene el rol de Recepcionista.
+        /// </summary>
+        public static bool EsRecepcionista(this ClaimsPrincipal? usuario)
+        {
+            return usuario?.IsInRole(RolRecepcionista) ?? false;
+        }
+
+        /// <summary>
+        /// Comprueba si el usuario autenticado tiene el rol de Administrador o Recepcionista.
+        /// </summary>
+        public static bool EsAdminORecepcionista(this ClaimsPrincipal? usuario)
+        {
+            return (usuario?.IsInRole(RolAdmin) ?? false) || (usuario?.IsInRole(RolRecepcionista) ?? false);
         }
 
         /// <summary>

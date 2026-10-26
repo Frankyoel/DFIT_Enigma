@@ -457,14 +457,302 @@ namespace Dfit.Controllers
         }
 
         // ==========================================
+        // MÓDULO DE RECEPCIÓN
+        // ==========================================
+
+        [Authorize(Roles = "Admin,Recepcionista")]
+        public async Task<IActionResult> Recepcion(string? search = null, string? estado = null)
+        {
+            // 1. Obtener todos los socios registrados
+            var uSnap = await _db.Collection("Usuarios").GetSnapshotAsync();
+            var todosSocios = new List<Usuario>();
+            foreach (var doc in uSnap.Documents)
+            {
+                var rol = doc.ContainsField("Rol") ? doc.GetValue<string>("Rol") : "Usuario";
+                if (rol == "Usuario")
+                {
+                    todosSocios.Add(new Usuario
+                    {
+                        Id = doc.Id,
+                        Nombres = doc.ContainsField("Nombres") ? doc.GetValue<string>("Nombres") : "",
+                        Apellidos = doc.ContainsField("Apellidos") ? doc.GetValue<string>("Apellidos") : "",
+                        Correo = doc.ContainsField("Correo") ? doc.GetValue<string>("Correo") : "",
+                        DNI = doc.ContainsField("DNI") ? doc.GetValue<string>("DNI") : "",
+                        Celular = doc.ContainsField("Celular") ? doc.GetValue<string>("Celular") : "",
+                        Rol = rol,
+                        Activo = doc.ContainsField("Activo") ? doc.GetValue<bool>("Activo") : true
+                    });
+                }
+            }
+
+            // 2. Obtener planes disponibles y membresías activas
+            var mSnap = await _db.Collection("Membresias").WhereEqualTo("Activa", true).GetSnapshotAsync();
+            var planes = new List<Membresia>();
+            var planesDict = new Dictionary<string, Membresia>();
+            foreach (var doc in mSnap.Documents)
+            {
+                var p = new Membresia
+                {
+                    Id = doc.Id,
+                    Nombre = doc.GetValue<string>("Nombre"),
+                    Descripcion = doc.ContainsField("Descripcion") ? doc.GetValue<string>("Descripcion") : "",
+                    Precio = Convert.ToDecimal(doc.GetValue<double>("Precio")),
+                    DuracionDias = doc.GetValue<int>("DuracionDias")
+                };
+                planes.Add(p);
+                planesDict[p.Id] = p;
+            }
+
+            var muSnap = await _db.Collection("MembresiasUsuarios").WhereEqualTo("Activa", true).GetSnapshotAsync();
+            var membresiasDict = new Dictionary<string, (string DocId, string MembresiaId, DateTime FechaFin)>();
+            foreach (var doc in muSnap.Documents)
+            {
+                var uId = doc.GetValue<string>("UsuarioId");
+                var mId = doc.GetValue<string>("MembresiaId");
+                var ff = doc.GetValue<DateTime>("FechaFin");
+
+                if (!membresiasDict.TryGetValue(uId, out var prev) || ff > prev.FechaFin)
+                {
+                    membresiasDict[uId] = (doc.Id, mId, ff);
+                }
+            }
+
+            // 3. Pagos de hoy
+            var ahora = DateTime.UtcNow;
+            var pSnap = await _db.Collection("Pagos").GetSnapshotAsync();
+            var ultimosPagosHoy = new List<Pago>();
+            decimal totalCobradoHoy = 0;
+            int pagosRealizadosHoy = 0;
+
+            foreach (var doc in pSnap.Documents)
+            {
+                var fechaPago = doc.GetValue<DateTime>("FechaPago");
+                var monto = Convert.ToDecimal(doc.GetValue<double>("Monto"));
+                var uId = doc.GetValue<string>("UsuarioId");
+                var mId = doc.GetValue<string>("MembresiaId");
+                var metodo = doc.ContainsField("MetodoPago") ? doc.GetValue<string>("MetodoPago") : "Efectivo";
+
+                if (fechaPago.Date == ahora.Date)
+                {
+                    totalCobradoHoy += monto;
+                    pagosRealizadosHoy++;
+
+                    var pago = new Pago
+                    {
+                        Id = doc.Id,
+                        UsuarioId = uId,
+                        MembresiaId = mId,
+                        Monto = monto,
+                        FechaPago = fechaPago,
+                        MetodoPago = metodo
+                    };
+
+                    if (planesDict.TryGetValue(mId, out var plan)) pago.Membresia = plan;
+                    var socio = todosSocios.FirstOrDefault(s => s.Id == uId);
+                    if (socio != null) pago.Usuario = socio;
+
+                    ultimosPagosHoy.Add(pago);
+                }
+            }
+
+            // 4. Mapear estado y vigencia de socios
+            var sociosItems = new List<SocioRecepcionItem>();
+            int sociosActivos = 0;
+            int porVencer = 0;
+            int vencidos = 0;
+
+            foreach (var u in todosSocios)
+            {
+                var item = new SocioRecepcionItem
+                {
+                    Id = u.Id,
+                    Nombres = u.Nombres,
+                    Apellidos = u.Apellidos,
+                    Correo = u.Correo,
+                    DNI = u.DNI,
+                    Celular = u.Celular,
+                    Activo = u.Activo
+                };
+
+                if (membresiasDict.TryGetValue(u.Id, out var mu))
+                {
+                    item.MembresiaUsuarioId = mu.DocId;
+                    item.FechaFin = mu.FechaFin;
+                    if (planesDict.TryGetValue(mu.MembresiaId, out var p))
+                    {
+                        item.MembresiaNombre = p.Nombre;
+                    }
+
+                    var diasRestantes = (int)Math.Ceiling((mu.FechaFin - ahora).TotalDays);
+                    item.DiasRestantes = diasRestantes;
+
+                    if (mu.FechaFin > ahora)
+                    {
+                        item.TieneMembresiaActiva = true;
+                        sociosActivos++;
+                        if (diasRestantes <= 5)
+                        {
+                            item.EstadoVigencia = "Por Vencer";
+                            porVencer++;
+                        }
+                        else
+                        {
+                            item.EstadoVigencia = "Vigente";
+                        }
+                    }
+                    else
+                    {
+                        item.TieneMembresiaActiva = false;
+                        item.EstadoVigencia = "Vencida";
+                        vencidos++;
+                    }
+                }
+                else
+                {
+                    item.EstadoVigencia = "Sin Plan";
+                }
+
+                sociosItems.Add(item);
+            }
+
+            // Filtros de búsqueda
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                var s = search.Trim().ToLower();
+                sociosItems = sociosItems.Where(x =>
+                    x.Nombres.ToLower().Contains(s) ||
+                    x.Apellidos.ToLower().Contains(s) ||
+                    x.DNI.Contains(s) ||
+                    x.Correo.ToLower().Contains(s)).ToList();
+            }
+
+            if (!string.IsNullOrWhiteSpace(estado) && estado != "Todos")
+            {
+                sociosItems = sociosItems.Where(x => x.EstadoVigencia == estado).ToList();
+            }
+
+            var model = new RecepcionViewModel
+            {
+                Socios = sociosItems.OrderBy(x => x.Nombres).ToList(),
+                PlanesDisponibles = planes,
+                UltimosPagosHoy = ultimosPagosHoy.OrderByDescending(x => x.FechaPago).Take(15).ToList(),
+                TotalSocios = todosSocios.Count,
+                SociosConMembresiaActiva = sociosActivos,
+                MembresiasPorVencer = porVencer,
+                MembresiasVencidas = vencidos,
+                TotalCobradoHoy = totalCobradoHoy,
+                PagosRealizadosHoy = pagosRealizadosHoy,
+                SearchTerm = search,
+                FiltroEstado = estado
+            };
+
+            return View(model);
+        }
+
+        [Authorize(Roles = "Admin,Recepcionista")]
+        [HttpPost]
+        public async Task<IActionResult> RegistrarSocioRecepcion(Usuario model, string? membresiaId = null, decimal? montoPago = null, string? metodoPago = null)
+        {
+            if (string.IsNullOrWhiteSpace(model.Nombres) || string.IsNullOrWhiteSpace(model.Apellidos) || string.IsNullOrWhiteSpace(model.Correo))
+            {
+                TempData["MensajeError"] = "Los campos Nombre, Apellidos y Correo son requeridos.";
+                return RedirectToAction("Recepcion");
+            }
+
+            var correoNormalizado = model.Correo.Trim();
+            var snap = await _db.Collection("Usuarios").WhereEqualTo("Correo", correoNormalizado).GetSnapshotAsync();
+            if (snap.Documents.Count > 0)
+            {
+                TempData["MensajeError"] = $"El correo '{correoNormalizado}' ya está registrado.";
+                return RedirectToAction("Recepcion");
+            }
+
+            var doc = _db.Collection("Usuarios").Document();
+            var password = string.IsNullOrWhiteSpace(model.PasswordHash) 
+                ? (!string.IsNullOrWhiteSpace(model.DNI) ? model.DNI.Trim() : "123456") 
+                : model.PasswordHash.Trim();
+
+            var nuevoUsuario = new Usuario
+            {
+                Id = doc.Id,
+                Nombres = model.Nombres.Trim(),
+                Apellidos = model.Apellidos.Trim(),
+                Correo = correoNormalizado,
+                DNI = model.DNI?.Trim() ?? "",
+                Celular = model.Celular?.Trim() ?? "",
+                PasswordHash = password,
+                Rol = "Usuario",
+                Activo = true,
+                FechaRegistro = DateTime.UtcNow
+            };
+
+            await doc.SetAsync(new {
+                Nombres = nuevoUsuario.Nombres,
+                Apellidos = nuevoUsuario.Apellidos,
+                Correo = nuevoUsuario.Correo,
+                DNI = nuevoUsuario.DNI,
+                Celular = nuevoUsuario.Celular,
+                PasswordHash = nuevoUsuario.PasswordHash,
+                Rol = nuevoUsuario.Rol,
+                FechaRegistro = nuevoUsuario.FechaRegistro,
+                Activo = nuevoUsuario.Activo
+            });
+
+            // Si se seleccionó plan inicial con cobro inmediato
+            if (!string.IsNullOrEmpty(membresiaId))
+            {
+                var mDoc = await _db.Collection("Membresias").Document(membresiaId).GetSnapshotAsync();
+                if (mDoc.Exists)
+                {
+                    var duracion = mDoc.GetValue<int>("DuracionDias");
+                    var memNombre = mDoc.GetValue<string>("Nombre");
+                    var precio = Convert.ToDecimal(mDoc.GetValue<double>("Precio"));
+                    var montoFinal = montoPago ?? precio;
+                    montoFinal = _paymentContext.ExecutePaymentForAmount(montoFinal);
+
+                    await _db.Collection("Pagos").AddAsync(new {
+                        UsuarioId = nuevoUsuario.Id,
+                        MembresiaId = membresiaId,
+                        Monto = (double)montoFinal,
+                        FechaPago = DateTime.UtcNow,
+                        MetodoPago = string.IsNullOrEmpty(metodoPago) ? "Efectivo" : metodoPago
+                    });
+
+                    var (fechaInicio, fechaFin) = ReglasMembresia.CalcularPeriodoVigencia(null, duracion, DateTime.UtcNow);
+
+                    await _db.Collection("MembresiasUsuarios").AddAsync(new {
+                        UsuarioId = nuevoUsuario.Id,
+                        MembresiaId = membresiaId,
+                        FechaInicio = fechaInicio,
+                        FechaFin = fechaFin,
+                        Activa = true
+                    });
+
+                    TempData["MensajeExito"] = $"Socio {nuevoUsuario.Nombres} registrado y membresía '{memNombre}' activada hasta el {fechaFin:dd/MM/yyyy}.";
+                    return RedirectToAction("Recepcion");
+                }
+            }
+
+            TempData["MensajeExito"] = $"Socio {nuevoUsuario.Nombres} {nuevoUsuario.Apellidos} registrado con éxito.";
+            return RedirectToAction("Recepcion");
+        }
+
+        // ==========================================
         // FASE 4: PAGOS Y REPORTES
         // ==========================================
 
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> RegistrarPago(string usuarioId)
+        [Authorize(Roles = "Admin,Recepcionista")]
+        public async Task<IActionResult> RegistrarPago(string usuarioId, string? returnUrl = null)
         {
             var uDoc = await _db.Collection("Usuarios").Document(usuarioId).GetSnapshotAsync();
-            ViewBag.Usuario = new Usuario { Id = uDoc.Id, Nombres = uDoc.GetValue<string>("Nombres"), Apellidos = uDoc.GetValue<string>("Apellidos") };
+            if (!uDoc.Exists) return NotFound();
+
+            ViewBag.Usuario = new Usuario { 
+                Id = uDoc.Id, 
+                Nombres = uDoc.ContainsField("Nombres") ? uDoc.GetValue<string>("Nombres") : "", 
+                Apellidos = uDoc.ContainsField("Apellidos") ? uDoc.GetValue<string>("Apellidos") : "" 
+            };
+            ViewBag.ReturnUrl = returnUrl;
             
             var snap = await _db.Collection("Membresias").WhereEqualTo("Activa", true).GetSnapshotAsync();
             var list = new List<Membresia>();
@@ -480,20 +768,78 @@ namespace Dfit.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Recepcionista")]
         [HttpPost]
-        public async Task<IActionResult> RegistrarPago(Pago model)
+        public async Task<IActionResult> RegistrarPago(Pago model, string? returnUrl = null)
         {
             if (ModelState.IsValid)
             {
                 model.Monto = _paymentContext.ExecutePaymentForAmount(model.Monto);
 
+                // 1. Guardar Pago
                 await _db.Collection("Pagos").AddAsync(new {
                     UsuarioId = model.UsuarioId,
                     MembresiaId = model.MembresiaId,
                     Monto = (double)model.Monto,
-                    FechaPago = DateTime.UtcNow
+                    FechaPago = DateTime.UtcNow,
+                    MetodoPago = string.IsNullOrEmpty(model.MetodoPago) ? "Efectivo" : model.MetodoPago
                 });
+
+                // 2. CORRECCIÓN Y ADECUACIÓN FUNCIONAL:
+                // Actualizar correctamente el estado y vigencia de la membresía del socio
+                var mDoc = await _db.Collection("Membresias").Document(model.MembresiaId).GetSnapshotAsync();
+                if (mDoc.Exists)
+                {
+                    var duracion = mDoc.GetValue<int>("DuracionDias");
+                    var memNombre = mDoc.GetValue<string>("Nombre");
+
+                    // Buscar si tiene membresía activa actual
+                    var memSnap = await _db.Collection("MembresiasUsuarios")
+                        .WhereEqualTo("UsuarioId", model.UsuarioId)
+                        .WhereEqualTo("Activa", true)
+                        .GetSnapshotAsync();
+
+                    DateTime? fechaFinActual = null;
+                    foreach (var doc in memSnap.Documents)
+                    {
+                        var ff = doc.GetValue<DateTime>("FechaFin");
+                        if (ff > DateTime.UtcNow)
+                        {
+                            fechaFinActual = ff;
+                            break;
+                        }
+                    }
+
+                    var (fechaInicio, fechaFin) = ReglasMembresia.CalcularPeriodoVigencia(fechaFinActual, duracion, DateTime.UtcNow);
+
+                    // Desactivar membresías activas anteriores
+                    foreach (var doc in memSnap.Documents)
+                    {
+                        await _db.Collection("MembresiasUsuarios").Document(doc.Id).UpdateAsync("Activa", false);
+                    }
+
+                    // Registrar nueva membresía con vigencia actualizada
+                    await _db.Collection("MembresiasUsuarios").AddAsync(new {
+                        UsuarioId = model.UsuarioId,
+                        MembresiaId = model.MembresiaId,
+                        FechaInicio = fechaInicio,
+                        FechaFin = fechaFin,
+                        Activa = true
+                    });
+
+                    TempData["MensajeExito"] = $"Pago de S/ {model.Monto:N2} registrado con éxito. Membresía '{memNombre}' actualizada hasta el {fechaFin:dd/MM/yyyy}.";
+                }
+
+                if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                {
+                    return Redirect(returnUrl);
+                }
+
+                if (User.IsInRole("Recepcionista"))
+                {
+                    return RedirectToAction("Recepcion");
+                }
+
                 return RedirectToAction("Dashboard");
             }
             return View(model);
@@ -561,7 +907,7 @@ namespace Dfit.Controllers
         // FASE 5: OPERACIONES DEL GIMNASIO
         // ==========================================
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Recepcionista")]
         public async Task<IActionResult> Asistencia()
         {
             var snap = await _db.Collection("Asistencias").GetSnapshotAsync();
@@ -590,7 +936,7 @@ namespace Dfit.Controllers
             return View(asistencias.OrderByDescending(x => x.FechaHoraEntrada).ToList());
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Recepcionista")]
         [HttpPost]
         public async Task<IActionResult> RegistrarAsistencia(string usuarioId)
         {

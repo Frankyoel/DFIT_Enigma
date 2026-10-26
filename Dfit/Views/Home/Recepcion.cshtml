@@ -1,0 +1,525 @@
+@model Dfit.Models.RecepcionViewModel
+@{
+    ViewData["Title"] = "Recepción y Control de Pagos";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+    <div>
+        <h2>Recepción y Control de Pagos</h2>
+        <p class="text-muted" style="margin-top: 4px;">
+            Agiliza el registro de socios, cobro de mensualidades y mantén actualizada la vigencia de membresías en tiempo real.
+        </p>
+    </div>
+    <div class="d-flex gap-2">
+        <a href="/Home/Asistencia" class="btn btn-secondary">
+            <span>📋 Control Asistencia</span>
+        </a>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalNuevoSocio">
+            <span>+ Registrar Nuevo Socio</span>
+        </button>
+    </div>
+</div>
+
+@if (TempData["MensajeExito"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert" style="background-color: #ecfdf5; border-color: #a7f3d0; color: #065f46; border-radius: var(--radius); padding: 1rem 1.25rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <span style="font-size: 1.25rem;">✅</span>
+            <div><strong>¡Operación exitosa!</strong> @TempData["MensajeExito"]</div>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #065f46;">×</button>
+    </div>
+}
+
+@if (TempData["MensajeError"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" style="background-color: #fef2f2; border-color: #fecaca; color: #991b1b; border-radius: var(--radius); padding: 1rem 1.25rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <span style="font-size: 1.25rem;">⚠️</span>
+            <div><strong>Atención:</strong> @TempData["MensajeError"]</div>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #991b1b;">×</button>
+    </div>
+}
+
+<!-- KPI Cards -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+    <div class="card" style="margin-bottom: 0; padding: 1.25rem;">
+        <div style="color: var(--text-muted); font-size: 13px; font-weight: 500; text-transform: uppercase;">Total Socios</div>
+        <div style="font-size: 28px; font-weight: 700; color: var(--text-main); margin-top: 4px;">@Model.TotalSocios</div>
+        <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Miembros en la plataforma</div>
+    </div>
+    <div class="card" style="margin-bottom: 0; padding: 1.25rem; border-left: 4px solid var(--success);">
+        <div style="color: var(--text-muted); font-size: 13px; font-weight: 500; text-transform: uppercase;">Membresías Vigentes</div>
+        <div style="font-size: 28px; font-weight: 700; color: var(--success); margin-top: 4px;">@Model.SociosConMembresiaActiva</div>
+        <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Acceso activo permitido</div>
+    </div>
+    <div class="card" style="margin-bottom: 0; padding: 1.25rem; border-left: 4px solid var(--warning);">
+        <div style="color: var(--text-muted); font-size: 13px; font-weight: 500; text-transform: uppercase;">Por Vencer (≤ 5 días)</div>
+        <div style="font-size: 28px; font-weight: 700; color: var(--warning); margin-top: 4px;">@Model.MembresiasPorVencer</div>
+        <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Pendientes de renovación</div>
+    </div>
+    <div class="card" style="margin-bottom: 0; padding: 1.25rem; border-left: 4px solid var(--info);">
+        <div style="color: var(--text-muted); font-size: 13px; font-weight: 500; text-transform: uppercase;">Recaudación Hoy</div>
+        <div style="font-size: 28px; font-weight: 700; color: var(--info); margin-top: 4px;">S/ @Model.TotalCobradoHoy.ToString("N2")</div>
+        <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">@Model.PagosRealizadosHoy pagos registrados hoy</div>
+    </div>
+</div>
+
+<!-- Filtros y Búsqueda -->
+<div class="card" style="padding: 1rem 1.25rem;">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <div class="d-flex gap-2 flex-wrap" id="filtrosEstado">
+            <a href="/Home/Recepcion" class="btn @(string.IsNullOrEmpty(Model.FiltroEstado) || Model.FiltroEstado == "Todos" ? "btn-primary" : "btn-secondary")" style="font-size: 13px; padding: 6px 14px;">Todos (@Model.TotalSocios)</a>
+            <a href="/Home/Recepcion?estado=Vigente" class="btn @(Model.FiltroEstado == "Vigente" ? "btn-primary" : "btn-secondary")" style="font-size: 13px; padding: 6px 14px;">Vigentes (@Model.SociosConMembresiaActiva)</a>
+            <a href="/Home/Recepcion?estado=Por+Vencer" class="btn @(Model.FiltroEstado == "Por Vencer" ? "btn-primary" : "btn-secondary")" style="font-size: 13px; padding: 6px 14px; color: @(Model.FiltroEstado == "Por Vencer" ? "#fff" : "var(--warning)");">Por Vencer (@Model.MembresiasPorVencer)</a>
+            <a href="/Home/Recepcion?estado=Vencida" class="btn @(Model.FiltroEstado == "Vencida" ? "btn-primary" : "btn-secondary")" style="font-size: 13px; padding: 6px 14px; color: @(Model.FiltroEstado == "Vencida" ? "#fff" : "var(--danger)");">Vencidas (@Model.MembresiasVencidas)</a>
+            <a href="/Home/Recepcion?estado=Sin+Plan" class="btn @(Model.FiltroEstado == "Sin Plan" ? "btn-primary" : "btn-secondary")" style="font-size: 13px; padding: 6px 14px;">Sin Plan</a>
+        </div>
+        <form method="get" asp-action="Recepcion" class="d-flex gap-2">
+            <input type="hidden" name="estado" value="@Model.FiltroEstado" />
+            <input type="text" id="buscadorSocios" name="search" class="form-control" placeholder="Buscar por DNI, Nombre o Correo..." value="@Model.SearchTerm" style="width: 280px;" />
+            <button type="submit" class="btn btn-secondary">Buscar</button>
+            @if (!string.IsNullOrEmpty(Model.SearchTerm) || !string.IsNullOrEmpty(Model.FiltroEstado))
+            {
+                <a href="/Home/Recepcion" class="btn btn-outline-secondary">Limpiar</a>
+            }
+        </form>
+    </div>
+</div>
+
+<!-- Tabla de Socios y Vigencia -->
+<div class="card">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h3 style="margin-bottom: 0;">Lista de Socios y Estado de Membresía</h3>
+        <span class="text-muted" style="font-size: 13px;">Mostrando @Model.Socios.Count socios</span>
+    </div>
+
+    <div class="table-responsive">
+        <table class="formal-table" id="tablaSocios">
+            <thead>
+                <tr>
+                    <th>Socio / Identificación</th>
+                    <th>Contacto</th>
+                    <th>Plan Actual</th>
+                    <th>Vigencia</th>
+                    <th>Fecha Vencimiento</th>
+                    <th style="text-align: right;">Acciones de Recepción</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var s in Model.Socios)
+                {
+                    <tr class="socio-row" data-search="@s.Nombres.ToLower() @s.Apellidos.ToLower() @s.DNI @s.Correo.ToLower()">
+                        <td>
+                            <div style="font-weight: 600; font-size: 14px;">@s.Nombres @s.Apellidos</div>
+                            <div class="text-muted" style="font-size: 12px;">DNI: <strong>@(string.IsNullOrEmpty(s.DNI) ? "Sin DNI" : s.DNI)</strong></div>
+                        </td>
+                        <td>
+                            <div>@s.Correo</div>
+                            <div class="text-muted" style="font-size: 12px;">@(string.IsNullOrEmpty(s.Celular) ? "-" : s.Celular)</div>
+                        </td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(s.MembresiaNombre))
+                            {
+                                <span style="font-weight: 600; color: var(--text-main);">@s.MembresiaNombre</span>
+                            }
+                            else
+                            {
+                                <span class="text-muted">Ninguno</span>
+                            }
+                        </td>
+                        <td>
+                            @if (s.EstadoVigencia == "Vigente")
+                            {
+                                <span class="badge badge-success">Vigente (@s.DiasRestantes d)</span>
+                            }
+                            else if (s.EstadoVigencia == "Por Vencer")
+                            {
+                                <span class="badge badge-warning">Por Vencer (@s.DiasRestantes d)</span>
+                            }
+                            else if (s.EstadoVigencia == "Vencida")
+                            {
+                                <span class="badge badge-danger">Vencida</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-neutral">Sin Plan</span>
+                            }
+                        </td>
+                        <td>
+                            @if (s.FechaFin.HasValue)
+                            {
+                                <span style="@(s.EstadoVigencia == "Por Vencer" ? "color: var(--warning); font-weight: 600;" : (s.EstadoVigencia == "Vencida" ? "color: var(--danger); font-weight: 600;" : ""))">
+                                    @s.FechaFin.Value.ToString("dd/MM/yyyy")
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="text-muted">-</span>
+                            }
+                        </td>
+                        <td style="text-align: right;">
+                            <div class="d-flex gap-2 justify-content-end align-items-center">
+                                <button type="button" 
+                                        class="btn btn-primary btn-sm btn-abrir-pago"
+                                        data-usuario-id="@s.Id"
+                                        data-usuario-nombre="@s.Nombres @s.Apellidos"
+                                        data-usuario-dni="@s.DNI"
+                                        data-plan-actual="@(s.MembresiaNombre ?? "Sin Plan")"
+                                        data-fecha-fin="@(s.FechaFin.HasValue ? s.FechaFin.Value.ToString("yyyy-MM-ddTHH:mm:ss") : "")"
+                                        data-fecha-fin-formato="@(s.FechaFin.HasValue ? s.FechaFin.Value.ToString("dd/MM/yyyy") : "Sin vigencia previa")"
+                                        data-tiene-activa="@(s.TieneMembresiaActiva ? "true" : "false")"
+                                        style="font-size: 12px; padding: 5px 12px; font-weight: 600;">
+                                    💳 Cobrar / Renovar
+                                </button>
+                                <a href="/Home/PagosUsuario/@s.Id" class="btn btn-secondary btn-sm" title="Ver historial de pagos" style="font-size: 12px; padding: 5px 10px;">
+                                    Historial
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+
+                @if (!Model.Socios.Any())
+                {
+                    <tr>
+                        <td colspan="6" class="text-center text-muted" style="padding: 3rem 1rem;">
+                            No se encontraron socios con los criterios de búsqueda seleccionados.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Últimos Pagos Registrados Hoy -->
+@if (Model.UltimosPagosHoy.Any())
+{
+    <div class="card">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h3 style="margin-bottom: 0;">Pagos Registrados Hoy (@DateTime.Now.ToString("dd/MM/yyyy"))</h3>
+            <span class="badge badge-info">S/ @Model.TotalCobradoHoy.ToString("N2") total</span>
+        </div>
+        <div class="table-responsive">
+            <table class="formal-table">
+                <thead>
+                    <tr>
+                        <th>Hora</th>
+                        <th>Socio</th>
+                        <th>Plan Pagado</th>
+                        <th>Método</th>
+                        <th>Monto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in Model.UltimosPagosHoy)
+                    {
+                        <tr>
+                            <td class="text-muted">@p.FechaPago.ToLocalTime().ToString("HH:mm:ss")</td>
+                            <td style="font-weight: 500;">@(p.Usuario != null ? $"{p.Usuario.Nombres} {p.Usuario.Apellidos}" : $"Socio #{p.UsuarioId}")</td>
+                            <td>@(p.Membresia?.Nombre ?? "Membresía")</td>
+                            <td>
+                                <span class="badge badge-neutral">@p.MetodoPago</span>
+                            </td>
+                            <td><strong style="color: var(--success);">S/ @p.Monto.ToString("N2")</strong></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+<!-- MODAL: REGISTRAR PAGO RÁPIDO Y ACTUALIZAR MEMBRESÍA -->
+<div class="modal fade" id="modalPago" tabindex="-1" aria-labelledby="modalPagoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 520px;">
+        <div class="modal-content" style="border-radius: var(--radius); border: 1px solid var(--border-color); box-shadow: 0 10px 25px rgba(0,0,0,0.15);">
+            <div class="modal-header" style="border-bottom: 1px solid var(--border-color); padding: 1.25rem 1.5rem;">
+                <h5 class="modal-title" id="modalPagoLabel" style="font-weight: 700; font-size: 18px; margin: 0;">
+                    💳 Registrar Cobro y Actualizar Vigencia
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="background: none; border: none; font-size: 1.4rem; cursor: pointer;">×</button>
+            </div>
+            <form asp-action="RegistrarPago" method="post" id="formRegistrarPago">
+                <div class="modal-body" style="padding: 1.5rem;">
+                    <input type="hidden" name="UsuarioId" id="pagoUsuarioId" />
+                    <input type="hidden" name="returnUrl" value="/Home/Recepcion" />
+
+                    <!-- Info Socio -->
+                    <div style="background-color: var(--bg-body); border-radius: var(--radius); padding: 1rem; margin-bottom: 1.25rem; border: 1px solid var(--border-color);">
+                        <div style="font-size: 11px; text-transform: uppercase; color: var(--text-muted); font-weight: 600;">Socio Seleccionado</div>
+                        <div id="pagoUsuarioNombre" style="font-size: 16px; font-weight: 700; color: var(--text-main); margin-top: 2px;">-</div>
+                        <div style="display: flex; gap: 1rem; font-size: 13px; color: var(--text-muted); margin-top: 4px;">
+                            <span>DNI: <strong id="pagoUsuarioDni">-</strong></span>
+                            <span>Plan actual: <strong id="pagoUsuarioPlan">-</strong></span>
+                        </div>
+                        <div style="font-size: 12px; margin-top: 4px;">
+                            Vigencia actual: <span id="pagoUsuarioFechaFin" style="font-weight: 600;">-</span>
+                        </div>
+                    </div>
+
+                    <!-- Selección de Membresía -->
+                    <div class="form-group mb-3">
+                        <label for="pagoMembresiaId" class="form-label" style="font-weight: 600;">Plan / Membresía a Cobrar</label>
+                        <select name="MembresiaId" id="pagoMembresiaId" class="form-control" style="appearance: auto;" required>
+                            <option value="" disabled selected>-- Selecciona un plan --</option>
+                            @foreach (var plan in Model.PlanesDisponibles)
+                            {
+                                <option value="@plan.Id" data-precio="@plan.Precio" data-dias="@plan.DuracionDias" data-nombre="@plan.Nombre">
+                                    @plan.Nombre - S/ @plan.Precio (@plan.DuracionDias días)
+                                </option>
+                            }
+                        </select>
+                    </div>
+
+                    <!-- Previsualización de Vigencia Actualizada -->
+                    <div id="boxPreviewVigencia" style="display: none; background-color: #ecfdf5; border: 1px solid #a7f3d0; border-radius: var(--radius); padding: 0.75rem 1rem; margin-bottom: 1.25rem;">
+                        <div style="font-size: 11px; font-weight: 700; color: #065f46; text-transform: uppercase;">
+                            ✨ Nueva Vigencia de la Membresía
+                        </div>
+                        <div style="font-size: 14px; color: #065f46; margin-top: 4px;">
+                            Al registrar el pago, la vigencia quedará activa hasta:
+                            <div style="font-size: 16px; font-weight: 800;" id="txtNuevaFechaFin">-</div>
+                        </div>
+                    </div>
+
+                    <!-- Monto y Método -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="pagoMonto" class="form-label" style="font-weight: 600;">Monto a Cobrar (S/)</label>
+                            <input type="number" step="0.01" name="Monto" id="pagoMonto" class="form-control" required style="font-size: 16px; font-weight: 700;" />
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="pagoMetodo" class="form-label" style="font-weight: 600;">Método de Pago</label>
+                            <select name="MetodoPago" id="pagoMetodo" class="form-control" style="appearance: auto;">
+                                <option value="Efectivo" selected>💵 Efectivo</option>
+                                <option value="Tarjeta">💳 Tarjeta Crédito/Débito</option>
+                                <option value="Transferencia">📱 Yape / Plin / Transferencia</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="font-size: 12px; color: var(--text-muted); background: #f9fafb; padding: 8px 12px; border-radius: var(--radius); border: 1px solid var(--border-color);">
+                        ℹ️ <strong>Control de cobro:</strong> El sistema guardará el comprobante del pago y actualizará de inmediato el acceso y fecha de vencimiento del socio.
+                    </div>
+                </div>
+                <div class="modal-footer" style="border-top: 1px solid var(--border-color); padding: 1rem 1.5rem; display: flex; justify-content: space-between;">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" style="font-weight: 600; padding: 8px 20px;">
+                        ✓ Confirmar Cobro y Actualizar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL: REGISTRAR NUEVO SOCIO (RÁPIDO) -->
+<div class="modal fade" id="modalNuevoSocio" tabindex="-1" aria-labelledby="modalNuevoSocioLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 540px;">
+        <div class="modal-content" style="border-radius: var(--radius); border: 1px solid var(--border-color); box-shadow: 0 10px 25px rgba(0,0,0,0.15);">
+            <div class="modal-header" style="border-bottom: 1px solid var(--border-color); padding: 1.25rem 1.5rem;">
+                <h5 class="modal-title" id="modalNuevoSocioLabel" style="font-weight: 700; font-size: 18px; margin: 0;">
+                    👤 Registrar Nuevo Socio
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="background: none; border: none; font-size: 1.4rem; cursor: pointer;">×</button>
+            </div>
+            <form asp-action="RegistrarSocioRecepcion" method="post">
+                <div class="modal-body" style="padding: 1.5rem;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label class="form-label" style="font-weight: 500;">Nombres *</label>
+                            <input type="text" name="Nombres" class="form-control" required placeholder="Ej. Juan Carlos" />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" style="font-weight: 500;">Apellidos *</label>
+                            <input type="text" name="Apellidos" class="form-control" required placeholder="Ej. Pérez Gómez" />
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label class="form-label" style="font-weight: 500;">DNI / Documento</label>
+                            <input type="text" name="DNI" class="form-control" placeholder="8 dígitos" maxlength="15" />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" style="font-weight: 500;">Celular</label>
+                            <input type="tel" name="Celular" class="form-control" placeholder="9XXXXXXXX" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" style="font-weight: 500;">Correo Electrónico *</label>
+                        <input type="email" name="Correo" class="form-control" required placeholder="socio@email.com" />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" style="font-weight: 500;">Contraseña Inicial (opcional)</label>
+                        <input type="password" name="PasswordHash" class="form-control" placeholder="Por defecto se usará el DNI o '123456'" />
+                    </div>
+
+                    <!-- Opción de cobrar de inmediato -->
+                    <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px dashed var(--border-color);">
+                        <div class="form-check" style="margin-bottom: 0.75rem;">
+                            <input class="form-check-input" type="checkbox" id="checkCobrarInmediato" style="accent-color: var(--primary); cursor: pointer;" />
+                            <label class="form-check-label" for="checkCobrarInmediato" style="font-weight: 600; cursor: pointer;">
+                                ¿Cobrar y activar membresía de inmediato?
+                            </label>
+                        </div>
+
+                        <div id="seccionCobroInmediato" style="display: none; background: #f9fafb; padding: 1rem; border-radius: var(--radius); border: 1px solid var(--border-color);">
+                            <div class="form-group mb-2">
+                                <label class="form-label" style="font-weight: 500;">Plan a Asignar</label>
+                                <select name="membresiaId" id="selectNuevoPlan" class="form-control" style="appearance: auto;">
+                                    <option value="">-- Seleccionar Plan --</option>
+                                    @foreach (var plan in Model.PlanesDisponibles)
+                                    {
+                                        <option value="@plan.Id" data-precio="@plan.Precio">@plan.Nombre - S/ @plan.Precio (@plan.DuracionDias días)</option>
+                                    }
+                                </select>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                                <div class="form-group mb-0">
+                                    <label class="form-label" style="font-weight: 500;">Monto (S/)</label>
+                                    <input type="number" step="0.01" name="montoPago" id="inputNuevoMonto" class="form-control" placeholder="0.00" />
+                                </div>
+                                <div class="form-group mb-0">
+                                    <label class="form-label" style="font-weight: 500;">Método</label>
+                                    <select name="metodoPago" class="form-control" style="appearance: auto;">
+                                        <option value="Efectivo">Efectivo</option>
+                                        <option value="Tarjeta">Tarjeta</option>
+                                        <option value="Transferencia">Yape / Plin</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="border-top: 1px solid var(--border-color); padding: 1rem 1.5rem; display: flex; justify-content: space-between;">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" style="font-weight: 600;">Registrar Socio</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // 1. Filtrado instantáneo en vivo de la tabla por texto
+        const buscador = document.getElementById("buscadorSocios");
+        const filas = document.querySelectorAll(".socio-row");
+
+        if (buscador) {
+            buscador.addEventListener("input", function () {
+                const query = this.value.toLowerCase().trim();
+                filas.forEach(fila => {
+                    const textoFila = fila.getAttribute("data-search") || "";
+                    if (!query || textoFila.includes(query)) {
+                        fila.style.display = "";
+                    } else {
+                        fila.style.display = "none";
+                    }
+                });
+            });
+        }
+
+        // 2. Control del Modal de Pago Rápido
+        let fechaFinActualSocio = null;
+
+        document.querySelectorAll(".btn-abrir-pago").forEach(btn => {
+            btn.addEventListener("click", function () {
+                const uId = this.getAttribute("data-usuario-id");
+                const uNombre = this.getAttribute("data-usuario-nombre");
+                const uDni = this.getAttribute("data-usuario-dni") || "Sin DNI";
+                const uPlan = this.getAttribute("data-plan-actual");
+                const uFechaFin = this.getAttribute("data-fecha-fin");
+                const uFechaFinFormato = this.getAttribute("data-fecha-fin-formato");
+
+                document.getElementById("pagoUsuarioId").value = uId;
+                document.getElementById("pagoUsuarioNombre").textContent = uNombre;
+                document.getElementById("pagoUsuarioDni").textContent = uDni;
+                document.getElementById("pagoUsuarioPlan").textContent = uPlan;
+                document.getElementById("pagoUsuarioFechaFin").textContent = uFechaFinFormato;
+
+                fechaFinActualSocio = uFechaFin ? new Date(uFechaFin) : null;
+
+                // Resetear select y monto
+                const selectMembresia = document.getElementById("pagoMembresiaId");
+                selectMembresia.selectedIndex = 0;
+                document.getElementById("pagoMonto").value = "";
+                document.getElementById("boxPreviewVigencia").style.display = "none";
+
+                // Abrir modal con Bootstrap
+                const modal = new bootstrap.Modal(document.getElementById("modalPago"));
+                modal.show();
+            });
+        });
+
+        // 3. Cálculo dinámico de vigencia estimada y monto al seleccionar membresía
+        const selectPlan = document.getElementById("pagoMembresiaId");
+        const inputMonto = document.getElementById("pagoMonto");
+        const boxPreview = document.getElementById("boxPreviewVigencia");
+        const txtNuevaFechaFin = document.getElementById("txtNuevaFechaFin");
+
+        if (selectPlan) {
+            selectPlan.addEventListener("change", function () {
+                const opt = this.selectedOptions[0];
+                if (!opt) return;
+
+                const precio = opt.getAttribute("data-precio");
+                const dias = parseInt(opt.getAttribute("data-dias"), 10) || 30;
+
+                if (precio) {
+                    inputMonto.value = parseFloat(precio).toFixed(2);
+                }
+
+                // Calcular vigencia exactamente como ReglasMembresia.CalcularPeriodoVigencia
+                const ahora = new Date();
+                let fechaBase = ahora;
+
+                if (fechaFinActualSocio && fechaFinActualSocio > ahora) {
+                    fechaBase = new Date(fechaFinActualSocio.getTime());
+                }
+
+                const fechaNueva = new Date(fechaBase.getTime() + (dias * 24 * 60 * 60 * 1000));
+                const dia = String(fechaNueva.getDate()).padStart(2, "0");
+                const mes = String(fechaNueva.getMonth() + 1).padStart(2, "0");
+                const anio = fechaNueva.getFullYear();
+
+                txtNuevaFechaFin.textContent = `${dia}/${mes}/${anio} (${dias} días)`;
+                boxPreview.style.display = "block";
+            });
+        }
+
+        // 4. Checkbox de cobro inmediato en nuevo socio
+        const checkCobroInmediato = document.getElementById("checkCobrarInmediato");
+        const seccionCobro = document.getElementById("seccionCobroInmediato");
+        const selectNuevoPlan = document.getElementById("selectNuevoPlan");
+        const inputNuevoMonto = document.getElementById("inputNuevoMonto");
+
+        if (checkCobroInmediato && seccionCobro) {
+            checkCobroInmediato.addEventListener("change", function () {
+                seccionCobro.style.display = this.checked ? "block" : "none";
+                if (!this.checked) {
+                    if (selectNuevoPlan) selectNuevoPlan.selectedIndex = 0;
+                    if (inputNuevoMonto) inputNuevoMonto.value = "";
+                }
+            });
+        }
+
+        if (selectNuevoPlan && inputNuevoMonto) {
+            selectNuevoPlan.addEventListener("change", function () {
+                const opt = this.selectedOptions[0];
+                if (opt) {
+                    const precio = opt.getAttribute("data-precio");
+                    if (precio) inputNuevoMonto.value = parseFloat(precio).toFixed(2);
+                }
+            });
+        }
+    });
+</script>
+}
