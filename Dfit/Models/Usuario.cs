@@ -37,7 +37,10 @@ namespace Dfit.Models
         public string PasswordHash { get; set; } = string.Empty;
 
         [Required]
-        public string Rol { get; set; } = "Usuario"; // "Usuario" o "Admin"
+        public string Rol { get; set; } = "Usuario"; // "Usuario", "Entrenador", "Recepcionista" o "Admin"
+
+        [FirestoreProperty]
+        public string NotasEntrenador { get; set; } = string.Empty;
 
         public DateTime FechaRegistro { get; set; } = DateTime.Now;
 

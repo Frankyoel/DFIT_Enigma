@@ -10,10 +10,11 @@ namespace Dfit.Utils
     {
         public const string RolAdmin = "Admin";
         public const string RolRecepcionista = "Recepcionista";
+        public const string RolEntrenador = "Entrenador";
         public const string RolUsuario = "Usuario";
 
         /// <summary>
-        /// Comprueba si el usuario autenticado tiene rol de Administrador o Recepcionista o es el propietario del recurso.
+        /// Comprueba si el usuario autenticado tiene rol de Administrador, Recepcionista, Entrenador o es el propietario del recurso.
         /// </summary>
         public static bool EsAdminOPropietario(this ClaimsPrincipal? usuario, string? usuarioIdObjetivo)
         {
@@ -22,7 +23,7 @@ namespace Dfit.Utils
                 return false;
             }
 
-            if (usuario.EsAdminORecepcionista())
+            if (usuario.EsAdminORecepcionista() || usuario.EsEntrenador())
             {
                 return true;
             }
@@ -53,6 +54,23 @@ namespace Dfit.Utils
         public static bool EsAdminORecepcionista(this ClaimsPrincipal? usuario)
         {
             return (usuario?.IsInRole(RolAdmin) ?? false) || (usuario?.IsInRole(RolRecepcionista) ?? false);
+        }
+
+        /// <summary>
+        /// Comprueba si el usuario autenticado tiene el rol de Entrenador.
+        /// </summary>
+        public static bool EsEntrenador(this ClaimsPrincipal? usuario)
+        {
+            return usuario?.IsInRole(RolEntrenador) ?? false;
+        }
+
+        /// <summary>
+        /// Comprueba si el usuario autenticado tiene el rol de Administrador o Entrenador.
+        /// Utilizado para validar acceso a gestión de Rutinas y Horarios.
+        /// </summary>
+        public static bool EsAdminOEntrenador(this ClaimsPrincipal? usuario)
+        {
+            return (usuario?.IsInRole(RolAdmin) ?? false) || (usuario?.IsInRole(RolEntrenador) ?? false);
         }
 
         /// <summary>

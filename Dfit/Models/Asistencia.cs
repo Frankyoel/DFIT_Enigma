@@ -20,6 +20,12 @@ namespace Dfit.Models
         [FirestoreProperty]
         public Usuario? Usuario { get; set; }
 
+        [FirestoreProperty]
+        public string? HorarioId { get; set; }
+
+        [FirestoreProperty]
+        public string? NombreClase { get; set; }
+
         [Required]
         public DateTime FechaHoraEntrada { get; set; } = DateTime.Now;
     }

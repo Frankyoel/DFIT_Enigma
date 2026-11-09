@@ -24,5 +24,8 @@ namespace Dfit.Models
         [DataType(DataType.Password)]
         [FirestoreProperty]
         public string? NewPassword { get; set; }
+
+        [FirestoreProperty]
+        public string NotasEntrenador { get; set; } = string.Empty;
     }
 }

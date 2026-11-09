@@ -1,64 +1,325 @@
 @model Dfit.Models.ProfileViewModel
+@using Dfit.Utils
 @{
-    Layout = null;
+    ViewData["Title"] = "Perfil de Usuario";
+    var esEntrenadorOAdmin = User.EsAdminOEntrenador();
+    var esDuenio = User.ObtenerUsuarioId() == Model.Id;
+    var rutinaAsignada = ViewBag.RutinaAsignada as Dfit.Models.RutinaUsuario;
+    var rutinasDisponibles = ViewBag.RutinasDisponibles as List<Dfit.Models.Rutina> ?? new List<Dfit.Models.Rutina>();
+    var evaluaciones = ViewBag.Evaluaciones as List<Dfit.Models.EvaluacionFisica> ?? new List<Dfit.Models.EvaluacionFisica>();
 }
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="utf-8" />
-    <title>Mi Perfil - DFIT Power</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="~/css/dfit-login.css" asp-append-version="true" />
-    <style>
-        .login-card { max-width: 500px; width: 100%; margin: 40px auto; }
-    </style>
-</head>
-<body style="background-image: none; background-color: var(--mobile-bg);">
+<!-- Encabezado de la Vista -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="h3 fw-bold mb-1">Perfil de Usuario</h2>
+        <p class="text-muted small mb-0">
+            Socio: <strong>@Model.Nombres @Model.Apellidos</strong> | ID: <span class="badge bg-light text-dark border">@Model.Id</span>
+        </p>
+    </div>
+    <div>
+        @if (User.IsInRole("Admin"))
+        {
+            <a href="/Home/Dashboard" class="btn btn-outline-secondary btn-sm">← Volver al Dashboard</a>
+        }
+        else if (User.IsInRole("Recepcionista"))
+        {
+            <a href="/Home/Recepcion" class="btn btn-outline-secondary btn-sm">← Volver a Recepción</a>
+        }
+        else if (User.IsInRole("Entrenador"))
+        {
+            <a href="/Home/Rutinas" class="btn btn-outline-secondary btn-sm">← Volver a Rutinas</a>
+        }
+        else
+        {
+            <a href="/Home/MiMembresia/@Model.Id" class="btn btn-outline-secondary btn-sm">← Mi Membresía</a>
+        }
+    </div>
+</div>
 
-    <div class="login-container" style="max-width: 600px;">
-        <div class="login-card" style="background: var(--dark-card);">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 24px;">
-                <h1 class="text-h1">Mi Perfil</h1>
-                <a href="/Home/Index" style="color:var(--muted); text-decoration:none;">✕ Cerrar</a>
+<!-- Alertas y Mensajes de Estado -->
+@if (TempData["MensajeExito"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+        <strong>✓ Operación Exitosa:</strong> @TempData["MensajeExito"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
+}
+@if (TempData["MensajeError"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+        <strong>✕ Error:</strong> @TempData["MensajeError"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
+}
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+        @ViewBag.Message
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
+}
+
+<div class="row g-4">
+    <!-- ========================================================================= -->
+    <!-- COLUMNA IZQUIERDA (7 COLUMNAS): FOCO PRINCIPAL EN GESTIÓN DEL ENTRENADOR   -->
+    <!-- ========================================================================= -->
+    <div class="col-lg-7">
+        
+        <!-- BLOQUE 1: RUTINA ASIGNADA -->
+        <div class="card shadow-sm border-0 mb-4 bg-white">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3 class="h5 fw-bold mb-0 text-dark">🏋️ Rutina de Entrenamiento Asignada</h3>
+                    @if (rutinaAsignada != null)
+                    {
+                        <span class="badge bg-success px-3 py-2">Estado: @rutinaAsignada.Estado</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary px-3 py-2">Sin Rutina Activa</span>
+                    }
+                </div>
+
+                @if (rutinaAsignada != null && rutinaAsignada.Rutina != null)
+                {
+                    <div class="p-3 bg-light rounded border mb-3">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h4 class="h6 fw-bold text-dark mb-0">@rutinaAsignada.Rutina.Nombre</h4>
+                            <span class="badge bg-primary">Nivel: @rutinaAsignada.Rutina.Nivel</span>
+                        </div>
+                        <p class="small text-muted mb-2">@rutinaAsignada.Rutina.Descripcion</p>
+                        
+                        <div class="small text-muted mb-3 d-flex flex-wrap gap-3">
+                            <span>📅 <strong>Asignada:</strong> @rutinaAsignada.FechaAsignacion.ToString("dd/MM/yyyy")</span>
+                            @if (rutinaAsignada.FechaFin.HasValue)
+                            {
+                                <span>⏳ <strong>Vencimiento:</strong> @rutinaAsignada.FechaFin.Value.ToString("dd/MM/yyyy")</span>
+                            }
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(rutinaAsignada.Rutina.VideoUrl))
+                        {
+                            var embedUrl = rutinaAsignada.Rutina.VideoUrl.Replace("watch?v=", "embed/").Replace("youtu.be/", "www.youtube.com/embed/");
+                            <div class="ratio ratio-16x9 rounded overflow-hidden shadow-sm mb-2">
+                                <iframe src="@embedUrl" title="Video Guía de Rutina" allowfullscreen></iframe>
+                            </div>
+                        }
+
+                        @if (esEntrenadorOAdmin)
+                        {
+                            <div class="text-end mt-3">
+                                <form asp-action="RemoverRutina" method="post" class="d-inline" onsubmit="return confirm('¿Seguro que deseas desasignar esta rutina?');">
+                                    <input type="hidden" name="rutinaUsuarioId" value="@rutinaAsignada.Id" />
+                                    <input type="hidden" name="usuarioId" value="@Model.Id" />
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">Quitar Asignación Actual</button>
+                                </form>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-4 bg-light rounded border mb-3">
+                        <p class="text-muted mb-0">El usuario no tiene asignada ninguna rutina de entrenamiento en este momento.</p>
+                    </div>
+                }
+
+                <!-- Formulario para Asignar / Reemplazar Rutina (Solo Entrenador o Admin) -->
+                @if (esEntrenadorOAdmin)
+                {
+                    <div class="border-top pt-3 mt-3">
+                        <h6 class="fw-bold text-dark mb-2">Asignar Nueva Rutina de Entrenamiento</h6>
+                        <form asp-action="AsignarRutina" method="post" class="row g-2 align-items-center">
+                            <input type="hidden" name="usuarioId" value="@Model.Id" />
+                            <div class="col-md-7">
+                                <select name="rutinaId" class="form-select form-select-sm" required>
+                                    <option value="">-- Seleccionar Rutina del Catálogo --</option>
+                                    @foreach (var r in rutinasDisponibles)
+                                    {
+                                        <option value="@r.Id">@r.Nombre (@r.Nivel)</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="input-group input-group-sm">
+                                    <input type="number" name="duracionDias" class="form-control" value="30" min="1" max="365" placeholder="Días" title="Duración en días" />
+                                    <span class="input-group-text">días</span>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-primary btn-sm w-100">Asignar</button>
+                            </div>
+                        </form>
+                    </div>
+                }
             </div>
-            
-            @if (ViewBag.Message != null)
-            {
-                <div style="background: rgba(99, 153, 34, 0.2); color: var(--accent-light); padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size:14px; text-align:center;">
-                    @ViewBag.Message
-                </div>
-            }
-
-            <form asp-action="Profile" method="post">
-                <input type="hidden" asp-for="Id" />
-                
-                <div class="input-group">
-                    <label style="font-size:12px; color:var(--muted); margin-bottom:4px; display:block;">Nombres</label>
-                    <input asp-for="Nombres" class="input-dark" required />
-                </div>
-                <div class="input-group">
-                    <label style="font-size:12px; color:var(--muted); margin-bottom:4px; display:block;">Apellidos</label>
-                    <input asp-for="Apellidos" class="input-dark" required />
-                </div>
-                <div class="input-group">
-                    <label style="font-size:12px; color:var(--muted); margin-bottom:4px; display:block;">Correo Electrónico</label>
-                    <input asp-for="Correo" class="input-dark" required />
-                </div>
-                
-                <div class="divider">
-                    <span>Cambiar Contraseña (Opcional)</span>
-                </div>
-
-                <div class="input-group">
-                    <input asp-for="NewPassword" type="password" class="input-dark" placeholder="Nueva Contraseña" />
-                    <span style="font-size:11px; color:var(--muted); display:block; margin-top:4px;">Déjalo en blanco si no quieres cambiarla.</span>
-                </div>
-                
-                <button type="submit" class="btn btn-primary mt-2">Actualizar Datos</button>
-            </form>
         </div>
+
+        <!-- BLOQUE 2: NOTAS PRIVADAS DEL ENTRENADOR (SOLO ADMIN O ENTRENADOR) -->
+        @if (esEntrenadorOAdmin)
+        {
+            <div class="card shadow-sm border-0 border-start border-4 border-warning mb-4 bg-white">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h3 class="h5 fw-bold mb-0 text-dark">🔒 Notas Privadas del Entrenador</h3>
+                        <span class="badge bg-warning text-dark fw-bold">Confidencial</span>
+                    </div>
+                    <p class="small text-muted mb-3">
+                        Bitácora confidencial para el equipo de entrenadores (registro de lesiones, precauciones técnicas, patologías o metas). 
+                        <strong>El socio no tiene visibilidad de este campo.</strong>
+                    </p>
+                    <form asp-action="GuardarNotaInterna" method="post">
+                        <input type="hidden" name="usuarioId" value="@Model.Id" />
+                        <div class="mb-3">
+                            <textarea name="notasEntrenador" class="form-control" rows="4" placeholder="Ej: Lesión de manguito rotador derecho. Evitar press militar con barra, priorizar mancuernas con rango controlado...">@Model.NotasEntrenador</textarea>
+                        </div>
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-warning btn-sm fw-bold">Guardar Notas del Entrenador</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        }
     </div>
 
-</body>
-</html>
+    <!-- ========================================================================= -->
+    <!-- COLUMNA DERECHA (5 COLUMNAS): INFORMACIÓN SECUNDARIA Y EVALUACIONES       -->
+    <!-- ========================================================================= -->
+    <div class="col-lg-5">
+        
+        <!-- BLOQUE 1: DATOS DE LA CUENTA -->
+        <div class="card shadow-sm border-0 mb-4 bg-white">
+            <div class="card-body p-4">
+                <h3 class="h5 fw-bold mb-3 text-dark">👤 Datos de la Cuenta</h3>
+                <form asp-action="Profile" method="post">
+                    <input type="hidden" asp-for="Id" />
+                    
+                    <div class="mb-3">
+                        <label class="form-label small text-muted mb-1">Nombres</label>
+                        <input asp-for="Nombres" class="form-control form-control-sm" readonly="@(!User.EsAdmin() && !esDuenio)" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small text-muted mb-1">Apellidos</label>
+                        <input asp-for="Apellidos" class="form-control form-control-sm" readonly="@(!User.EsAdmin() && !esDuenio)" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small text-muted mb-1">Correo Electrónico</label>
+                        <input asp-for="Correo" type="email" class="form-control form-control-sm" readonly="@(!User.EsAdmin() && !esDuenio)" required />
+                    </div>
+
+                    @if (User.EsAdmin() || esDuenio)
+                    {
+                        <div class="border-top pt-3 my-3">
+                            <label class="form-label small text-muted mb-1">Cambiar Contraseña (Opcional)</label>
+                            <input asp-for="NewPassword" type="password" class="form-control form-control-sm" placeholder="Nueva Contraseña" />
+                            <span class="form-text small text-muted">Dejar vacío para conservar la contraseña actual.</span>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-sm w-100">Guardar Cambios</button>
+                    }
+                </form>
+            </div>
+        </div>
+
+        <!-- BLOQUE 2: HISTORIAL DE EVALUACIONES FÍSICAS -->
+        <div class="card shadow-sm border-0 mb-4 bg-white">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3 class="h5 fw-bold mb-0 text-dark">📊 Historial de Evaluaciones</h3>
+                    @if (esEntrenadorOAdmin)
+                    {
+                        <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#formNuevaEvaluacion" aria-expanded="false" aria-controls="formNuevaEvaluacion">
+                            + Nueva Evaluación
+                        </button>
+                    }
+                </div>
+
+                @if (esEntrenadorOAdmin)
+                {
+                    <div class="collapse mb-3" id="formNuevaEvaluacion">
+                        <div class="p-3 bg-light rounded border">
+                            <h6 class="fw-bold text-dark mb-2">Registrar Nuevas Métricas</h6>
+                            <form asp-action="GuardarEvaluacion" method="post">
+                                <input type="hidden" name="UsuarioId" value="@Model.Id" />
+                                <div class="row g-2 mb-2">
+                                    <div class="col-6">
+                                        <label class="form-label small text-muted mb-1">Peso (kg)</label>
+                                        <input type="number" step="0.1" name="Peso" class="form-control form-control-sm" placeholder="Ej: 75.0" required />
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label small text-muted mb-1">Altura (m)</label>
+                                        <input type="number" step="0.01" name="Altura" class="form-control form-control-sm" placeholder="Ej: 1.75" required />
+                                    </div>
+                                </div>
+                                <div class="row g-2 mb-2">
+                                    <div class="col-6">
+                                        <label class="form-label small text-muted mb-1">% Grasa</label>
+                                        <input type="number" step="0.1" name="PorcentajeGrasa" class="form-control form-control-sm" placeholder="Ej: 18.5" />
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label small text-muted mb-1">% Músculo</label>
+                                        <input type="number" step="0.1" name="MasaMuscular" class="form-control form-control-sm" placeholder="Ej: 42.0" />
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label small text-muted mb-1">Observaciones</label>
+                                    <textarea name="Notas" class="form-control form-control-sm" rows="2" placeholder="Diagnóstico o metas..."></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-success btn-sm w-100">Guardar Evaluación</button>
+                            </form>
+                        </div>
+                    </div>
+                }
+
+                @if (evaluaciones.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle table-sm small mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Peso</th>
+                                    <th>IMC</th>
+                                    <th>% Grasa</th>
+                                    <th>% Músculo</th>
+                                    <th>Evaluador</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var ev in evaluaciones)
+                                {
+                                    <tr>
+                                        <td>@ev.Fecha.ToString("dd/MM/yyyy")</td>
+                                        <td class="fw-bold">@ev.Peso.ToString("N1") kg</td>
+                                        <td>
+                                            <span class="badge @(ev.IMC >= 18.5 && ev.IMC <= 24.9 ? "bg-success" : (ev.IMC >= 25 && ev.IMC <= 29.9 ? "bg-warning text-dark" : "bg-danger"))">
+                                                @ev.IMC.ToString("N1")
+                                            </span>
+                                        </td>
+                                        <td>@(ev.PorcentajeGrasa > 0 ? $"{ev.PorcentajeGrasa:N1}%" : "-")</td>
+                                        <td>@(ev.MasaMuscular > 0 ? $"{ev.MasaMuscular:N1}%" : "-")</td>
+                                        <td class="text-muted small">@ev.EntrenadorNombre</td>
+                                    </tr>
+                                    @if (!string.IsNullOrWhiteSpace(ev.Notas))
+                                    {
+                                        <tr class="table-light">
+                                            <td colspan="6" class="small text-muted py-1 fst-italic">
+                                                Notas: @ev.Notas
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-3 bg-light rounded border">
+                        <p class="text-muted small mb-0">No hay evaluaciones registradas aún.</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

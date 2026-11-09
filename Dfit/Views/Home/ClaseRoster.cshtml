@@ -1,0 +1,113 @@
+@model IEnumerable<Dfit.Models.Usuario>
+@{
+    ViewData["Title"] = "Pase de Lista - Roster de Clase";
+    var horario = ViewBag.Horario as Dfit.Models.Horario;
+    var asistenciasHoy = ViewBag.AsistenciasHoy as HashSet<string> ?? new HashSet<string>();
+    var search = ViewBag.SearchTerm as string;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <a href="/Home/Horarios" class="btn btn-outline-secondary btn-sm mb-2">← Volver a Horarios</a>
+        <h2>Pase de Lista: @(horario?.NombreClase ?? "Clase")</h2>
+        <p class="text-muted small mb-0">
+            Día: <strong>@(horario?.DiaSemana)</strong> | 
+            Horario: <strong>@(horario?.HoraInicio.ToString(@"hh\:mm")) - @(horario?.HoraFin.ToString(@"hh\:mm"))</strong> | 
+            Instructor: <strong>@(horario?.Instructor)</strong> | 
+            Cupo: <strong>@(horario?.CupoMaximo)</strong>
+        </p>
+    </div>
+    <div class="text-end">
+        <span class="badge bg-primary fs-6 px-3 py-2">
+            Asistentes Hoy: @asistenciasHoy.Count / @(horario?.CupoMaximo ?? 0)
+        </span>
+    </div>
+</div>
+
+@if (TempData["MensajeExito"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["MensajeExito"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="card mb-4" style="padding: 1.5rem;">
+    <form method="get" asp-action="ClaseRoster" class="row g-2 align-items-center">
+        <input type="hidden" name="horarioId" value="@(horario?.Id)" />
+        <div class="col-md-9">
+            <input type="text" name="search" class="form-control" placeholder="Buscar socio por nombres, apellidos o DNI..." value="@search" />
+        </div>
+        <div class="col-md-3 d-flex gap-2">
+            <button type="submit" class="btn btn-primary flex-grow-1">Buscar</button>
+            @if (!string.IsNullOrEmpty(search))
+            {
+                <a href="/Home/ClaseRoster?horarioId=@(horario?.Id)" class="btn btn-secondary">Limpiar</a>
+            }
+        </div>
+    </form>
+</div>
+
+<div class="card" style="padding: 1.5rem;">
+    <h3 class="h5 mb-3">Socios Registrados</h3>
+    @if (Model != null && Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Socio</th>
+                        <th>DNI</th>
+                        <th>Correo</th>
+                        <th>Estado en Clase</th>
+                        <th class="text-end">Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var socio in Model)
+                    {
+                        var yaAsistio = asistenciasHoy.Contains(socio.Id);
+                        <tr>
+                            <td>
+                                <strong>@socio.Nombres @socio.Apellidos</strong>
+                            </td>
+                            <td>@socio.DNI</td>
+                            <td>@socio.Correo</td>
+                            <td>
+                                @if (yaAsistio)
+                                {
+                                    <span class="badge bg-success">✓ Asistencia Registrada</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Pendiente</span>
+                                }
+                            </td>
+                            <td class="text-end">
+                                @if (!yaAsistio)
+                                {
+                                    <form asp-action="RegistrarAsistenciaClase" method="post" style="display:inline;">
+                                        <input type="hidden" name="usuarioId" value="@socio.Id" />
+                                        <input type="hidden" name="horarioId" value="@(horario?.Id)" />
+                                        <button type="submit" class="btn btn-success btn-sm">Marcar Asistencia</button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-outline-secondary btn-sm" disabled>Confirmado</button>
+                                }
+                                <a href="/Home/Profile/@socio.Id" class="btn btn-outline-info btn-sm ms-1" target="_blank" title="Ver Perfil y Rutina">Ver Perfil</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-4 text-muted">
+            <p class="mb-0">No se encontraron socios que coincidan con la búsqueda.</p>
+        </div>
+    }
+</div>

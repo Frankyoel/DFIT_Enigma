@@ -232,6 +232,11 @@ namespace Dfit.Controllers
                     return RedirectToAction("Recepcion", "Home");
                 }
 
+                if (rol == "Entrenador")
+                {
+                    return RedirectToAction("Rutinas", "Home");
+                }
+
                 return RedirectToAction("MiMembresia", "Home", new { id = userDoc.Id });
             }
             catch (Exception ex)

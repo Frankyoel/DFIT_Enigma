@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - DFIT Power</title>
+    <link rel="icon" type="image/x-icon" href="~/favicon.ico" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
@@ -42,6 +43,10 @@
                         <a href="/Home/Recepcion" class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Recepcion" ? "active" : "")">Recepción y Pagos</a>
                         <a href="/Home/Asistencia" class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Asistencia" ? "active" : "")">Control Asistencia</a>
                     }
+                    else if (User.IsInRole("Entrenador"))
+                    {
+                        @* Para Entrenador se ocultan Reportes, Pagos y Membresías. Rutinas y Horarios se visualizan abajo. *@
+                    }
                     else
                     {
                         var idSocio = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
@@ -62,10 +67,10 @@
                 <header class="topbar">
                     <a href="/Home/Profile/@(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value)" style="display:flex; gap: 1rem; align-items:center; text-decoration:none; color:inherit;">
                         <span style="font-weight: 500; font-size:14px; color:var(--text-muted);">
-                            @(User.IsInRole("Admin") ? "Admin Panel" : (User.IsInRole("Recepcionista") ? "Panel Recepción" : (User.Identity?.Name ?? "Portal Socio")))
+                            @(User.IsInRole("Admin") ? "Admin Panel" : (User.IsInRole("Recepcionista") ? "Panel Recepción" : (User.IsInRole("Entrenador") ? "Panel Entrenador" : (User.Identity?.Name ?? "Portal Socio"))))
                         </span>
                         <div style="width: 32px; height: 32px; background: var(--primary); border-radius: 50%; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold;">
-                            @(User.IsInRole("Admin") ? "A" : (User.IsInRole("Recepcionista") ? "R" : (User.Identity?.Name?.Length > 0 ? User.Identity.Name.Substring(0, 1).ToUpper() : "S")))
+                            @(User.IsInRole("Admin") ? "A" : (User.IsInRole("Recepcionista") ? "R" : (User.IsInRole("Entrenador") ? "E" : (User.Identity?.Name?.Length > 0 ? User.Identity.Name.Substring(0, 1).ToUpper() : "S"))))
                         </div>
                     </a>
                 </header>

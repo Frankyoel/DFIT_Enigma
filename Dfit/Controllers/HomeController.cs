@@ -50,6 +50,11 @@ namespace Dfit.Controllers
                 return RedirectToAction("Dashboard");
             }
 
+            if (User.EsEntrenador())
+            {
+                return RedirectToAction("Rutinas");
+            }
+
             var currentUserId = User.ObtenerUsuarioId();
             return RedirectToAction("MiMembresia", new { id = currentUserId });
         }
@@ -241,15 +246,97 @@ namespace Dfit.Controllers
                 Id = doc.Id,
                 Nombres = doc.GetValue<string>("Nombres"),
                 Apellidos = doc.GetValue<string>("Apellidos"),
-                Correo = doc.GetValue<string>("Correo")
+                Correo = doc.GetValue<string>("Correo"),
+                NotasEntrenador = (User.EsAdminOEntrenador() && doc.ContainsField("NotasEntrenador"))
+                    ? doc.GetValue<string>("NotasEntrenador")
+                    : string.Empty
             };
+
+            // 1. Cargar Rutina Asignada actual
+            var ruSnap = await _db.Collection("RutinasUsuarios")
+                .WhereEqualTo("UsuarioId", id)
+                .WhereEqualTo("Estado", "Activa")
+                .GetSnapshotAsync();
+
+            RutinaUsuario? rutinaAsignada = null;
+            if (ruSnap.Documents.Count > 0)
+            {
+                var ruDoc = ruSnap.Documents[0];
+                rutinaAsignada = new RutinaUsuario
+                {
+                    Id = ruDoc.Id,
+                    UsuarioId = ruDoc.GetValue<string>("UsuarioId"),
+                    RutinaId = ruDoc.GetValue<string>("RutinaId"),
+                    FechaAsignacion = ruDoc.GetValue<DateTime>("FechaAsignacion"),
+                    FechaFin = ruDoc.ContainsField("FechaFin") ? ruDoc.GetValue<DateTime?>("FechaFin") : null,
+                    Estado = ruDoc.GetValue<string>("Estado")
+                };
+
+                var rDoc = await _db.Collection("Rutinas").Document(rutinaAsignada.RutinaId).GetSnapshotAsync();
+                if (rDoc.Exists)
+                {
+                    rutinaAsignada.Rutina = new Rutina
+                    {
+                        Id = rDoc.Id,
+                        Nombre = rDoc.GetValue<string>("Nombre"),
+                        Descripcion = rDoc.GetValue<string>("Descripcion"),
+                        Nivel = rDoc.GetValue<string>("Nivel"),
+                        VideoUrl = rDoc.GetValue<string>("VideoUrl")
+                    };
+                }
+            }
+            ViewBag.RutinaAsignada = rutinaAsignada;
+
+            // 2. Si es Admin o Entrenador, cargar catálogo de rutinas disponibles para asignar
+            if (User.EsAdminOEntrenador())
+            {
+                var rutinasSnap = await _db.Collection("Rutinas").WhereEqualTo("Activa", true).GetSnapshotAsync();
+                var rutinasList = new List<Rutina>();
+                foreach (var rDoc in rutinasSnap.Documents)
+                {
+                    rutinasList.Add(new Rutina
+                    {
+                        Id = rDoc.Id,
+                        Nombre = rDoc.GetValue<string>("Nombre"),
+                        Nivel = rDoc.GetValue<string>("Nivel")
+                    });
+                }
+                ViewBag.RutinasDisponibles = rutinasList;
+            }
+
+            // 3. Cargar Historial de Evaluaciones Físicas
+            var evalSnap = await _db.Collection("EvaluacionesFisicas")
+                .WhereEqualTo("UsuarioId", id)
+                .GetSnapshotAsync();
+
+            var evaluaciones = new List<EvaluacionFisica>();
+            foreach (var eDoc in evalSnap.Documents)
+            {
+                evaluaciones.Add(new EvaluacionFisica
+                {
+                    Id = eDoc.Id,
+                    UsuarioId = eDoc.GetValue<string>("UsuarioId"),
+                    EntrenadorId = eDoc.GetValue<string>("EntrenadorId"),
+                    EntrenadorNombre = eDoc.ContainsField("EntrenadorNombre") ? eDoc.GetValue<string>("EntrenadorNombre") : "Entrenador",
+                    Fecha = eDoc.GetValue<DateTime>("Fecha"),
+                    Peso = Convert.ToDouble(eDoc.GetValue<object>("Peso")),
+                    Altura = eDoc.ContainsField("Altura") ? Convert.ToDouble(eDoc.GetValue<object>("Altura")) : 0,
+                    IMC = eDoc.ContainsField("IMC") ? Convert.ToDouble(eDoc.GetValue<object>("IMC")) : 0,
+                    PorcentajeGrasa = eDoc.ContainsField("PorcentajeGrasa") ? Convert.ToDouble(eDoc.GetValue<object>("PorcentajeGrasa")) : 0,
+                    MasaMuscular = eDoc.ContainsField("MasaMuscular") ? Convert.ToDouble(eDoc.GetValue<object>("MasaMuscular")) : 0,
+                    Notas = eDoc.ContainsField("Notas") ? eDoc.GetValue<string>("Notas") : ""
+                });
+            }
+            ViewBag.Evaluaciones = evaluaciones.OrderByDescending(e => e.Fecha).ToList();
+
             return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> Profile(ProfileViewModel model)
         {
-            if (!User.EsAdminOPropietario(model.Id))
+            var currentUserId = User.ObtenerUsuarioId();
+            if (!User.EsAdmin() && currentUserId != model.Id)
             {
                 return Forbid();
             }
@@ -270,6 +357,194 @@ namespace Dfit.Controllers
                 ViewBag.Message = "Perfil actualizado correctamente.";
             }
             return View(model);
+        }
+
+        // ==========================================
+        // FUNCIONES AVANZADAS PARA ENTRENADOR
+        // ==========================================
+
+        [Authorize(Roles = "Admin,Entrenador")]
+        [HttpPost]
+        public async Task<IActionResult> AsignarRutina(string usuarioId, string rutinaId, int duracionDias = 30)
+        {
+            if (string.IsNullOrWhiteSpace(usuarioId) || string.IsNullOrWhiteSpace(rutinaId))
+            {
+                TempData["MensajeError"] = "Datos de asignación incompletos.";
+                return RedirectToAction("Profile", new { id = usuarioId });
+            }
+
+            // Desactivar cualquier rutina activa anterior del usuario
+            var prevSnap = await _db.Collection("RutinasUsuarios")
+                .WhereEqualTo("UsuarioId", usuarioId)
+                .WhereEqualTo("Estado", "Activa")
+                .GetSnapshotAsync();
+
+            foreach (var doc in prevSnap.Documents)
+            {
+                await _db.Collection("RutinasUsuarios").Document(doc.Id).UpdateAsync("Estado", "Reemplazada");
+            }
+
+            var fechaInicio = DateTime.UtcNow;
+            var fechaFin = fechaInicio.AddDays(duracionDias > 0 ? duracionDias : 30);
+
+            await _db.Collection("RutinasUsuarios").AddAsync(new
+            {
+                UsuarioId = usuarioId,
+                RutinaId = rutinaId,
+                FechaAsignacion = fechaInicio,
+                FechaFin = fechaFin,
+                Estado = "Activa"
+            });
+
+            TempData["MensajeExito"] = "Rutina asignada exitosamente al usuario.";
+            return RedirectToAction("Profile", new { id = usuarioId });
+        }
+
+        [Authorize(Roles = "Admin,Entrenador")]
+        [HttpPost]
+        public async Task<IActionResult> RemoverRutina(string rutinaUsuarioId, string usuarioId)
+        {
+            if (!string.IsNullOrWhiteSpace(rutinaUsuarioId))
+            {
+                await _db.Collection("RutinasUsuarios").Document(rutinaUsuarioId).UpdateAsync("Estado", "Cancelada");
+                TempData["MensajeExito"] = "Rutina desasignada correctamente.";
+            }
+            return RedirectToAction("Profile", new { id = usuarioId });
+        }
+
+        [Authorize(Roles = "Admin,Entrenador")]
+        [HttpPost]
+        public async Task<IActionResult> GuardarEvaluacion(EvaluacionFisica model)
+        {
+            if (string.IsNullOrWhiteSpace(model.UsuarioId))
+            {
+                return BadRequest();
+            }
+
+            model.CalcularImc();
+            var entrenadorId = User.ObtenerUsuarioId() ?? "";
+            var entrenadorNombre = User.Identity?.Name ?? "Entrenador";
+
+            await _db.Collection("EvaluacionesFisicas").AddAsync(new
+            {
+                UsuarioId = model.UsuarioId,
+                EntrenadorId = entrenadorId,
+                EntrenadorNombre = entrenadorNombre,
+                Fecha = DateTime.UtcNow,
+                Peso = model.Peso,
+                Altura = model.Altura,
+                IMC = model.IMC,
+                PorcentajeGrasa = model.PorcentajeGrasa,
+                MasaMuscular = model.MasaMuscular,
+                Notas = model.Notas ?? ""
+            });
+
+            TempData["MensajeExito"] = "Evaluación física registrada correctamente.";
+            return RedirectToAction("Profile", new { id = model.UsuarioId });
+        }
+
+        [Authorize(Roles = "Admin,Entrenador")]
+        [HttpPost]
+        public async Task<IActionResult> GuardarNotaInterna(string usuarioId, string notasEntrenador)
+        {
+            if (string.IsNullOrWhiteSpace(usuarioId))
+            {
+                return BadRequest();
+            }
+
+            await _db.Collection("Usuarios").Document(usuarioId).UpdateAsync("NotasEntrenador", notasEntrenador ?? "");
+            TempData["MensajeExito"] = "Notas del entrenador actualizadas correctamente.";
+            return RedirectToAction("Profile", new { id = usuarioId });
+        }
+
+        [Authorize(Roles = "Admin,Entrenador")]
+        [HttpGet]
+        public async Task<IActionResult> ClaseRoster(string horarioId, string? search = null)
+        {
+            var hDoc = await _db.Collection("Horarios").Document(horarioId).GetSnapshotAsync();
+            if (!hDoc.Exists) return NotFound();
+
+            var horario = new Horario
+            {
+                Id = hDoc.Id,
+                DiaSemana = hDoc.GetValue<string>("DiaSemana"),
+                HoraInicio = TimeSpan.Parse(hDoc.GetValue<string>("HoraInicio")),
+                HoraFin = TimeSpan.Parse(hDoc.GetValue<string>("HoraFin")),
+                NombreClase = hDoc.GetValue<string>("NombreClase"),
+                Instructor = hDoc.GetValue<string>("Instructor"),
+                CupoMaximo = hDoc.GetValue<int>("CupoMaximo")
+            };
+
+            // Obtener socios activos
+            var uSnap = await _db.Collection("Usuarios").WhereEqualTo("Activo", true).GetSnapshotAsync();
+            var socios = new List<Usuario>();
+            foreach (var doc in uSnap.Documents)
+            {
+                var rol = doc.ContainsField("Rol") ? doc.GetValue<string>("Rol") : "Usuario";
+                if (rol == "Usuario")
+                {
+                    socios.Add(new Usuario
+                    {
+                        Id = doc.Id,
+                        Nombres = doc.GetValue<string>("Nombres"),
+                        Apellidos = doc.GetValue<string>("Apellidos"),
+                        DNI = doc.ContainsField("DNI") ? doc.GetValue<string>("DNI") : "",
+                        Correo = doc.GetValue<string>("Correo")
+                    });
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                var s = search.Trim().ToLower();
+                socios = socios.Where(u =>
+                    u.Nombres.ToLower().Contains(s) ||
+                    u.Apellidos.ToLower().Contains(s) ||
+                    u.DNI.Contains(s)).ToList();
+            }
+
+            // Obtener asistencias registradas hoy para este horario
+            var hoy = DateTime.UtcNow.Date;
+            var aSnap = await _db.Collection("Asistencias")
+                .WhereEqualTo("HorarioId", horarioId)
+                .GetSnapshotAsync();
+
+            var asistenciasHoy = new HashSet<string>();
+            foreach (var aDoc in aSnap.Documents)
+            {
+                var f = aDoc.GetValue<DateTime>("FechaHoraEntrada");
+                if (f.Date == hoy)
+                {
+                    asistenciasHoy.Add(aDoc.GetValue<string>("UsuarioId"));
+                }
+            }
+
+            ViewBag.Horario = horario;
+            ViewBag.AsistenciasHoy = asistenciasHoy;
+            ViewBag.SearchTerm = search;
+
+            return View(socios.OrderBy(u => u.Nombres).ToList());
+        }
+
+        [Authorize(Roles = "Admin,Entrenador")]
+        [HttpPost]
+        public async Task<IActionResult> RegistrarAsistenciaClase(string usuarioId, string horarioId)
+        {
+            var hDoc = await _db.Collection("Horarios").Document(horarioId).GetSnapshotAsync();
+            if (!hDoc.Exists) return NotFound();
+
+            var nombreClase = hDoc.GetValue<string>("NombreClase");
+
+            await _db.Collection("Asistencias").AddAsync(new
+            {
+                UsuarioId = usuarioId,
+                HorarioId = horarioId,
+                NombreClase = nombreClase,
+                FechaHoraEntrada = DateTime.UtcNow
+            });
+
+            TempData["MensajeExito"] = $"Asistencia registrada para la clase '{nombreClase}'.";
+            return RedirectToAction("ClaseRoster", new { horarioId = horarioId });
         }
 
         // ==========================================
@@ -1025,10 +1300,10 @@ namespace Dfit.Controllers
             return View(list);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Entrenador")]
         public IActionResult CreateRutina() => View();
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Entrenador")]
         [HttpPost]
         public async Task<IActionResult> CreateRutina(Rutina model)
         {
@@ -1046,7 +1321,7 @@ namespace Dfit.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Entrenador")]
         public async Task<IActionResult> EditRutina(string id)
         {
             var doc = await _db.Collection("Rutinas").Document(id).GetSnapshotAsync();
@@ -1061,7 +1336,7 @@ namespace Dfit.Controllers
             });
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Entrenador")]
         [HttpPost]
         public async Task<IActionResult> EditRutina(Rutina model)
         {
@@ -1079,7 +1354,7 @@ namespace Dfit.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Entrenador")]
         [HttpPost]
         public async Task<IActionResult> DeleteRutina(string id)
         {
@@ -1105,10 +1380,10 @@ namespace Dfit.Controllers
             return View(list.OrderBy(h => h.HoraInicio).ToList());
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Entrenador")]
         public IActionResult CreateHorario() => View();
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Entrenador")]
         [HttpPost]
         public async Task<IActionResult> CreateHorario(Horario model)
         {
@@ -1127,7 +1402,7 @@ namespace Dfit.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Entrenador")]
         public async Task<IActionResult> EditHorario(string id)
         {
             var doc = await _db.Collection("Horarios").Document(id).GetSnapshotAsync();
@@ -1143,7 +1418,7 @@ namespace Dfit.Controllers
             });
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Entrenador")]
         [HttpPost]
         public async Task<IActionResult> EditHorario(Horario model)
         {
@@ -1162,7 +1437,7 @@ namespace Dfit.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Entrenador")]
         [HttpPost]
         public async Task<IActionResult> DeleteHorario(string id)
         {
