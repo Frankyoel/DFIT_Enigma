@@ -74,7 +74,9 @@ namespace Dfit.Utils
                 };
 
                 var generatedJson = JsonSerializer.Serialize(serviceAccountObj);
+#pragma warning disable CS0618
                 var credential = GoogleCredential.FromJson(generatedJson);
+#pragma warning restore CS0618
                 projectId = effectiveProjectId;
 
                 Console.WriteLine("[Firebase] Credenciales cargadas exitosamente (OPCIÓN A: CLIENT_EMAIL y PRIVATE_KEY).");
@@ -122,7 +124,9 @@ namespace Dfit.Utils
         {
             try
             {
+#pragma warning disable CS0618
                 var credential = GoogleCredential.FromFile(path);
+#pragma warning restore CS0618
                 Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", path);
 
                 SincronizarProjectIdDesdeArchivo(path, ref projectId);
