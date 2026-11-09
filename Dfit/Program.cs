@@ -82,14 +82,15 @@ var forwardedHeadersOptions = new ForwardedHeadersOptions
 {
     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
 };
-forwardedHeadersOptions.KnownIPNetworks.Clear();
+//forwardedHeadersOptions.KnownIPNetworks.Clear();
 forwardedHeadersOptions.KnownProxies.Clear();
 app.UseForwardedHeaders(forwardedHeadersOptions);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
+    // Captura excepciones de código no controladas (Errores 500) y redirige
+    app.UseExceptionHandler("/Error/500");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
@@ -117,8 +118,6 @@ app.Use(async (context, next) =>
 });
 
 app.UseHttpsRedirection();
-// Captura excepciones de código no controladas (Errores 500) y redirige
-app.UseExceptionHandler("/Error/500");
 
 // Intercepta códigos de estado HTTP (401, 403, 404, etc.) y redirige pasando el código
 app.UseStatusCodePagesWithReExecute("/Error/{0}");
