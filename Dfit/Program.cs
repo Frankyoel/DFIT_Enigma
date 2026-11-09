@@ -5,6 +5,8 @@ using Dfit.Models.Patterns.Proxy;
 using Dfit.Models.Patterns.Strategy;
 using Dfit.Models.Patterns.Observer;
 using Dfit.Services;
+using Dfit.Repositories.Contracts;
+using Dfit.Repositories.Firestore;
 
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
@@ -69,6 +71,17 @@ builder.Services.AddSingleton<IPasswordHasherService, PasswordHasherService>();
 builder.Services.AddScoped<RealGymAccess>();
 builder.Services.AddScoped<IGymAccess, GymAccessProxy>();
 builder.Services.AddScoped<PaymentContext>();
+
+// Registro de repositorios de persistencia Firestore
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IMembresiaRepository, MembresiaRepository>();
+builder.Services.AddScoped<IMembresiaUsuarioRepository, MembresiaUsuarioRepository>();
+builder.Services.AddScoped<IPagoRepository, PagoRepository>();
+builder.Services.AddScoped<IAsistenciaRepository, AsistenciaRepository>();
+builder.Services.AddScoped<IRutinaRepository, RutinaRepository>();
+builder.Services.AddScoped<IHorarioRepository, HorarioRepository>();
+builder.Services.AddScoped<IEvaluacionFisicaRepository, EvaluacionFisicaRepository>();
+builder.Services.AddScoped<IRutinaUsuarioRepository, RutinaUsuarioRepository>();
 
 var registrationSubject = new UserRegistrationSubject();
 registrationSubject.Attach(new EmailNotificationObserver());
