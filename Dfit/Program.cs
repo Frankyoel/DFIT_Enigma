@@ -83,6 +83,14 @@ builder.Services.AddScoped<IHorarioRepository, HorarioRepository>();
 builder.Services.AddScoped<IEvaluacionFisicaRepository, EvaluacionFisicaRepository>();
 builder.Services.AddScoped<IRutinaUsuarioRepository, RutinaUsuarioRepository>();
 
+// Registro de servicios de aplicación y orquestación de negocio
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<IMembresiaService, MembresiaService>();
+builder.Services.AddScoped<IRecepcionService, RecepcionService>();
+builder.Services.AddScoped<IPagoService, PagoService>();
+builder.Services.AddScoped<IAsistenciaService, AsistenciaService>();
+builder.Services.AddScoped<IEntrenamientoService, EntrenamientoService>();
+
 var registrationSubject = new UserRegistrationSubject();
 registrationSubject.Attach(new EmailNotificationObserver());
 registrationSubject.Attach(new LogNotificationObserver());
