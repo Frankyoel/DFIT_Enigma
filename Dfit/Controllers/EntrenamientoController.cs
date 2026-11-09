@@ -40,18 +40,21 @@ namespace Dfit.Controllers
         }
 
         // Presenta el formulario para crear una nueva rutina de ejercicios.
-        // Restringido al personal de entrenadores y administradores.
+        // Restringido al personal de entrenadores y administradores del gimnasio.
+        // Permite configurar series, repeticiones, nivel sugerido y video de demostración.
         [Authorize(Roles = RolesSistema.AdminOEntrenador)]
         [HttpGet]
         [Route("Entrenamiento/CreateRutina")]
         [Route("Home/CreateRutina")]
         public IActionResult CreateRutina()
         {
+            // Inicializa la vista de creación de rutina.
             return View("~/Views/Home/CreateRutina.cshtml");
         }
 
         // Procesa la inserción de una nueva rutina deportiva en el catálogo.
         // Valida nombre, nivel, descripción y enlace multimedia de demostración.
+        // Aplica validaciones de DataAnnotations antes de enviar a persistencia.
         [Authorize(Roles = RolesSistema.AdminOEntrenador)]
         [HttpPost]
         [Route("Entrenamiento/CreateRutina")]
@@ -72,12 +75,14 @@ namespace Dfit.Controllers
 
         // Carga la información de una rutina para su modificación.
         // Retorna 404 si el documento de rutina no existe.
+        // Permite a los entrenadores ajustar ejercicios y enlaces explicativos.
         [Authorize(Roles = RolesSistema.AdminOEntrenador)]
         [HttpGet]
         [Route("Entrenamiento/EditRutina/{id}")]
         [Route("Home/EditRutina/{id}")]
         public async Task<IActionResult> EditRutina(string id)
         {
+            // Consulta de la rutina por clave primaria.
             var model = await _entrenamientoService.ObtenerRutinaParaEditarAsync(id);
             if (model == null)
             {
@@ -206,12 +211,14 @@ namespace Dfit.Controllers
 
         // Carga una sesión de clase para su reprogramación o cambio de instructor.
         // Retorna 404 si la sesión no fue encontrada.
+        // Inicializa el formulario con el día, hora de inicio, hora fin y aforo.
         [Authorize(Roles = RolesSistema.AdminOEntrenador)]
         [HttpGet]
         [Route("Entrenamiento/EditHorario/{id}")]
         [Route("Home/EditHorario/{id}")]
         public async Task<IActionResult> EditHorario(string id)
         {
+            // Búsqueda del registro de horario en el servicio de aplicación.
             var model = await _entrenamientoService.ObtenerHorarioParaEditarAsync(id);
             if (model == null)
             {
@@ -223,6 +230,7 @@ namespace Dfit.Controllers
 
         // Procesa la actualización de los datos de un horario de clase.
         // Modifica días, horas, instructores o aforos máximos permitidos.
+        // Valida que el modelo cumpla con las restricciones de TimeSpan.
         [Authorize(Roles = RolesSistema.AdminOEntrenador)]
         [HttpPost]
         [Route("Entrenamiento/EditHorario/{id?}")]
@@ -277,6 +285,8 @@ namespace Dfit.Controllers
 
         // Registra la asistencia de un socio a la clase grupal seleccionada.
         // Asocia el identificador de clase y nombre al registro de entrada.
+        // Permite computar la ocupación efectiva respecto al cupo máximo configurado.
+        // Registra la fecha y hora exacta en tiempo universal coordinado (UTC).
         [Authorize(Roles = RolesSistema.AdminOEntrenador)]
         [HttpPost]
         [Route("Entrenamiento/RegistrarAsistenciaClase")]
@@ -284,6 +294,7 @@ namespace Dfit.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RegistrarAsistenciaClase(string usuarioId, string horarioId)
         {
+            // Ejecuta el registro de pase de lista en el servicio.
             var (exito, mensaje) = await _entrenamientoService.RegistrarAsistenciaClaseAsync(usuarioId, horarioId);
             if (exito)
             {

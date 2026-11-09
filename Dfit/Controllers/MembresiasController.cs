@@ -123,6 +123,9 @@ namespace Dfit.Controllers
         }
 
         // Presenta el formulario para asignar una membresía a un socio específico.
+        // Restringido al Administrador para garantizar control de contratos y tarifas.
+        // Filtra planes como Entrada Libre que no corresponden a suscripciones recurrentes.
+        // Inicializa el ViewBag con el identificador del socio y catálogo de membresías activas.
         [Authorize(Roles = RolesSistema.Admin)]
         [HttpGet]
         [Route("Membresias/AssignMembresia")]
