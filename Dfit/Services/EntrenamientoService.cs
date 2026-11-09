@@ -87,12 +87,12 @@ namespace Dfit.Services
         }
 
         // Asigna una rutina a un socio desactivando cualquier rutina previa.
-        public async Task AsignarRutinaASocioAsync(string usuarioId, string rutinaId, int duracionDias)
+        public async Task<(bool Exito, string Mensaje)> AsignarRutinaASocioAsync(string usuarioId, string rutinaId, int duracionDias)
         {
             // Cláusula de guarda para identificadores vacíos.
             if (string.IsNullOrWhiteSpace(usuarioId) || string.IsNullOrWhiteSpace(rutinaId))
             {
-                return;
+                return (false, MensajesNotificacion.DatosAsignacionIncompletos);
             }
 
             // Desactiva asignaciones activas previas del socio.
@@ -112,15 +112,17 @@ namespace Dfit.Services
                 FechaFin = fechaFin,
                 Estado = "Activa"
             });
+
+            return (true, MensajesNotificacion.RutinaAsignadaExito);
         }
 
         // Desasigna o cancela una rutina asignada al socio.
-        public async Task RemoverRutinaSocioAsync(string rutinaUsuarioId)
+        public async Task<(bool Exito, string Mensaje)> RemoverRutinaSocioAsync(string rutinaUsuarioId)
         {
             // Cláusula de guarda para ID de asignación vacío.
             if (string.IsNullOrWhiteSpace(rutinaUsuarioId))
             {
-                return;
+                return (false, MensajesNotificacion.DatosAsignacionIncompletos);
             }
 
             // Localiza la asignación y cambia su estado a Cancelada.
@@ -130,10 +132,12 @@ namespace Dfit.Services
                 ru.Estado = "Cancelada";
                 await _rutinaUsuarioRepo.UpdateAsync(rutinaUsuarioId, ru);
             }
+
+            return (true, MensajesNotificacion.RutinaDesasignadaExito);
         }
 
         // Obtiene la lista semanal de clases grupales ordenadas por hora de inicio.
-        public async Task<IReadOnlyList<Horario>> ObtenerHorariosAsync()
+        public async Task<IReadOnlyList<Horario>> ObtenerHorariosOrdenadosAsync()
         {
             // Retorna los horarios ordenados cronológicamente.
             return await _horarioRepo.GetHorariosOrdenadosAsync();

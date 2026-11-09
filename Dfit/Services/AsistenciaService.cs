@@ -41,7 +41,7 @@ namespace Dfit.Services
         }
 
         // Obtiene las asistencias del día y lista de socios activos para el panel operativo.
-        public async Task<(IReadOnlyList<Asistencia> AsistenciasHoy, IReadOnlyList<Usuario> UsuariosActivos)> ObtenerAsistenciasHoyAsync()
+        public async Task<(IReadOnlyList<Asistencia> AsistenciasHoy, IReadOnlyList<Usuario> UsuariosActivos)> ObtenerAsistenciaDashboardAsync()
         {
             var ahora = DateTime.UtcNow;
 
@@ -67,7 +67,7 @@ namespace Dfit.Services
         }
 
         // Registra ingreso manual comprobando que el socio cuente con suscripción vigente.
-        public async Task<(bool Exito, string Mensaje)> RegistrarAccesoManualAsync(string usuarioId)
+        public async Task<(bool Exito, string Mensaje)> RegistrarAsistenciaManualAsync(string usuarioId)
         {
             // Cláusula de guarda para ID de usuario vacío.
             if (string.IsNullOrWhiteSpace(usuarioId))

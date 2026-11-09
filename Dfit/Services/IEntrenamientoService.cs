@@ -21,11 +21,11 @@ namespace Dfit.Services
         // Desactiva lógicamente una rutina.
         Task EliminarRutinaAsync(string id);
         // Asigna una rutina a un socio desactivando cualquier rutina anterior.
-        Task AsignarRutinaASocioAsync(string usuarioId, string rutinaId, int duracionDias);
+        Task<(bool Exito, string Mensaje)> AsignarRutinaASocioAsync(string usuarioId, string rutinaId, int duracionDias);
         // Desasigna o cancela la rutina asignada a un socio.
-        Task RemoverRutinaSocioAsync(string rutinaUsuarioId);
+        Task<(bool Exito, string Mensaje)> RemoverRutinaSocioAsync(string rutinaUsuarioId);
         // Obtiene los horarios de clases ordenados cronológicamente.
-        Task<IReadOnlyList<Horario>> ObtenerHorariosAsync();
+        Task<IReadOnlyList<Horario>> ObtenerHorariosOrdenadosAsync();
         // Crea una nueva sesión de clase en el cronograma semanal.
         Task CrearHorarioAsync(Horario model);
         // Obtiene una sesión de horario para su edición.

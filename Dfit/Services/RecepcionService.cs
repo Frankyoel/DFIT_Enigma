@@ -45,7 +45,7 @@ namespace Dfit.Services
 
         // Obtiene el estado consolidado de recepción: socios, estado de vigencia y pagos del día.
         // Agrupa colecciones en memoria mediante diccionarios O(1) eliminando bucles N+1.
-        public async Task<RecepcionViewModel> ObtenerConsolaRecepcionAsync(string? search = null, string? estado = null)
+        public async Task<RecepcionViewModel> ObtenerRecepcionDashboardAsync(string? search = null, string? estado = null)
         {
             // 1. Obtener socios registrados con rol Usuario.
             var todosSocios = await _usuarioRepo.GetSociosAsync();
