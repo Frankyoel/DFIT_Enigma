@@ -1,0 +1,16 @@
+﻿@{
+    ViewData["Title"] = "Error " + ViewBag.StatusCode + " - DFIT POWER";
+}
+
+<div class="container text-center" style="margin-top: 8%; margin-bottom: 8%;">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h1 class="display-1 text-danger font-weight-bold" style="font-size: 7rem;">@ViewBag.StatusCode</h1>
+            <h2 class="mb-3">🏋️‍♂️ ¡Fallo en el entrenamiento!</h2>
+            <p class="lead text-muted mb-4">@ViewBag.ErrorMessage</p>
+            <a href="/" class="btn btn-primary btn-lg shadow-sm" style="border-radius: 30px; padding: 10px 30px;">
+                Volver al Inicio de DFIT POWER
+            </a>
+        </div>
+    </div>
+</div>
