@@ -2,7 +2,7 @@
 // Controlador especializado en rutinas de ejercicios, horarios semanales y asistencia a clases.
 // Delega la lógica deportiva y de cronogramas a IEntrenamientoService.
 // Proporciona compatibilidad con las rutas y enlaces del menú de entrenadores y socios.
-// Cumple con profundidad condicional <= 2 niveles y comentarios explicativos con //.
+// Cumple con la directriz de profundidad condicional <= 2 niveles y comentarios explicativos.
 
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -14,45 +14,44 @@ using Dfit.Services;
 namespace Dfit.Controllers
 {
     // Controlador de planes de entrenamiento, videos de rutinas y clases colectivas.
-    // Expone endpoints protegidos para perfiles de Entrenador, Admin y Socios.
+    // Gestiona el catálogo de ejercicios, la programación semanal y el pase de lista de clases.
     [Authorize]
     public class EntrenamientoController : Controller
     {
         // Servicio de orquestación de rutinas y horarios inyectado por DI.
         private readonly IEntrenamientoService _entrenamientoService;
 
-        // Constructor con inyección de dependencias del servicio de entrenamiento.
+        // Constructor con inyección del servicio de aplicación de entrenamiento.
         public EntrenamientoController(IEntrenamientoService entrenamientoService)
         {
             _entrenamientoService = entrenamientoService;
         }
 
         // Muestra el catálogo de rutinas activas para socios y entrenadores.
-        // Permite filtrar ejercicios por nivel y reproducir videos demostrativos.
+        // Permite filtrar ejercicios por nivel y reproducir videos instructivos.
         [HttpGet]
         [Route("Entrenamiento/Rutinas")]
         [Route("Home/Rutinas")]
         public async Task<IActionResult> Rutinas()
         {
-            // Recupera rutinas activas desde el servicio.
+            // Consulta de rutinas disponibles en el catálogo deportivo.
             var list = await _entrenamientoService.ObtenerRutinasActivasAsync();
             return View("~/Views/Home/Rutinas.cshtml", list);
         }
 
         // Presenta el formulario para crear una nueva rutina de ejercicios.
-        // Restringido exclusivamente a perfiles de Entrenador o Administrador.
+        // Restringido al personal de entrenadores y administradores.
         [Authorize(Roles = RolesSistema.AdminOEntrenador)]
         [HttpGet]
         [Route("Entrenamiento/CreateRutina")]
         [Route("Home/CreateRutina")]
         public IActionResult CreateRutina()
         {
-            // Despliega formulario de creación de ejercicios.
             return View("~/Views/Home/CreateRutina.cshtml");
         }
 
         // Procesa la inserción de una nueva rutina deportiva en el catálogo.
-        // Protegido con token Anti-CSRF contra ataques de falsificación de petición.
+        // Valida nombre, nivel, descripción y enlace multimedia de demostración.
         [Authorize(Roles = RolesSistema.AdminOEntrenador)]
         [HttpPost]
         [Route("Entrenamiento/CreateRutina")]
@@ -60,36 +59,36 @@ namespace Dfit.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateRutina(Rutina model)
         {
-            // Cláusula de guarda para entradas no válidas.
+            // Cláusula de guarda si el modelo no supera las validaciones.
             if (!ModelState.IsValid)
             {
                 return View("~/Views/Home/CreateRutina.cshtml", model);
             }
 
-            // Guarda la rutina en el almacén de datos.
+            // Inserción persistente en el catálogo de rutinas.
             await _entrenamientoService.CrearRutinaAsync(model);
             return RedirectToAction(nameof(Rutinas));
         }
 
         // Carga la información de una rutina para su modificación.
+        // Retorna 404 si el documento de rutina no existe.
         [Authorize(Roles = RolesSistema.AdminOEntrenador)]
         [HttpGet]
         [Route("Entrenamiento/EditRutina/{id}")]
         [Route("Home/EditRutina/{id}")]
         public async Task<IActionResult> EditRutina(string id)
         {
-            // Carga la rutina correspondiente por su ID.
             var model = await _entrenamientoService.ObtenerRutinaParaEditarAsync(id);
             if (model == null)
             {
                 return NotFound();
             }
 
-            // Retorna la vista de edición con la rutina cargada.
             return View("~/Views/Home/EditRutina.cshtml", model);
         }
 
         // Procesa la actualización de los ejercicios y multimedia de la rutina.
+        // Modifica la descripción, nivel de exigencia o enlace de video.
         [Authorize(Roles = RolesSistema.AdminOEntrenador)]
         [HttpPost]
         [Route("Entrenamiento/EditRutina/{id?}")]
@@ -97,18 +96,19 @@ namespace Dfit.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditRutina(Rutina model)
         {
-            // Cláusula de guarda si el modelo no es válido.
+            // Cláusula de guarda para validar el estado del modelo.
             if (!ModelState.IsValid)
             {
                 return View("~/Views/Home/EditRutina.cshtml", model);
             }
 
-            // Aplica los cambios en el catálogo.
+            // Actualización persistente en el repositorio de rutinas.
             await _entrenamientoService.ActualizarRutinaAsync(model);
             return RedirectToAction(nameof(Rutinas));
         }
 
-        // Desactiva lógicamente una rutina del catálogo sin borrar su historial.
+        // Desactiva lógicamente una rutina del catálogo.
+        // Mantiene la integridad histórica de rutinas asignadas a socios.
         [Authorize(Roles = RolesSistema.AdminOEntrenador)]
         [HttpPost]
         [Route("Entrenamiento/DeleteRutina/{id}")]
@@ -116,12 +116,12 @@ namespace Dfit.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteRutina(string id)
         {
-            // Desactiva la rutina de forma asíncrona.
             await _entrenamientoService.EliminarRutinaAsync(id);
             return RedirectToAction(nameof(Rutinas));
         }
 
         // Asigna una rutina de entrenamiento al socio con vigencia configurable.
+        // Desactiva cualquier asignación previa activa para evitar duplicidades.
         [Authorize(Roles = RolesSistema.AdminOEntrenador)]
         [HttpPost]
         [Route("Entrenamiento/AsignarRutina")]
@@ -129,10 +129,9 @@ namespace Dfit.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AsignarRutina(string usuarioId, string rutinaId, int duracionDias = 30)
         {
-            // Asigna la rutina al socio y desactiva asignaciones previas.
             var (exito, mensaje) = await _entrenamientoService.AsignarRutinaASocioAsync(usuarioId, rutinaId, duracionDias);
 
-            // Almacena mensaje de feedback según el resultado.
+            // Registro de notificación de feedback para la interfaz.
             if (exito)
             {
                 TempData["MensajeExito"] = mensaje;
@@ -142,11 +141,11 @@ namespace Dfit.Controllers
                 TempData["MensajeError"] = mensaje;
             }
 
-            // Redirige al perfil del socio.
             return RedirectToAction("Profile", "Usuarios", new { id = usuarioId });
         }
 
         // Remueve la asignación de una rutina activa de un socio.
+        // Actualiza el estado de la asignación a Cancelada.
         [Authorize(Roles = RolesSistema.AdminOEntrenador)]
         [HttpPost]
         [Route("Entrenamiento/RemoverRutina")]
@@ -154,40 +153,39 @@ namespace Dfit.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoverRutina(string rutinaUsuarioId, string usuarioId)
         {
-            // Cancela la asignación de la rutina en el repositorio.
             var (exito, mensaje) = await _entrenamientoService.RemoverRutinaSocioAsync(rutinaUsuarioId);
             if (exito)
             {
                 TempData["MensajeExito"] = mensaje;
             }
 
-            // Redirige al perfil del socio.
             return RedirectToAction("Profile", "Usuarios", new { id = usuarioId });
         }
 
         // Muestra la programación semanal de clases colectivas.
+        // Ordena las sesiones cronológicamente por hora de inicio.
         [HttpGet]
         [Route("Entrenamiento/Horarios")]
         [Route("Home/Horarios")]
         public async Task<IActionResult> Horarios()
         {
-            // Carga horarios semanales ordenados por hora de inicio.
             var list = await _entrenamientoService.ObtenerHorariosOrdenadosAsync();
             return View("~/Views/Home/Horarios.cshtml", list);
         }
 
         // Presenta el formulario para programar una nueva clase grupal.
+        // Restringido al personal técnico de entrenamiento.
         [Authorize(Roles = RolesSistema.AdminOEntrenador)]
         [HttpGet]
         [Route("Entrenamiento/CreateHorario")]
         [Route("Home/CreateHorario")]
         public IActionResult CreateHorario()
         {
-            // Retorna la vista de creación de horarios en Views/Home/.
             return View("~/Views/Home/CreateHorario.cshtml");
         }
 
         // Procesa la inserción de una nueva sesión de clase en el calendario.
+        // Almacena día de la semana, hora de inicio, fin, clase y cupo máximo.
         [Authorize(Roles = RolesSistema.AdminOEntrenador)]
         [HttpPost]
         [Route("Entrenamiento/CreateHorario")]
@@ -195,36 +193,36 @@ namespace Dfit.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateHorario(Horario model)
         {
-            // Cláusula de guarda para validación de entrada.
+            // Cláusula de guarda para validar el horario programado.
             if (!ModelState.IsValid)
             {
                 return View("~/Views/Home/CreateHorario.cshtml", model);
             }
 
-            // Persiste el nuevo horario en Firestore.
+            // Inserción en la colección de horarios de Firestore.
             await _entrenamientoService.CrearHorarioAsync(model);
             return RedirectToAction(nameof(Horarios));
         }
 
         // Carga una sesión de clase para su reprogramación o cambio de instructor.
+        // Retorna 404 si la sesión no fue encontrada.
         [Authorize(Roles = RolesSistema.AdminOEntrenador)]
         [HttpGet]
         [Route("Entrenamiento/EditHorario/{id}")]
         [Route("Home/EditHorario/{id}")]
         public async Task<IActionResult> EditHorario(string id)
         {
-            // Recupera la sesión de clase por su ID.
             var model = await _entrenamientoService.ObtenerHorarioParaEditarAsync(id);
             if (model == null)
             {
                 return NotFound();
             }
 
-            // Despliega el formulario de edición con los datos poblados.
             return View("~/Views/Home/EditHorario.cshtml", model);
         }
 
         // Procesa la actualización de los datos de un horario de clase.
+        // Modifica días, horas, instructores o aforos máximos permitidos.
         [Authorize(Roles = RolesSistema.AdminOEntrenador)]
         [HttpPost]
         [Route("Entrenamiento/EditHorario/{id?}")]
@@ -232,18 +230,19 @@ namespace Dfit.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditHorario(Horario model)
         {
-            // Cláusula de guarda si el modelo no es válido.
+            // Cláusula de guarda para validar el modelo.
             if (!ModelState.IsValid)
             {
                 return View("~/Views/Home/EditHorario.cshtml", model);
             }
 
-            // Aplica los cambios en el cronograma semanal.
+            // Modificación en el repositorio de horarios.
             await _entrenamientoService.ActualizarHorarioAsync(model);
             return RedirectToAction(nameof(Horarios));
         }
 
-        // Elimina una clase del cronograma semanal por su ID.
+        // Elimina una clase del cronograma semanal.
+        // Operación administrativa de depuración del calendario.
         [Authorize(Roles = RolesSistema.AdminOEntrenador)]
         [HttpPost]
         [Route("Entrenamiento/DeleteHorario/{id}")]
@@ -251,36 +250,33 @@ namespace Dfit.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteHorario(string id)
         {
-            // Borra la clase en la base de datos.
             await _entrenamientoService.EliminarHorarioAsync(id);
             return RedirectToAction(nameof(Horarios));
         }
 
         // Muestra el roster de asistencia y lista de socios disponibles para la clase grupal.
-        // Facilita a entrenadores marcar check-in en lote durante sesiones dirigidas.
+        // Permite a los instructores tomar asistencia en tiempo real.
         [Authorize(Roles = RolesSistema.AdminOEntrenador)]
         [HttpGet]
         [Route("Entrenamiento/ClaseRoster")]
         [Route("Home/ClaseRoster")]
         public async Task<IActionResult> ClaseRoster(string horarioId, string? search = null)
         {
-            // Obtiene la clase, los socios activos y los accesos registrados hoy.
             var (horario, socios, asistenciasHoy) = await _entrenamientoService.ObtenerClaseRosterAsync(horarioId, search);
             if (horario == null)
             {
                 return NotFound();
             }
 
-            // Comparte datos con la vista mediante ViewBag.
             ViewBag.Horario = horario;
             ViewBag.AsistenciasHoy = asistenciasHoy;
             ViewBag.SearchTerm = search;
 
-            // Retorna la vista de pase de lista en Views/Home/.
             return View("~/Views/Home/ClaseRoster.cshtml", socios);
         }
 
         // Registra la asistencia de un socio a la clase grupal seleccionada.
+        // Asocia el identificador de clase y nombre al registro de entrada.
         [Authorize(Roles = RolesSistema.AdminOEntrenador)]
         [HttpPost]
         [Route("Entrenamiento/RegistrarAsistenciaClase")]
@@ -288,14 +284,12 @@ namespace Dfit.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RegistrarAsistenciaClase(string usuarioId, string horarioId)
         {
-            // Registra el ingreso del socio en la clase indicada.
             var (exito, mensaje) = await _entrenamientoService.RegistrarAsistenciaClaseAsync(usuarioId, horarioId);
             if (exito)
             {
                 TempData["MensajeExito"] = mensaje;
             }
 
-            // Recarga el roster de la clase para mostrar el estado actualizado.
             return RedirectToAction(nameof(ClaseRoster), new { horarioId });
         }
     }
