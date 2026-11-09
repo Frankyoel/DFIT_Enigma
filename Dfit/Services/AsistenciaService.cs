@@ -1,7 +1,6 @@
 // Dfit/Services/AsistenciaService.cs
-// Implementación de lógica de negocio para accesos físicos, check-in QR y control de aforo.
-// Integra el proxy de acceso al gimnasio (IGymAccess) y el emisor de tokens QR (IQRTokenService).
-// Aplica cláusulas de guarda para mantener la profundidad condicional <= 2 niveles.
+// Implementación de control de ingresos físicos y validación de tokens QR temporales.
+// Encapsula las reglas de acceso con IGymAccess (Proxy Pattern) e IQRTokenService (Singleton).
 
 using System;
 using System.Collections.Generic;
@@ -15,17 +14,18 @@ using Dfit.Utils;
 
 namespace Dfit.Services
 {
-    // Servicio de aplicación para control de ingresos, check-in QR y validación de membresías.
+    // Servicio de aplicación para control de acceso, asistencia y validación de check-in por QR.
+    // Coordina la verificación de membresías activas y el registro de entradas en tiempo real.
     public class AsistenciaService : IAsistenciaService
     {
-        // Repositorios y componentes de acceso inyectados.
+        // Repositorios y componentes de patrones inyectados.
         private readonly IAsistenciaRepository _asistenciaRepo;
         private readonly IUsuarioRepository _usuarioRepo;
         private readonly IMembresiaUsuarioRepository _memUsuarioRepo;
         private readonly IQRTokenService _qrTokenService;
         private readonly IGymAccess _gymAccess;
 
-        // Constructor con inyección de dependencias.
+        // Constructor con inyección de dependencias de repositorios y servicios de acceso.
         public AsistenciaService(
             IAsistenciaRepository asistenciaRepo,
             IUsuarioRepository usuarioRepo,
@@ -40,16 +40,20 @@ namespace Dfit.Services
             _gymAccess = gymAccess;
         }
 
-        // Obtiene las asistencias registradas en la jornada de hoy y la lista de socios activos.
-        public async Task<(IReadOnlyList<Asistencia> AsistenciasHoy, IReadOnlyList<Usuario> UsuariosActivos)> ObtenerAsistenciaDashboardAsync()
+        // Obtiene las asistencias del día y lista de socios activos para el panel operativo.
+        public async Task<(IReadOnlyList<Asistencia> AsistenciasHoy, IReadOnlyList<Usuario> UsuariosActivos)> ObtenerAsistenciasHoyAsync()
         {
-            // Consulta de asistencias de la fecha actual.
-            var asistenciasHoy = await _asistenciaRepo.GetByFechaAsync(DateTime.UtcNow);
+            var ahora = DateTime.UtcNow;
+
+            // Recupera asistencias registradas en la fecha actual.
+            var asistencias = await _asistenciaRepo.GetByFechaAsync(ahora);
+
+            // Carga todos los usuarios para asociar nombres a las entradas.
             var usuarios = await _usuarioRepo.GetAllAsync();
             var usuariosDict = usuarios.ToDictionary(u => u.Id, u => u);
 
-            // Vinculación en memoria de la información del socio.
-            foreach (var a in asistenciasHoy)
+            // Asocia el objeto Usuario a cada registro de asistencia.
+            foreach (var a in asistencias)
             {
                 if (usuariosDict.TryGetValue(a.UsuarioId, out var socio))
                 {
@@ -57,86 +61,72 @@ namespace Dfit.Services
                 }
             }
 
-            // Filtrado de usuarios activos para el desplegable de check-in manual.
-            var usuariosActivos = usuarios
-                .Where(u => u.Activo)
-                .OrderBy(u => u.Nombres)
-                .ToList();
-
-            return (asistenciasHoy, usuariosActivos);
+            // Filtra solo socios activos para el selector de registro manual.
+            var usuariosActivos = usuarios.Where(u => u.Activo).ToList();
+            return (asistencias, usuariosActivos);
         }
 
-        // Registra el ingreso manual de un socio verificando previamente la vigencia de su plan.
-        public async Task<(bool Exito, string Mensaje)> RegistrarAsistenciaManualAsync(string usuarioId)
+        // Registra ingreso manual comprobando que el socio cuente con suscripción vigente.
+        public async Task<(bool Exito, string Mensaje)> RegistrarAccesoManualAsync(string usuarioId)
         {
-            // Cláusula de guarda para validar el socio.
+            // Cláusula de guarda para ID de usuario vacío.
             if (string.IsNullOrWhiteSpace(usuarioId))
             {
-                return (false, MensajesNotificacion.DatosAsignacionIncompletos);
+                return (false, MensajesNotificacion.UsuarioNoEncontrado);
             }
 
-            // Verifica si el usuario cuenta con alguna membresía activa vigente.
-            var membresiaActiva = await ValidarMembresiaActivaSocioAsync(usuarioId);
-            if (!membresiaActiva)
-            {
-                return (false, MensajesNotificacion.SinMembresiaActivaOAccesoVencido);
-            }
-
-            // Registro persistente del acceso en el repositorio de asistencias.
-            var asistencia = new Asistencia
-            {
-                UsuarioId = usuarioId,
-                FechaHoraEntrada = DateTime.UtcNow
-            };
-            await _asistenciaRepo.AddAsync(asistencia);
-
-            return (true, MensajesNotificacion.AccesoConcedidoAsistenciaExito);
-        }
-
-        // Genera o recupera el token criptográfico actual para la pantalla QR de recepción.
-        public string GenerarTokenQR()
-        {
-            // Delega la emisión al servicio de tokens temporales de ciclo corto.
-            return _qrTokenService.GetCurrentToken();
-        }
-
-        // Valida el código QR escaneado por el socio y efectúa el check-in físico en el torniquete.
-        public (bool Exito, string Mensaje) CheckInQR(string token, string userId)
-        {
-            // Cláusula de guarda si el usuario no tiene una sesión autenticada.
-            if (string.IsNullOrWhiteSpace(userId))
-            {
-                return (false, "Sesión de usuario no identificada.");
-            }
-
-            // Validación temporal y criptográfica del token QR escaneado.
-            if (!_qrTokenService.ValidateToken(token))
-            {
-                return (false, MensajesNotificacion.QRExpiradoOInvalido);
-            }
-
-            // Ejecución del registro de acceso a través del proxy de torniquetes.
-            bool exito = _gymAccess.RegistrarAsistencia(userId);
-            string mensaje = _gymAccess.MensajeError ?? (exito ? MensajesNotificacion.AccesoConcedidoAsistenciaExito : "Acceso no autorizado.");
-
-            return (exito, mensaje);
-        }
-
-        // Método auxiliar privado para comprobar el acceso según reglas puras de vigencia.
-        private async Task<bool> ValidarMembresiaActivaSocioAsync(string usuarioId)
-        {
+            // Carga membresías activas del socio en Cloud Firestore.
             var asignaciones = await _memUsuarioRepo.GetByUsuarioIdAsync(usuarioId, soloActivas: true);
             var ahora = DateTime.UtcNow;
+            bool tieneAcceso = false;
 
+            // Evalúa si alguna de las membresías activas se encuentra dentro del rango de vigencia.
             foreach (var doc in asignaciones)
             {
                 if (ReglasMembresia.PermiteAcceso(doc.Activa, doc.FechaFin, ahora))
                 {
-                    return true;
+                    tieneAcceso = true;
+                    break;
                 }
             }
 
-            return false;
+            // Si el socio no tiene plan vigente, se rechaza el acceso físico.
+            if (!tieneAcceso)
+            {
+                return (false, MensajesNotificacion.SinMembresiaActivaOAccesoVencido);
+            }
+
+            // Registra el ingreso exitoso en la colección de asistencias.
+            await _asistenciaRepo.AddAsync(new Asistencia
+            {
+                UsuarioId = usuarioId,
+                FechaHoraEntrada = ahora
+            });
+
+            return (true, MensajesNotificacion.AccesoConcedidoAsistenciaExito);
+        }
+
+        // Genera el token rotativo actual mediante QRTokenManager (Singleton).
+        public string GenerarTokenQR()
+        {
+            // Retorna el token criptográfico actual de corta duración.
+            return _qrTokenService.GetCurrentToken();
+        }
+
+        // Valida el código QR y delega a IGymAccess (Proxy) para registrar asistencia y verificar estado.
+        public Task<(bool Exito, string Mensaje)> ProcesarCheckInQRAsync(string token, string usuarioId)
+        {
+            // Verifica que el token esté presente y sea válido según el Singleton.
+            if (string.IsNullOrWhiteSpace(token) || !_qrTokenService.ValidateToken(token))
+            {
+                return Task.FromResult((false, MensajesNotificacion.QRExpiradoOInvalido));
+            }
+
+            // Ejecuta el acceso a través del Proxy (GymAccessProxy) para validar permisos y registrar.
+            bool exito = _gymAccess.RegistrarAsistencia(usuarioId);
+            string mensaje = _gymAccess.MensajeError;
+
+            return Task.FromResult((exito, mensaje));
         }
     }
 }

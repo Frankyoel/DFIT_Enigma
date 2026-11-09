@@ -1,7 +1,6 @@
 // Dfit/Services/EntrenamientoService.cs
-// Implementación de lógica de negocio para rutinas, horarios y clases dirigidas.
-// Encapsula la gestión de entrenamientos deportivos y el pase de lista de clases.
-// Cumple con la directriz de profundidad condicional <= 2 niveles y cláusulas de guarda.
+// Implementación de lógica de negocio para rutinas, asignaciones y pase de lista de clases.
+// Desacopla las funciones avanzadas de entrenadores de la capa de presentación.
 
 using System;
 using System.Collections.Generic;
@@ -13,229 +12,213 @@ using Dfit.Utils;
 
 namespace Dfit.Services
 {
-    // Servicio de aplicación para rutinas de entrenamiento, programación semanal y clases colectivas.
+    // Servicio de aplicación para rutinas deportivas, clases grupales y asistencia de socios.
+    // Encapsula las operaciones del catálogo de ejercicios, asignaciones temporales y control de asistencia a clases.
     public class EntrenamientoService : IEntrenamientoService
     {
-        // Repositorios inyectados para el dominio deportivo.
+        // Repositorios requeridos para rutinas, horarios y usuarios.
         private readonly IRutinaRepository _rutinaRepo;
         private readonly IRutinaUsuarioRepository _rutinaUsuarioRepo;
         private readonly IHorarioRepository _horarioRepo;
-        private readonly IUsuarioRepository _usuarioRepo;
         private readonly IAsistenciaRepository _asistenciaRepo;
+        private readonly IUsuarioRepository _usuarioRepo;
 
-        // Constructor con inyección de dependencias.
+        // Constructor con inyección de repositorios de entrenamiento.
         public EntrenamientoService(
             IRutinaRepository rutinaRepo,
             IRutinaUsuarioRepository rutinaUsuarioRepo,
             IHorarioRepository horarioRepo,
-            IUsuarioRepository usuarioRepo,
-            IAsistenciaRepository asistenciaRepo)
+            IAsistenciaRepository asistenciaRepo,
+            IUsuarioRepository usuarioRepo)
         {
             _rutinaRepo = rutinaRepo;
             _rutinaUsuarioRepo = rutinaUsuarioRepo;
             _horarioRepo = horarioRepo;
-            _usuarioRepo = usuarioRepo;
             _asistenciaRepo = asistenciaRepo;
+            _usuarioRepo = usuarioRepo;
         }
 
-        // Obtiene todas las rutinas activas del catálogo.
+        // Obtiene las rutinas activas para el catálogo de entrenamientos.
         public async Task<IReadOnlyList<Rutina>> ObtenerRutinasActivasAsync()
         {
+            // Recupera rutinas activas desde Firestore.
             return await _rutinaRepo.GetActivasAsync();
         }
 
         // Registra una nueva rutina en el catálogo.
         public async Task CrearRutinaAsync(Rutina model)
         {
+            // Cláusula de guarda para evitar entidades nulas.
             if (model == null)
             {
                 return;
             }
 
+            // Marca la rutina como activa y persiste.
             model.Activa = true;
             await _rutinaRepo.AddAsync(model);
         }
 
-        // Obtiene una rutina para su edición.
+        // Obtiene una rutina por su identificador.
         public async Task<Rutina?> ObtenerRutinaParaEditarAsync(string id)
         {
-            if (string.IsNullOrWhiteSpace(id))
-            {
-                return null;
-            }
-
+            // Recupera la rutina por clave primaria.
             return await _rutinaRepo.GetByIdAsync(id);
         }
 
-        // Actualiza los parámetros de una rutina existente.
+        // Actualiza los datos de una rutina existente.
         public async Task ActualizarRutinaAsync(Rutina model)
         {
-            if (model == null || string.IsNullOrWhiteSpace(model.Id))
+            // Valida que el modelo esté presente.
+            if (model == null)
             {
                 return;
             }
 
+            // Aplica la actualización en el repositorio.
             await _rutinaRepo.UpdateAsync(model.Id, model);
         }
 
-        // Da de baja lógica una rutina del catálogo sin borrar su historial de uso.
+        // Desactiva lógicamente una rutina sin borrar su historial de uso.
         public async Task EliminarRutinaAsync(string id)
         {
-            if (string.IsNullOrWhiteSpace(id))
+            // Desactiva el registro en Firestore.
+            await _rutinaRepo.DesactivarAsync(id);
+        }
+
+        // Asigna una rutina a un socio desactivando cualquier rutina previa.
+        public async Task AsignarRutinaASocioAsync(string usuarioId, string rutinaId, int duracionDias)
+        {
+            // Cláusula de guarda para identificadores vacíos.
+            if (string.IsNullOrWhiteSpace(usuarioId) || string.IsNullOrWhiteSpace(rutinaId))
             {
                 return;
             }
 
-            await _rutinaRepo.DesactivarAsync(id);
-        }
-
-        // Asigna una rutina de entrenamiento a un socio con un plazo de vigencia en días.
-        public async Task<(bool Exito, string Mensaje)> AsignarRutinaASocioAsync(string usuarioId, string rutinaId, int duracionDias = 30)
-        {
-            // Cláusula de guarda para validar parámetros de asignación.
-            if (string.IsNullOrWhiteSpace(usuarioId) || string.IsNullOrWhiteSpace(rutinaId))
-            {
-                return (false, MensajesNotificacion.DatosAsignacionIncompletos);
-            }
-
-            // Desactiva rutinas activas anteriores del socio.
+            // Desactiva asignaciones activas previas del socio.
             await _rutinaUsuarioRepo.DesactivarRutinasPreviasAsync(usuarioId);
 
+            // Calcula fechas de inicio y finalización del plan de ejercicios.
             var fechaInicio = DateTime.UtcNow;
             var dias = duracionDias > 0 ? duracionDias : 30;
             var fechaFin = fechaInicio.AddDays(dias);
 
-            // Inserción de la nueva asignación activa.
-            var asignacion = new RutinaUsuario
+            // Registra la nueva asignación activa en Firestore.
+            await _rutinaUsuarioRepo.AddAsync(new RutinaUsuario
             {
                 UsuarioId = usuarioId,
                 RutinaId = rutinaId,
                 FechaAsignacion = fechaInicio,
                 FechaFin = fechaFin,
                 Estado = "Activa"
-            };
-            await _rutinaUsuarioRepo.AddAsync(asignacion);
-
-            return (true, MensajesNotificacion.RutinaAsignadaExito);
+            });
         }
 
-        // Desasigna o cancela la rutina activa de un socio.
-        public async Task<(bool Exito, string Mensaje)> RemoverRutinaSocioAsync(string rutinaUsuarioId)
+        // Desasigna o cancela una rutina asignada al socio.
+        public async Task RemoverRutinaSocioAsync(string rutinaUsuarioId)
         {
+            // Cláusula de guarda para ID de asignación vacío.
             if (string.IsNullOrWhiteSpace(rutinaUsuarioId))
             {
-                return (false, MensajesNotificacion.DatosAsignacionIncompletos);
+                return;
             }
 
-            var asignacion = await _rutinaUsuarioRepo.GetByIdAsync(rutinaUsuarioId);
-            if (asignacion == null)
+            // Localiza la asignación y cambia su estado a Cancelada.
+            var ru = await _rutinaUsuarioRepo.GetByIdAsync(rutinaUsuarioId);
+            if (ru != null)
             {
-                return (false, "Asignación no encontrada.");
+                ru.Estado = "Cancelada";
+                await _rutinaUsuarioRepo.UpdateAsync(rutinaUsuarioId, ru);
             }
-
-            asignacion.Estado = "Cancelada";
-            await _rutinaUsuarioRepo.UpdateAsync(rutinaUsuarioId, asignacion);
-
-            return (true, MensajesNotificacion.RutinaDesasignadaExito);
         }
 
-        // Obtiene el cronograma semanal de clases ordenado cronológicamente.
-        public async Task<IReadOnlyList<Horario>> ObtenerHorariosOrdenadosAsync()
+        // Obtiene la lista semanal de clases grupales ordenadas por hora de inicio.
+        public async Task<IReadOnlyList<Horario>> ObtenerHorariosAsync()
         {
+            // Retorna los horarios ordenados cronológicamente.
             return await _horarioRepo.GetHorariosOrdenadosAsync();
         }
 
-        // Registra una nueva clase en el cronograma semanal.
+        // Crea una nueva sesión de clase en el cronograma semanal.
         public async Task CrearHorarioAsync(Horario model)
         {
+            // Cláusula de guarda para horario nulo.
             if (model == null)
             {
                 return;
             }
 
+            // Persiste el nuevo horario en Firestore.
             await _horarioRepo.AddAsync(model);
         }
 
-        // Obtiene un horario de clase para su edición.
+        // Obtiene una sesión de horario para su formulario de edición.
         public async Task<Horario?> ObtenerHorarioParaEditarAsync(string id)
         {
-            if (string.IsNullOrWhiteSpace(id))
-            {
-                return null;
-            }
-
+            // Recupera la sesión de clase por su ID.
             return await _horarioRepo.GetByIdAsync(id);
         }
 
-        // Actualiza los datos de una clase programada.
+        // Actualiza los parámetros de una clase grupal.
         public async Task ActualizarHorarioAsync(Horario model)
         {
-            if (model == null || string.IsNullOrWhiteSpace(model.Id))
+            // Valida la entidad recibida.
+            if (model == null)
             {
                 return;
             }
 
+            // Aplica los cambios en el almacén de datos.
             await _horarioRepo.UpdateAsync(model.Id, model);
         }
 
         // Elimina una clase del cronograma semanal.
         public async Task EliminarHorarioAsync(string id)
         {
-            if (string.IsNullOrWhiteSpace(id))
-            {
-                return;
-            }
-
+            // Borra el documento del horario.
             await _horarioRepo.DeleteAsync(id);
         }
 
-        // Carga los datos del roster de una clase grupal, socios disponibles y asistencia del día.
+        // Obtiene el roster de socios y asistencias de hoy para una clase grupal.
         public async Task<(Horario? Horario, IReadOnlyList<Usuario> Socios, HashSet<string> AsistenciasHoy)> ObtenerClaseRosterAsync(string horarioId, string? search = null)
         {
-            if (string.IsNullOrWhiteSpace(horarioId))
-            {
-                return (null, Array.Empty<Usuario>(), new HashSet<string>());
-            }
-
+            // Carga la información de la sesión de clase.
             var horario = await _horarioRepo.GetByIdAsync(horarioId);
             if (horario == null)
             {
-                return (null, Array.Empty<Usuario>(), new HashSet<string>());
+                return (null, new List<Usuario>(), new HashSet<string>());
             }
 
-            // Obtiene socios registrados y aplica filtro si existe.
+            // Carga los socios registrados y filtra por búsqueda si aplica.
             var socios = await _usuarioRepo.GetSociosAsync(search);
+            var hoy = DateTime.UtcNow;
 
-            // Obtiene los ingresos confirmados hoy para esta clase.
-            var asistenciasHoy = await _asistenciaRepo.GetAsistenciasHoyPorHorarioAsync(horarioId, DateTime.UtcNow);
+            // Identifica qué socios ya asistieron hoy a esta clase específica.
+            var asistenciasHoy = await _asistenciaRepo.GetAsistenciasHoyPorHorarioAsync(horarioId, hoy);
 
-            var sociosOrdenados = socios.OrderBy(u => u.Nombres).ToList();
-            return (horario, sociosOrdenados, asistenciasHoy);
+            return (horario, socios.OrderBy(u => u.Nombres).ToList(), asistenciasHoy);
         }
 
-        // Registra el pase de lista de un socio en una clase colectiva.
+        // Registra la asistencia de un socio a una clase grupal específica.
         public async Task<(bool Exito, string Mensaje)> RegistrarAsistenciaClaseAsync(string usuarioId, string horarioId)
         {
-            if (string.IsNullOrWhiteSpace(usuarioId) || string.IsNullOrWhiteSpace(horarioId))
-            {
-                return (false, MensajesNotificacion.DatosAsignacionIncompletos);
-            }
-
+            // Obtiene la clase para incluir su nombre en el registro.
             var horario = await _horarioRepo.GetByIdAsync(horarioId);
             if (horario == null)
             {
-                return (false, "Horario de clase no encontrado.");
+                return (false, "Horario no encontrado.");
             }
 
-            var asistencia = new Asistencia
+            // Registra el acceso a la clase colectiva en Firestore.
+            await _asistenciaRepo.AddAsync(new Asistencia
             {
                 UsuarioId = usuarioId,
                 HorarioId = horarioId,
                 NombreClase = horario.NombreClase,
                 FechaHoraEntrada = DateTime.UtcNow
-            };
-            await _asistenciaRepo.AddAsync(asistencia);
+            });
 
+            // Genera mensaje formateado mediante el catálogo de mensajes.
             var mensaje = string.Format(MensajesNotificacion.AsistenciaClaseRegistradaExito, horario.NombreClase);
             return (true, mensaje);
         }
