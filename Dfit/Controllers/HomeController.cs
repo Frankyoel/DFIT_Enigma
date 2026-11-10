@@ -19,7 +19,6 @@ namespace Dfit.Controllers
         // Redirige al panel correspondiente según el rol del usuario autenticado.
         // Evalúa permisos mediante ClaimsPrincipal y PermisosHelper.
         [HttpGet]
-        [Route("")]
         [Route("Home")]
         [Route("Home/Index")]
         public IActionResult Index()
