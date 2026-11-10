@@ -157,15 +157,26 @@ namespace Dfit.Repositories.Firestore
         }
 
         // Transforma un DocumentSnapshot en la entidad Pago.
-        // Previene excepciones por conversión de tipos numéricos entre double y decimal.
+        // Previene excepciones por conversión de tipos numéricos entre double, long y decimal.
         private static Pago MapearPago(DocumentSnapshot doc)
         {
+            // Extracción segura del monto para tolerar representaciones numéricas mixtas en Firestore.
+            decimal monto = 0m;
+            if (doc.ContainsField("Monto"))
+            {
+                var valorMonto = doc.GetValue<object>("Monto");
+                if (valorMonto != null)
+                {
+                    monto = Convert.ToDecimal(valorMonto);
+                }
+            }
+
             return new Pago
             {
                 Id = doc.Id,
                 UsuarioId = doc.ContainsField("UsuarioId") ? doc.GetValue<string>("UsuarioId") : "",
                 MembresiaId = doc.ContainsField("MembresiaId") ? doc.GetValue<string>("MembresiaId") : "",
-                Monto = doc.ContainsField("Monto") ? Convert.ToDecimal(doc.GetValue<double>("Monto")) : 0m,
+                Monto = monto,
                 FechaPago = doc.ContainsField("FechaPago") ? doc.GetValue<DateTime>("FechaPago") : DateTime.UtcNow,
                 MetodoPago = doc.ContainsField("MetodoPago") ? doc.GetValue<string>("MetodoPago") : "Efectivo"
             };

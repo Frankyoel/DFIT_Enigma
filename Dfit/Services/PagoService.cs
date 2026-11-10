@@ -159,8 +159,24 @@ namespace Dfit.Services
             var planes = await _membresiaRepo.GetAllAsync();
 
             // Mapea diccionarios en memoria para resolución rápida sin consultas adicionales.
-            var usuariosDict = usuarios.ToDictionary(u => u.Id, u => u);
-            var planesDict = planes.ToDictionary(p => p.Id, p => p);
+            // Utiliza asignación directa por clave para evitar excepciones si existen duplicados.
+            var usuariosDict = new Dictionary<string, Usuario>();
+            foreach (var u in usuarios)
+            {
+                if (!string.IsNullOrEmpty(u.Id))
+                {
+                    usuariosDict[u.Id] = u;
+                }
+            }
+
+            var planesDict = new Dictionary<string, Membresia>();
+            foreach (var p in planes)
+            {
+                if (!string.IsNullOrEmpty(p.Id))
+                {
+                    planesDict[p.Id] = p;
+                }
+            }
 
             // Variables de agregación contable.
             var ahora = DateTime.UtcNow;
@@ -170,14 +186,14 @@ namespace Dfit.Services
             // Itera las transacciones calculando totales y acumulados mensuales.
             foreach (var p in pagos)
             {
-                // Vincula el socio asociado a la transacción.
-                if (usuariosDict.TryGetValue(p.UsuarioId, out var usuario))
+                // Vincula el socio asociado si el identificador está presente en el diccionario.
+                if (!string.IsNullOrEmpty(p.UsuarioId) && usuariosDict.TryGetValue(p.UsuarioId, out var usuario))
                 {
                     p.Usuario = usuario;
                 }
 
-                // Vincula el plan adquirido en la transacción.
-                if (planesDict.TryGetValue(p.MembresiaId, out var plan))
+                // Vincula el plan adquirido si el identificador está presente en el catálogo.
+                if (!string.IsNullOrEmpty(p.MembresiaId) && planesDict.TryGetValue(p.MembresiaId, out var plan))
                 {
                     p.Membresia = plan;
                 }
