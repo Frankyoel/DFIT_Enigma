@@ -12,7 +12,7 @@ void main() async {
   // Initialize Firebase with your credentials
   await Firebase.initializeApp(
     options: const FirebaseOptions(
-      apiKey: 'AIzaSyCRWnAJbsM5QqDwt6Rp8WicffqxPmoYGEE',
+      apiKey: '00000000',
       appId: '1:867453974083:android:a183a7eaeaceac2ad5c6f6',
       messagingSenderId: '867453974083',
       projectId: 'dfit-gym-cd550',
