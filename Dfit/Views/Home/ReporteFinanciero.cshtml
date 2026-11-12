@@ -1,24 +1,42 @@
+@* Dfit/Views/Home/ReporteFinanciero.cshtml *@
+@* Vista administrativa para monitoreo de ingresos acumulados e historial contable. *@
+@* Integra controles de nulabilidad defensiva ante socios o planes eliminados. *@
+@* Renderiza totales agregados y detalle transaccional de pagos recibidos. *@
+
 @model IEnumerable<Dfit.Models.Pago>
 @{
     ViewData["Title"] = "Reporte Financiero";
 }
 
+@* Cabecera y descripción general de la consola de reportería *@
+@* Provee información de contexto para el usuario administrador *@
 <div class="mb-4">
     <h2>Reporte Financiero</h2>
-    <p class="text-muted" style="margin-top: 4px;">Resumen de ingresos y transacciones históricas.</p>
+    <p class="text-muted" style="margin-top: 4px;">Resumen consolidado de ingresos, recaudación mensual y auditoría de pagos.</p>
 </div>
 
+@* Tarjetas de KPI contables: Histórico acumulado y facturación del mes actual *@
+@* Distribución en cuadrícula responsiva con auto-ajuste de ancho *@
 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+    @* Tarjeta de ingresos totales históricos acumulados *@
     <div class="card" style="margin-bottom: 0;">
         <div style="color:var(--text-muted); font-weight:600; font-size:12px; text-transform:uppercase;">Ingresos Totales (Histórico)</div>
-        <div style="font-size: 32px; font-weight: 700; color: var(--text-main); margin-top: 8px;">S/ @ViewBag.IngresosTotales</div>
+        <div style="font-size: 32px; font-weight: 700; color: var(--text-main); margin-top: 8px;">
+            S/ @(ViewBag.IngresosTotales is decimal dTot ? dTot.ToString("N2") : ViewBag.IngresosTotales)
+        </div>
     </div>
+
+    @* Tarjeta de ingresos facturados en el mes corriente *@
     <div class="card" style="margin-bottom: 0;">
         <div style="color:var(--text-muted); font-weight:600; font-size:12px; text-transform:uppercase;">Ingresos de este Mes</div>
-        <div style="font-size: 32px; font-weight: 700; color: var(--primary); margin-top: 8px;">S/ @ViewBag.PagosDelMes</div>
+        <div style="font-size: 32px; font-weight: 700; color: var(--primary); margin-top: 8px;">
+            S/ @(ViewBag.PagosDelMes is decimal dMes ? dMes.ToString("N2") : ViewBag.PagosDelMes)
+        </div>
     </div>
 </div>
 
+@* Tabla detallada de transacciones con soporte de visualización responsiva *@
+@* Aplica estilos de tabla formal para visualización corporativa de finanzas *@
 <div class="card">
     <h3 style="margin-bottom: 1.5rem;">Historial de Transacciones</h3>
     <div class="table-responsive">
@@ -33,19 +51,40 @@
                 </tr>
             </thead>
             <tbody>
+                @* Renderizado defensivo de transacciones con verificación de nulabilidad *@
+                @* Protege contra excepciones si el socio o la membresía fueron dados de baja *@
                 @foreach (var pago in Model)
                 {
                     <tr>
+                        @* Fecha y hora formateada en horario local *@
                         <td class="text-muted">@pago.FechaPago.ToString("dd/MM/yyyy HH:mm")</td>
-                        <td style="font-weight: 500;">@pago.Usuario.Nombres @pago.Usuario.Apellidos</td>
-                        <td>@pago.Membresia.Nombre</td>
+
+                        @* Nombre del socio con fallback a ID si la cuenta fue dada de baja *@
+                        <td style="font-weight: 500;">
+                            @(pago.Usuario != null 
+                                ? $"{pago.Usuario.Nombres} {pago.Usuario.Apellidos}" 
+                                : (!string.IsNullOrEmpty(pago.UsuarioId) ? $"Socio #{pago.UsuarioId}" : "Socio no registrado"))
+                        </td>
+
+                        @* Nombre del plan con fallback en caso de membresía descontinuada *@
+                        <td>
+                            @(pago.Membresia?.Nombre ?? (!string.IsNullOrEmpty(pago.MembresiaId) ? $"Plan #{pago.MembresiaId}" : "Membresía"))
+                        </td>
+
+                        @* Modalidad de pago empleada en recepción *@
                         <td>
                             <span class="badge badge-neutral">@pago.MetodoPago</span>
                         </td>
-                        <td style="color:var(--success); font-weight: 600;">+ S/ @pago.Monto</td>
+
+                        @* Monto cobrado en soles peruanos con formato monetario estandarizado *@
+                        <td style="color:var(--success); font-weight: 600;">+ S/ @pago.Monto.ToString("N2")</td>
                     </tr>
                 }
-                @if(!Model.Any()) {
+
+                @* Mensaje alternativo cuando no existen registros en la colección *@
+                @* Previene renderizado de tabla vacía sin retroalimentación al usuario *@
+                @if (!Model.Any())
+                {
                     <tr>
                         <td colspan="5" class="text-center text-muted" style="padding: 3rem 1rem;">No hay transacciones registradas.</td>
                     </tr>
