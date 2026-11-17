@@ -220,11 +220,17 @@
                 }
             }
 
-            // Ocultar el texto antes de reemplazar por el hash para evitar parpadeo visual
+            // El campo visible NO se modifica: se envía un input oculto con el hash
+            // y se quita el atributo "name" del campo visible para que no viaje en texto plano.
             for (var i = 0; i < inputs.length; i++) {
-                if (inputs[i].value) {
-                    inputs[i].setAttribute("type", "password");
-                    inputs[i].value = await sha256Hex(inputs[i].value);
+                var visible = inputs[i];
+                if (visible.value && visible.name) {
+                    var hidden = document.createElement("input");
+                    hidden.type = "hidden";
+                    hidden.name = visible.name;
+                    hidden.value = await sha256Hex(visible.value);
+                    visible.removeAttribute("name");
+                    form.appendChild(hidden);
                 }
             }
 
