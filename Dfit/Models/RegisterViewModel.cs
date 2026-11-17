@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Dfit.Models
 {
@@ -34,8 +35,6 @@ namespace Dfit.Models
         [Required(ErrorMessage = "La contraseña es requerida")]
         [DataType(DataType.Password)]
         [StringLength(100, MinimumLength = 8, ErrorMessage = "La contraseña debe tener al menos 8 caracteres")]
-        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$",
-            ErrorMessage = "La contraseña debe tener al menos 8 caracteres e incluir mayúsculas, minúsculas, números y al menos un símbolo")]
         public string Password { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Confirmar la contraseña es requerido")]
@@ -43,10 +42,26 @@ namespace Dfit.Models
         [Compare("Password", ErrorMessage = "Las contraseñas no coinciden")]
         public string ConfirmPassword { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Indica si la contraseña ya fue pre-hasheada (SHA-256) en el frontend antes del envío.
+        /// </summary>
+        public bool IsClientHashed { get; set; } = false;
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (string.IsNullOrWhiteSpace(Password))
                 yield break;
+
+            // Si viene pre-hasheada con SHA-256 (64 caracteres hex), las reglas sobre texto plano ya se validaron en el cliente.
+            if (IsClientHashed && Regex.IsMatch(Password, "^[0-9a-f]{64}$"))
+                yield break;
+
+            if (!Regex.IsMatch(Password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$"))
+            {
+                yield return new ValidationResult(
+                    "La contraseña debe tener al menos 8 caracteres e incluir mayúsculas, minúsculas, números y al menos un símbolo",
+                    new[] { nameof(Password) });
+            }
 
             var lowerPwd = Password.ToLowerInvariant();
 

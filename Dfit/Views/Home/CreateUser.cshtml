@@ -12,7 +12,7 @@
 </div>
 
 <div class="card" style="max-width: 600px;">
-    <form asp-action="CreateUser" method="post">
+    <form asp-action="CreateUser" method="post" id="main-create-user-form">
         <div class="form-group">
             <label asp-for="Nombres" class="form-label">Nombres</label>
             <input asp-for="Nombres" class="form-control" required />
@@ -56,3 +56,16 @@
         <button type="submit" class="btn btn-primary" style="width: 100%;">Registrar Usuario</button>
     </form>
 </div>
+
+@section Scripts {
+    <script src="~/js/dfit-password-hash.js" asp-append-version="true"></script>
+    <script>
+        if (window.DfitPasswordHash) {
+            window.DfitPasswordHash.attachPasswordHashing({
+                formId: "main-create-user-form",
+                passwordInputIds: ["PasswordHash"],
+                minLength: 6
+            });
+        }
+    </script>
+}

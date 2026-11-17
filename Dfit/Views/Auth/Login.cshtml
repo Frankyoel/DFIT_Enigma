@@ -166,10 +166,19 @@
 
     <!-- Scripts de Bootstrap y Funciones Específicas de Login -->
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/dfit-password-hash.js" asp-append-version="true"></script>
 
     <script>
         (function () {
             "use strict";
+
+            // Pre-hasheo SHA-256 en el cliente antes de enviar el formulario de login
+            if (window.DfitPasswordHash) {
+                window.DfitPasswordHash.attachPasswordHashing({
+                    formId: "main-login-form",
+                    passwordInputIds: ["PasswordInput"]
+                });
+            }
 
             // 0. EVITAR DIÁLOGO DE REENVÍO DE FORMULARIO AL PRESIONAR F5
             if (window.history.replaceState) {

@@ -54,6 +54,7 @@
             <!-- Formulario de Registro -->
             <form asp-controller="Auth" asp-action="Register" method="post" id="main-register-form" novalidate>
                 @Html.AntiForgeryToken()
+                <input type="hidden" id="IsClientHashed" name="IsClientHashed" value="false" />
 
                 <!-- Fila 1: Nombres y Apellidos en dos columnas -->
                 <div class="row g-2 mb-2">
@@ -299,10 +300,26 @@
 
     <!-- Scripts de Bootstrap y Funciones Específicas de Registro -->
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/dfit-password-hash.js" asp-append-version="true"></script>
 
     <script>
         (function () {
             "use strict";
+
+            // Pre-hasheo SHA-256 en el cliente antes de enviar el formulario de registro
+            if (window.DfitPasswordHash) {
+                window.DfitPasswordHash.attachPasswordHashing({
+                    formId: "main-register-form",
+                    passwordInputIds: ["PasswordInput", "ConfirmPasswordInput"],
+                    isHashedInputId: "IsClientHashed",
+                    validateOwasp: true,
+                    errorElementId: "password-error",
+                    confirmInputId: "ConfirmPasswordInput",
+                    confirmErrorId: "confirm-password-error",
+                    dniInputId: "DniInput",
+                    celularInputId: "CelularInput"
+                });
+            }
 
             // 0. EVITAR DIÁLOGO DE REENVÍO DE FORMULARIO AL PRESIONAR F5
             if (window.history.replaceState) {

@@ -952,6 +952,14 @@ namespace Dfit.Controllers
                 ? (!string.IsNullOrWhiteSpace(model.DNI) ? model.DNI.Trim() : "123456") 
                 : model.PasswordHash.Trim();
 
+            // Si la contraseña fue generada por defecto en el servidor (ej. DNI), aplicar el mismo pre-hash SHA-256
+            // que realiza el frontend para mantener compatibilidad con el Login.
+            if (string.IsNullOrWhiteSpace(model.PasswordHash))
+            {
+                var bytes = System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(password));
+                password = Convert.ToHexString(bytes).ToLowerInvariant();
+            }
+
             // Hashear la contraseña antes de almacenarla (OWASP A02:2021)
             var hashedPassword = _passwordHasher.HashPassword(password);
 

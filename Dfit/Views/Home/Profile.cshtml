@@ -192,7 +192,7 @@
         <div class="card shadow-sm border-0 mb-4 bg-white">
             <div class="card-body p-4">
                 <h3 class="h5 fw-bold mb-3 text-dark">👤 Datos de la Cuenta</h3>
-                <form asp-action="Profile" method="post">
+                <form asp-action="Profile" method="post" id="main-profile-form">
                     <input type="hidden" asp-for="Id" />
                     
                     <div class="mb-3">
@@ -323,3 +323,16 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/dfit-password-hash.js" asp-append-version="true"></script>
+    <script>
+        if (window.DfitPasswordHash) {
+            window.DfitPasswordHash.attachPasswordHashing({
+                formId: "main-profile-form",
+                passwordInputIds: ["NewPassword"],
+                minLength: 6
+            });
+        }
+    </script>
+}
